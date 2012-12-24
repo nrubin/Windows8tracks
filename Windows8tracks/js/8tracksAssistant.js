@@ -60,6 +60,22 @@
           );
     }
 
+    Networker.getMix = function (playToken, mixId) {
+        defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/play" + urlPrefix + "&mix_id=" + mixId;
+        WinJS.xhr(defaultOptions).then(
+        function onCompleted(response) {
+            console.log("received mix");
+            console.log(response.responseText);
+        },
+        function onError(response) {
+            console.log("did not receive mix");
+            console.log(response.responseText);
+        },
+        function inProgress(response) {
+            console.log("receiving mix...");
+        });
+    }
+
     Networker.reportSong = function (playToken, trackId, mixId) {
         defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/report" + urlPrefix + "track_id=" + trackId + "&mixId=" + mixId;
         WinJS.xhr(defaultOptions).then(
