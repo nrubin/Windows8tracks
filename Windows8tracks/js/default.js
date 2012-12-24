@@ -14,7 +14,10 @@
                 // TODO: This application has been newly launched. Initialize
                 // your application here.
                 Networker.login("windows8tracks", "password");
-                Networker.reportSong("1234","1110", "4546");
+                //Networker.reportSong("1234", "1110", "4546");
+                //var playToken = Networker.playToken;
+                Networker.getFavoriteMixes();
+                Networker.getLatestMixes("10", "1");
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.

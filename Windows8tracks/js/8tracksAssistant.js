@@ -22,13 +22,16 @@
         logs a given unane/pw combo into 8tracks. Sets the user token and play tokens
         */
         defaultOptions.url = "https://8tracks.com/sessions/create_get" + urlPrefix + "&login=" + username + "&password=" + password
-        WinJS.xhr(defaultOptions).then(
+        WinJS.xhr(defaultOptions).done(
             function onCompleted(response) {
-                console.log("login successful");
-                console.log(response.responseText);
                 userObj = JSON.parse(response.responseText);
-                userToken = userObj.user_token;
-                Networker.getPlayToken();
+                if (userObj.status === "200 OK") {
+                    userToken = userObj.user_token;
+                    Networker.retrievePlayToken();
+                } else {
+                    console.log("login unsuccessful");
+                    console.log(response.responseText);
+                }
             },
             function onError(response) {
                 console.log("login not successful");
@@ -38,11 +41,11 @@
                 console.log("logging " + username + " into 8tracks");
             }
             );
-    }
+    };
 
-    Networker.getPlayToken = function () {
+    Networker.retrievePlayToken = function () {
         defaultOptions.url = "http://8tracks.com/sets/new.json" + urlPrefix
-        WinJS.xhr(defaultOptions).then(
+        WinJS.xhr(defaultOptions).done(
            function onCompleted(response) {
                console.log("received play token");
                console.log(response.responseText);
@@ -58,11 +61,49 @@
                 console.log("retrieving play token...");
             }
           );
-    }
+    };
+
+    Networker.getMixListFromUrl = function (url) {
+
+    };
+
+    Networker.getLatestMixes = function (perPage, pageNumber) {
+        defaultOptions.url = "http://8tracks.com/mixes" + urlPrefix + "&per_page=" + perPage + "&page=" + pageNumber;
+        WinJS.xhr(defaultOptions).done(
+        function onCompleted(response) {
+            console.log("received latest mixes");
+            console.log(response.responseText);
+        },
+        function onError(response) {
+            console.log("did not receive latest mixes");
+            console.log(response.responseText);
+        },
+        function inProgress(response) {
+            console.log("receiving latest mixes...");
+        });
+    };
+
+    Networker.getFavoriteMixes = function () {
+        defaultOptions.url = "http://8tracks.com/mix_sets/liked" + urlPrefix;
+        WinJS.xhr(defaultOptions).done(
+        function onCompleted(response) {
+            console.log("received favorite mixes");
+            console.log(response.responseText);
+        },
+        function onError(response) {
+            console.log("did not receive favorite mixes");
+            console.log(response.responseText);
+        },
+        function inProgress(response) {
+            console.log("receiving favorite mixes...");
+        });
+    };
+
+    //Networker.getMixesByTag
 
     Networker.getMix = function (playToken, mixId) {
         defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/play" + urlPrefix + "&mix_id=" + mixId;
-        WinJS.xhr(defaultOptions).then(
+        WinJS.xhr(defaultOptions).done(
         function onCompleted(response) {
             console.log("received mix");
             console.log(response.responseText);
@@ -74,11 +115,11 @@
         function inProgress(response) {
             console.log("receiving mix...");
         });
-    }
+    };
 
     Networker.reportSong = function (playToken, trackId, mixId) {
         defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/report" + urlPrefix + "track_id=" + trackId + "&mixId=" + mixId;
-        WinJS.xhr(defaultOptions).then(
+        WinJS.xhr(defaultOptions).done(
        function onCompleted(response) {
            console.log("reported song");
            console.log(response.responseText);
@@ -91,6 +132,14 @@
             console.log("reporting song...");
         }
       );
-    }
+    };
+
+    Networker.getPlayToken = function () {
+        return playToken;
+    };
+
+    Networker.setPlayToken = function (desiredPlayToken) {
+        playToken = desiredPlayToken;
+    };
 
 }());
