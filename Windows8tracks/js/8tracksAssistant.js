@@ -108,23 +108,31 @@
         });
     };
 
-    Networker.getFavoriteMixes = function (userId,callback){  
+    Networker.getFavoriteMixes = function (userId,perPage,pageNumber,callback){  
         /*
         fetches the logged in user's mixes from 8tracks, then calls callback on the list of mixes
         if the fetch fails, callback receives null
         */
-        defaultOptions.url = "http://8tracks.com/mix_sets/liked:" + userId;// + urlPrefix;
-        WinJS.xhr(defaultOptions).done(
+        defaultOptions.url = "http://8tracks.com/users/" + userId + "/mixes.json" + urlPrefix + "view=liked&per_page=" + perPage + "&page=" + pageNumber;
+        WinJS.xhr(defaultOptions).then(
         function onCompleted(response) {
-            console.log("received favorite mixes");
-            console.log(response.responseText);
+            var responseObj = JSON.parse(response.responseText);
+            if (responseObj.status === "200 OK") {
+                console.log("received favorite mixes");
+                console.log(response.responseText);
+                var mixes = responseObj.mix_set.mixes;
+                callback(mixes);
+            } else {
+                console.log("did not receive favorite mixes");
+                console.log(response.responseText);
+                callback(null);
+            }
         },
-
         function onError(response) {
             console.log("did not receive favorite mixes");
             console.log(response.responseText);
+            callback(null);
         },
-
         function inProgress(response) {
             console.log("receiving favorite mixes...");
         });

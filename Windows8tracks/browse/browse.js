@@ -16,9 +16,10 @@
 
     function getFavoriteMixes(eventargs) {
         console.log("getting favorite mixes....");
-        Networker.getFavoriteMixes(app.sessionState.userId,renderFavoriteMixList);
+        Networker.getFavoriteMixes(app.sessionState.userId,"5","1",renderFavoriteMixList);
     }
     function renderFavoriteMixList(mixes) {
+        console.log("rendering favorite mixes");
         var listView = document.querySelector("#favoriteMixesListView").winControl;
         var dataList = new WinJS.Binding.List(mixes);
         listView.itemDataSource = dataList.dataSource;
