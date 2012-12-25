@@ -16,5 +16,14 @@
 </head>
 <body>
     <p>Content goes here</p>
+    <div id="mixTemplate" data-win-control="WinJS.Binding.Template">
+        <div class="mix">
+            <h2 data-win-bind="innerText : name">
+            </h2>
+            <img src="#" data-win-bind="src: cover_urls.sq56"/>
+        </div>
+    </div>
+    <div id="basicListView"  data-win-control="WinJS.UI.ListView" data-win-options="{itemTemplate: select('#mixTemplate')}">  
+    </div>
 </body>
 </html>

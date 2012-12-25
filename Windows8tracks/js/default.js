@@ -17,9 +17,9 @@
                 //Networker.reportSong("1234", "1110", "4546");
                 //var playToken = Networker.playToken;
                 Networker.getFavoriteMixes();
-                var latestMixes = Networker.getLatestMixes("5", "1");
-                console.log("the latest mixes are");
-                console.log(latestMixes);
+                var mixes = null;
+                Networker.getLatestMixes("5", "1", renderMixList)
+                //console.log(mixes);
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.
@@ -38,4 +38,10 @@
     };
 
     app.start();
+
+    function renderMixList(mixes) {
+        var listView = document.querySelector("#basicListView").winControl;
+        var dataList = new WinJS.Binding.List(mixes);
+        listView.itemDataSource = dataList.dataSource;
+    }
 })();
