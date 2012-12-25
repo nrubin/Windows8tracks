@@ -1,3 +1,8 @@
 ﻿.browse p {
     margin-left: 120px;
 }
+
+.win-listview 
+{
+    height: 500px; 
+}

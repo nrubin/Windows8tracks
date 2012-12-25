@@ -1,3 +1,8 @@
 ﻿.home p {
     margin-left: 120px;
 }
+#loginError {
+font-style:italic;
+color:red;
+display:none;
+}

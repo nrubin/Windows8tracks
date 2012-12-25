@@ -31,18 +31,18 @@
             userObj = JSON.parse(response.responseText);
             if (userObj.status === "200 OK") {
                 userToken = userObj.user_token;
-                callback(true);
+                callback(true,userToken);
             } else {
                 console.log("login unsuccessful");
                 console.log(response.responseText);
-                callback(false);
+                callback(false,null);
             }
         },
 
         function onError(response) {
             console.log("login not successful");
             console.log(response.responseText);
-            callback(false);
+            callback(false,null);
         },
 
         function inProgress(response) {

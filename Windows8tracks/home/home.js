@@ -3,24 +3,27 @@
 (function () {
     "use strict";
 
-    function renderMixList(mixes) {
-        var listView = document.querySelector("#basicListView").winControl;
-        var dataList = new WinJS.Binding.List(mixes);
-        listView.itemDataSource = dataList.dataSource;
-    }
 
-    WinJS.UI.Pages.define("/home.html", {
+    function login() {
+        var username = document.querySelector("#username").value;
+        var password = document.querySelector("#password").value;
+        Networker.login(username, password, loginCallback);
+    };
+
+    function loginCallback(loginSuccessful,userTokenToAssign) {
+        if (loginSuccessful) {
+            app.session
+            WinJS.Navigation.navigate("/browse/browse.html");
+        } else {
+            document.querySelector("#loginError").attributes["style"] = "display: block";
+        }
+    };
+
+    WinJS.UI.Pages.define("/home/home.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
-            // TODO: Initialize the page here.
-            Networker.login("windows8tracks", "password");
-            //Networker.reportSong("1234", "1110", "4546");
-            //var playToken = Networker.playToken;
-            Networker.getFavoriteMixes();
-            var mixes = null;
-            Networker.getLatestMixes("5", "1", renderMixList)
-            //console.log(mixes);
+            document.querySelector("#login").addEventListener("click", login);
         },
 
         unload: function () {
