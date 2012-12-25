@@ -2,7 +2,8 @@
 // http://go.microsoft.com/fwlink/?LinkId=232511
 (function () {
     "use strict";
-
+    var app = WinJS.Application;
+    var nav = WinJS.Navigation;
 
     function login() {
         var username = document.querySelector("#username").value;
@@ -10,10 +11,12 @@
         Networker.login(username, password, loginCallback);
     };
 
-    function loginCallback(loginSuccessful,userTokenToAssign) {
+    function loginCallback(loginSuccessful,userToken, userId) {
         if (loginSuccessful) {
-            app.session
-            WinJS.Navigation.navigate("/browse/browse.html");
+            app.sessionState.userToken = userToken;
+            app.sessionState.userId = userId;
+            console.log(userToken);
+            nav.navigate("/browse/browse.html");
         } else {
             document.querySelector("#loginError").attributes["style"] = "display: block";
         }

@@ -9,7 +9,8 @@
     WinJS.Namespace.define("Networker");
     var APIKey = "a355db8b5d8c4c15b7a719484b1fd6cbec1c2067";
     var headers = {
-        "X-Api-Key": APIKey
+        "X-Api-Key": APIKey,
+        "If-Modified-Since": "Mon, 27 Mar 1972 00:00:00 GMT"
     };
     var urlPrefix = "?api_version=2.1&format=jsonh&"
     var userToken = ""
@@ -26,12 +27,12 @@
         */
         defaultOptions.url = "https://8tracks.com/sessions/create_get" + urlPrefix + "&login=" + username + "&password=" + password
         WinJS.xhr(defaultOptions).done(
-
         function onCompleted(response) {
-            userObj = JSON.parse(response.responseText);
-            if (userObj.status === "200 OK") {
-                userToken = userObj.user_token;
-                callback(true,userToken);
+            responseObj = JSON.parse(response.responseText);
+            if (responseObj.status === "200 OK") {
+                var userToken = responseObj.user.user_token;
+                var userId = responseObj.user.id;
+                callback(true,userToken,userId);
             } else {
                 console.log("login unsuccessful");
                 console.log(response.responseText);
@@ -107,12 +108,12 @@
         });
     };
 
-    Networker.getFavoriteMixes = function (callback){  
+    Networker.getFavoriteMixes = function (userId,callback){  
         /*
         fetches the logged in user's mixes from 8tracks, then calls callback on the list of mixes
         if the fetch fails, callback receives null
         */
-        defaultOptions.url = "http://8tracks.com/mix_sets/liked" + urlPrefix;
+        defaultOptions.url = "http://8tracks.com/mix_sets/liked:" + userId;// + urlPrefix;
         WinJS.xhr(defaultOptions).done(
         function onCompleted(response) {
             console.log("received favorite mixes");

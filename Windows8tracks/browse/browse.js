@@ -2,13 +2,24 @@
 // http://go.microsoft.com/fwlink/?LinkId=232511
 (function () {
     "use strict";
-
+    var app = WinJS.Application;
+    var nav = WinJS.Navigation;
     function getLatestMixes(eventargs) {
         console.log("getting latest mixes....");
-        Networker.getLatestMixes("5", "1", renderMixList);
+        Networker.getLatestMixes("5", "1", renderLatestMixList);
     }
-    function renderMixList(mixes) {
-        var listView = document.querySelector("#basicListView").winControl;
+    function renderLatestMixList(mixes) {
+        var listView = document.querySelector("#latestMixesListView").winControl;
+        var dataList = new WinJS.Binding.List(mixes);
+        listView.itemDataSource = dataList.dataSource;
+    }
+
+    function getFavoriteMixes(eventargs) {
+        console.log("getting favorite mixes....");
+        Networker.getFavoriteMixes(app.sessionState.userId,renderFavoriteMixList);
+    }
+    function renderFavoriteMixList(mixes) {
+        var listView = document.querySelector("#favoriteMixesListView").winControl;
         var dataList = new WinJS.Binding.List(mixes);
         listView.itemDataSource = dataList.dataSource;
     }
@@ -19,6 +30,7 @@
         ready: function (element, options) {
             // TODO: Initialize the page here.
             document.querySelector("#getLatestMixes").addEventListener("click", getLatestMixes);
+            document.querySelector("#getFavoriteMixes").addEventListener("click", getFavoriteMixes);
         },
 
         unload: function () {

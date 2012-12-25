@@ -21,14 +21,21 @@
             </h1>
         </header>
         <section aria-label="Main content" role="main">
-            <button id="getLatestMixes">Get Latest Mixes</button>
             <div id="mixTemplate" data-win-control="WinJS.Binding.Template">
                 <div class="mix">
                     <h2 data-win-bind="innerText : name"></h2>
                     <img src="#" data-win-bind="src: cover_urls.sq56" />
                 </div>
             </div>
-            <div id="basicListView" data-win-control="WinJS.UI.ListView" data-win-options="{itemTemplate: select('#mixTemplate')}">
+            <div id="latest" class="mix-set-view">
+                <button id="getLatestMixes">Get Latest Mixes</button>
+                <div id="latestMixesListView" data-win-control="WinJS.UI.ListView" data-win-options="{itemTemplate: select('#mixTemplate')}">
+                </div>
+            </div>
+            <div id="favorite" class="mix-set-view">
+                <button id="getFavoriteMixes">Get Favorite Mixes</button>
+                <div id="favoriteMixesListView" data-win-control="WinJS.UI.ListView" data-win-options="{itemTemplate: select('#mixTemplate')}">
+                </div>
             </div>
         </section>
     </div>
