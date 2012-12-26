@@ -1,4 +1,8 @@
-﻿.browse p {
+﻿body {
+overflow:scroll;
+}
+
+.browse p {
     margin-left: 120px;
 }
 
@@ -9,4 +13,16 @@
 
 .mix-set-view {
 float:left;
+}
+
+.mix-id {
+display: none;
+}
+
+.mix {
+width:250px;
+}
+
+.mix-pic {
+float:right;
 }

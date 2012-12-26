@@ -1,3 +1,11 @@
 ﻿.listen p {
     margin-left: 120px;
 }
+
+.mix-pic {
+float:left;
+}
+
+.current-mix {
+width:500px;
+}
