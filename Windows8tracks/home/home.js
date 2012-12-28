@@ -19,7 +19,7 @@
             console.log(userToken);
             nav.navigate("/browse/browse.html");
         } else {
-            document.querySelector("#loginError").attributes["style"] = "display: block";
+            document.querySelector("#loginError").setAttribute("style", "display: inline");
         }
     };
 

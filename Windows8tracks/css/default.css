@@ -1,4 +1,5 @@
 ﻿body {
+    background-color:#122C4B;
 }
 
 @media screen and (-ms-view-state: fullscreen-landscape) {
@@ -15,5 +16,4 @@
 
 #staticHeader {
 color:lightblue;
-
 }

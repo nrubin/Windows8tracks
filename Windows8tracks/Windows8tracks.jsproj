@@ -60,10 +60,6 @@
     <Content Include="home\home.css" />
     <Content Include="home\home.html" />
     <Content Include="home\home.js" />
-    <Content Include="images\logo.png" />
-    <Content Include="images\smalllogo.png" />
-    <Content Include="images\splashscreen.png" />
-    <Content Include="images\storelogo.png" />
     <Content Include="js\Networker.js" />
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
@@ -71,6 +67,11 @@
     <Content Include="listen\listen.css" />
     <Content Include="listen\listen.html" />
     <Content Include="listen\listen.js" />
+    <Content Include="media\images\logo.png" />
+    <Content Include="media\images\smalllogo.png" />
+    <Content Include="media\images\splashscreen.png" />
+    <Content Include="media\images\storelogo.png" />
+    <Content Include="media\songs\sampleSong.mp3" />
     <None Include="Windows8tracks_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

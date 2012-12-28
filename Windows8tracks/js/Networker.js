@@ -140,13 +140,18 @@
 
     //Networker.getMixesByTag
 
-    Networker.playSong = function (playToken,mixId,callback) {
+    Networker.beginMix = function (playToken, mixId, callback) {
+        /*
+        Begins playback of a mix. callback receives a "set", which contains some information
+        about the position of the track within a mix (presumably the beginning).
+        */
         defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/play" + urlPrefix + "&mix_id=" + mixId;
         WinJS.xhr(defaultOptions).done(
         function onCompleted(response) {
             var responseObj = JSON.parse(response.responseText);
             if (responseObj.status === "200 OK") {
                 console.log("received set");
+                console.log(response.responseText);
                 callback(responseObj.set);
             }
             else {
