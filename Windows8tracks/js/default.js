@@ -9,6 +9,21 @@
     var activation = Windows.ApplicationModel.Activation;
     var nav = WinJS.Navigation;
     var player = null;
+
+    function reportSong(eventargs) {
+        console.log(player.currentTime);
+        if (player.currentTime >= 30 && player.currentTime <= 31 && !app.sessionState.currentSetReported) {
+            console.log("reporting song!!");
+            app.sessionState.currentSetReported = true;
+            var mix = app.sessionState.currentMix;
+            var set = app.sessionState.currentSet;
+            var playToken = app.sessionState.playToken;
+            Networker.reportSong(playToken, set.track.id, mix.id);
+        } else {
+            console.log("this is not the time to report the song.");
+        }
+    }
+
     function nextSong() {
         //this gets called at the end of a song, not when a skip occurs
         if (app.sessionState.currentMix && app.sessionState.playToken) {
@@ -22,6 +37,8 @@
 
     function loadNextSong(responseObj) {
         var set = responseObj.set;
+        app.sessionState.currentSet = set;
+        app.sessionState.currentSetReported = false;
         var player = document.querySelector("#player"); //namespace issues w/ callbacks
         var song = set.track;
         player.src = song.track_file_stream_url; //immediately start buffering track
@@ -94,6 +111,7 @@
                 // your application here.
                 player = document.querySelector("audio");
                 player.setAttribute("msAudioCategory", "BackgroundCapableMedia");
+                player.addEventListener("timeupdate", reportSong);
                 setupMediaControls();
                 
                 document.querySelector("#nextSong").addEventListener("click", nextSong);

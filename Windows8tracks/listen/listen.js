@@ -20,6 +20,8 @@
         and the windows media controls
         */
         var player = document.querySelector("#player"); //namespace issues w/ callbacks
+        app.sessionState.currentSet = set;
+        app.sessionState.currentSetReported = false;
         var song = set.track;
         player.src = song.track_file_stream_url; //immediately start buffering track
         player.load();
