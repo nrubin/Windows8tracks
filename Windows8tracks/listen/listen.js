@@ -11,7 +11,6 @@
         var playToken = app.sessionState.playToken;
         var mix = app.sessionState.currentMix;
         Networker.beginMix(playToken, mix.id, loadSet);
-        console.log("poop");
     }
 
     function loadSet(set) {
@@ -26,9 +25,6 @@
         player.src = song.track_file_stream_url; //immediately start buffering track
         player.load();
     }
-
-
-
 
     function setup() {
         var playToken = app.sessionState.playToken;

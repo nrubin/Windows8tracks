@@ -13,25 +13,54 @@
     function reportSong(eventargs) {
         console.log(player.currentTime);
         if (player.currentTime >= 30 && player.currentTime <= 31 && !app.sessionState.currentSetReported) {
-            console.log("reporting song!!");
             app.sessionState.currentSetReported = true;
             var mix = app.sessionState.currentMix;
             var set = app.sessionState.currentSet;
             var playToken = app.sessionState.playToken;
             Networker.reportSong(playToken, set.track.id, mix.id);
-        } else {
-            console.log("this is not the time to report the song.");
         }
+    }
+
+
+    function playNewMix(set) {
+        /*
+        Once a set is received, this method binds the set metadata to the audio player
+        and the windows media controls
+        */
+        var mix = app.sessionState.currentMix
+        document.querySelector(".pagesubtitle").innerText = mix.name;
+        document.querySelector(".mix-pic").src = mix.cover_urls.sq100;
+        document.querySelector(".mix-description").innerText = mix.description;
+        var player = document.querySelector("#player"); //namespace issues w/ callbacks
+        app.sessionState.currentSet = set;
+        app.sessionState.currentSetReported = false;
+        var song = set.track;
+        player.src = song.track_file_stream_url; //immediately start buffering track
+        player.load();
     }
 
     function nextSong() {
         //this gets called at the end of a song, not when a skip occurs
+        //it needs to handle the end of a mix, so it unpacks the next mix ffom the current one and handles things nicely.
         if (app.sessionState.currentMix && app.sessionState.playToken) {
-            var mixId = app.sessionState.currentMix.id;
             var playToken = app.sessionState.playToken;
-            Networker.nextSong(playToken, mixId, loadNextSong);
+            if (!app.sessionState.goToNextMix) {
+                var mixId = app.sessionState.currentMix.id;
+                var playToken = app.sessionState.playToken;
+                Networker.nextSong(playToken, mixId, loadNextSong);
+            } else {
+                //pull the next mix from the current mix
+                var nextMix = app.sessionState.currentMix.nextMix;
+                if (nextMix) {
+                    app.sessionState.currentMix = nextMix; //set the current mix
+                    var mixId = app.sessionState.currentMix.id;
+                    Networker.beginMix(playToken, mixId, playNewMix);
+                } else {
+                    console.log("the mix set is over");
+                }
+            }
         } else {
-            console.log("there is no mix currently set");
+            console.log("there is no mix or play token currently set");
         }
     }
 
@@ -39,6 +68,10 @@
         var set = responseObj.set;
         app.sessionState.currentSet = set;
         app.sessionState.currentSetReported = false;
+        //need to set up pulling of next mix if at last song of current mix
+        if (set.at_last_track) {
+            app.sessionState.goToNextMix = true;
+        }
         var player = document.querySelector("#player"); //namespace issues w/ callbacks
         var song = set.track;
         player.src = song.track_file_stream_url; //immediately start buffering track
@@ -112,6 +145,7 @@
                 player = document.querySelector("audio");
                 player.setAttribute("msAudioCategory", "BackgroundCapableMedia");
                 player.addEventListener("timeupdate", reportSong);
+                player.addEventListener("ended", nextSong);
                 setupMediaControls();
                 
                 document.querySelector("#nextSong").addEventListener("click", nextSong);

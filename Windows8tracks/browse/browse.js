@@ -6,6 +6,24 @@
     var nav = WinJS.Navigation;
     var allMixes = {};
 
+    function tagMixesWithMixSet(mixes, mixSetName) {
+        //tags a mix with the mix set it belongs to (e.g. "latest" or "favorite")
+        for (var i = 0; i < mixes.length; i++) {
+            var mix = mixes[i];
+            mix.mixSetName = mixSetName;
+        }
+    }
+
+    function linkMixes(mixes) {
+        /*
+        I want to know the next item in a mix set, so I'll get to it by turning mix sets into a linked list. This way I can also know if I'm at the end of a mix set (since the last mix won't have a nextMix attr)
+        */
+        for (var i = 0; i < mixes.length-1; i++) {
+            var mix = mixes[i];
+            mix.nextMix = mixes[i + 1];
+        }
+    }
+
     function addMixToAllMixes(mix) {
         var id = mix.id;
         allMixes[id] = mix;
@@ -23,7 +41,10 @@
         Networker.getLatestMixes("5", "1", renderLatestMixList);
     }
     function renderLatestMixList(mixes) {
+        tagMixesWithMixSet(mixes, "latest");
         addMixesToAllMixes(mixes);
+        linkMixes(mixes);
+        app.sessionState.latestMixSet = mixes;
         var listView = document.querySelector("#latestMixesListView").winControl;
         var dataList = new WinJS.Binding.List(mixes);
         listView.itemDataSource = dataList.dataSource;
@@ -34,16 +55,26 @@
         Networker.getFavoriteMixes(app.sessionState.userId,"5","1",renderFavoriteMixList);
     }
     function renderFavoriteMixList(mixes) {
+        tagMixesWithMixSet(mixes, "favorite");
+        app.sessionState.favoriteMixSet = mixes;
         addMixesToAllMixes(mixes);
+        linkMixes(mixes);
         console.log("rendering favorite mixes");
         var listView = document.querySelector("#favoriteMixesListView").winControl;
         var dataList = new WinJS.Binding.List(mixes);
         listView.itemDataSource = dataList.dataSource;
     }
 
-    function playMix(eventargs) {
+    function playSelectedMix(eventargs) {
         var mixId = eventargs.srcElement.parentNode.parentNode.querySelector(".mix-id").innerText;
-        app.sessionState.currentMix = allMixes[mixId];
+        var selectedMix = allMixes[mixId];
+        app.sessionState.currentMix = selectedMix;
+        //switch (selectedMix.mixSetName) {
+        //    case "latest":
+        //        app.sessionState.currentMixSet = app.sessionState.latestMixSet;
+        //    case "favorite":
+        //        app.sessionState.currentMixSet = app.sessionState.favoriteMixSet;
+        //}
         nav.navigate("/listen/listen.html");
     }
 
@@ -54,7 +85,7 @@
             var mixes = listViewDOM.querySelectorAll(".mix");
             for (var i = 0; i < mixes.length; i++) {
                 var mix = mixes[i];
-                mix.addEventListener("click", playMix);
+                mix.addEventListener("click", playSelectedMix);
             }
         }
     }

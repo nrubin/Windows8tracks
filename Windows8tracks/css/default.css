@@ -21,3 +21,9 @@ color:lightblue;
 #playerContainer {
 display:block;
 }
+
+#last-track {
+    color:white;
+    float:left;
+    display:none;
+}
