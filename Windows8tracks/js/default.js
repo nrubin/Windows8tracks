@@ -8,13 +8,96 @@
     var app = WinJS.Application;
     var activation = Windows.ApplicationModel.Activation;
     var nav = WinJS.Navigation;
+    var player = null;
+    function nextSong() {
+        //this gets called at the end of a song, not when a skip occurs
+        if (app.sessionState.currentMix && app.sessionState.playToken) {
+            var mixId = app.sessionState.currentMix.id;
+            var playToken = app.sessionState.playToken;
+            Networker.nextSong(playToken, mixId, loadNextSong);
+        } else {
+            console.log("there is no mix currently set");
+        }
+    }
 
+    function loadNextSong(responseObj) {
+        var set = responseObj.set;
+        var player = document.querySelector("#player"); //namespace issues w/ callbacks
+        var song = set.track;
+        player.src = song.track_file_stream_url; //immediately start buffering track
+        player.load();
+        player.play();
+    }
+
+    function skipSong() {
+        //this gets called when a song is skipped, not when a song ends
+        if (app.sessionState.currentMix && app.sessionState.playToken) {
+            var mixId = app.sessionState.currentMix.id;
+            var playToken = app.sessionState.playToken;
+            Networker.skipSong(playToken, mixId, loadSkipSong);
+        } else {
+            console.log("there is no mix currently set");
+        }
+    }
+
+    function loadSkipSong(responseObj) {
+        if (responseObj.status === "200 OK") {
+            loadNextSong(responseObj);
+        } else {
+            console.log("no more skips!!");
+        }
+        //var player = document.querySelector("#player"); //namespace issues w/ callbacks
+        //var song = set.track;
+        //player.src = song.track_file_stream_url; //immediately start buffering track
+        //player.load();
+    }
+
+    // Define functions that will be the event handlers
+    function pause() {
+        player.pause();
+    }
+    function playpause() {
+        if (!player.paused) {
+            player.pause();
+            Windows.Media.MediaControl.isPlaying = false;
+        } else {
+            player.play();
+            Windows.Media.MediaControl.isPlaying = true;
+        }
+    }
+    function play() {
+        // Handle the Play event and print status to screen..
+        player.play();
+        Windows.Media.MediaControl.isPlaying = true;
+    }
+    function pause() {
+        // Handle the Pause event and print status to screen.
+        player.pause();
+        Windows.Media.MediaControl.isPlaying = false;
+    }
+    function stop() {
+        console.log("fuck off");
+    }
+
+    function setupMediaControls() {
+        var mediaControl = Windows.Media.MediaControl;
+        mediaControl.addEventListener("playpausetogglepressed", playpause, false);
+        mediaControl.addEventListener("playpressed", play, false);
+        mediaControl.addEventListener("stoppressed", stop, false);
+        mediaControl.addEventListener("pausepressed", pause, false);
+        mediaControl.albumArt = Windows.Foundation.Uri("ms-appx:///media/images/sampleAlbumArt.jpg");
+    }
     app.onactivated = function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 // TODO: This application has been newly launched. Initialize
                 // your application here.
-                console.log("hello");
+                player = document.querySelector("audio");
+                player.setAttribute("msAudioCategory", "BackgroundCapableMedia");
+                setupMediaControls();
+                
+                document.querySelector("#nextSong").addEventListener("click", nextSong);
+                document.querySelector("#skipSong").addEventListener("click", skipSong);
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.

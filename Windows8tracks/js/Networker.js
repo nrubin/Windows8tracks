@@ -51,7 +51,7 @@
         });
     };
 
-    Networker.retrievePlayToken = function (callback) {
+    Networker.getPlayToken = function (callback) {
         /*
         retrieves the play token for the session
         callback receives the play token, or "-1" if the request fails
@@ -138,8 +138,6 @@
         });
     };
 
-    //Networker.getMixesByTag
-
     Networker.beginMix = function (playToken, mixId, callback) {
         /*
         Begins playback of a mix. callback receives a "set", which contains some information
@@ -170,6 +168,65 @@
         });
     };
 
+    Networker.nextSong = function (playToken, mixId, callback) {
+        /*
+        Gets the next song in a mix. callback function receives the response, and is responsible for handling the end of a mix
+        */
+        defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/next" + urlPrefix + "mix_id=" + mixId;
+        WinJS.xhr(defaultOptions).done(
+        function onCompleted(response) {
+            var responseObj = JSON.parse(response.responseText);
+            if (responseObj.status === "200 OK") {
+                console.log("received next");
+                console.log(response.responseText);
+                callback(responseObj);
+            }
+            else {
+                console.log("did not receive next song");
+                console.log(response.responseText);
+            }
+        },
+
+        function onError(response) {
+            console.log("did not receive next song");
+            console.log(response.responseText);
+        },
+
+        function inProgress(response) {
+            console.log("receiving next song...");
+        });
+
+    };
+
+    Networker.skipSong = function (playToken, mixId, callback) {
+        /*
+        skips a song in the mix. callback function receives the response object, and is responsible for handling a limited number of mixes and the end of a mix
+        */
+        defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/skip" + urlPrefix + "mix_id=" + mixId;
+        WinJS.xhr(defaultOptions).done(
+        function onCompleted(response) {
+            var responseObj = JSON.parse(response.responseText);
+            if (responseObj.status === "200 OK") {
+                console.log("received skip");
+                console.log(response.responseText);
+                callback(responseObj);
+            }
+            else {
+                console.log("did not receive skip song");
+                console.log(response.responseText);
+            }
+        },
+
+        function onError(response) {
+            console.log("did not receive skip song");
+            console.log(response.responseText);
+        },
+
+        function inProgress(response) {
+            console.log("receiving skip song...");
+        });
+    };
+
     Networker.reportSong = function (playToken, trackId, mixId) {
         defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/report" + urlPrefix + "track_id=" + trackId + "&mixId=" + mixId;
         WinJS.xhr(defaultOptions).done(
@@ -189,12 +246,5 @@
         });
     };
 
-    Networker.getPlayToken = function () {
-        return playToken;
-    };
-
-    Networker.setPlayToken = function (desiredPlayToken) {
-        playToken = desiredPlayToken;
-    };
 
 }());

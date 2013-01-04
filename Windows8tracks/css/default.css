@@ -17,3 +17,7 @@
 #staticHeader {
 color:lightblue;
 }
+
+#playerContainer {
+display:block;
+}
