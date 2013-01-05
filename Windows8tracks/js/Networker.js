@@ -138,6 +138,40 @@
         });
     };
 
+    Networker.getMixesByTag = function (queryText, perPage,pageNumber, callback) {
+        /*
+        receives query text from the search charm and searches for mixes according to those tags
+      */
+        var escapedQueryText = encodeURIComponent(queryText);
+        console.log("I'm searching for: ");
+        console.log(queryText);
+        console.log("AKA: ");
+        console.log(escapedQueryText);
+        defaultOptions.url = "http://8tracks.com/mixes.json" + urlPrefix + "include=mixes&tags="+ escapedQueryText + "&per_page=" + perPage + "&page=" + pageNumber;
+        WinJS.xhr(defaultOptions).then(
+        function onCompleted(response) {
+            var responseObj = JSON.parse(response.responseText);
+            if (responseObj.status === "200 OK") {
+                console.log("received searched mixes");
+                console.log(response.responseText);
+                var mixes = responseObj.mix_set.mixes;
+                callback(mixes);
+            } else {
+                console.log("did not receive searched mixes");
+                console.log(response.responseText);
+                callback(null);
+            }
+        },
+        function onError(response) {
+            console.log("did not receive searched mixes");
+            console.log(response.responseText);
+            callback(null);
+        },
+        function inProgress(response) {
+            console.log("receiving searched mixes...");
+        });
+    };
+
     Networker.beginMix = function (playToken, mixId, callback) {
         /*
         Begins playback of a mix. callback receives a "set", which contains some information

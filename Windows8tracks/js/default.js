@@ -21,7 +21,6 @@
         }
     }
 
-
     function playNewMix(set) {
         /*
         Once a set is received, this method binds the set metadata to the audio player
@@ -137,6 +136,13 @@
         mediaControl.addEventListener("pausepressed", pause, false);
         mediaControl.albumArt = Windows.Foundation.Uri("ms-appx:///media/images/sampleAlbumArt.jpg");
     }
+
+    function search(eventObject) {
+        var searchQuery = eventObject.queryText;
+    }
+
+    Windows.ApplicationModel.Search.SearchPane.getForCurrentView().onquerysubmitted = search;
+
     app.onactivated = function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {

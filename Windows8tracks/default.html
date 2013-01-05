@@ -14,6 +14,7 @@
     <script src="/js/default.js"></script>
     <script src="/js/Networker.js"></script>
     <script src="/js/navigator.js"></script>
+    <script src="/search/searchResults.js"></script>
 </head>
 <body>
     <h6 id="staticHeader">Windows8tracks</h6>
@@ -21,10 +22,13 @@
         data-win-control="Application.PageControlNavigator"
         data-win-options="{home: '/home/home.html'}">
     </div>
+    <div class="footer">
         <div id="playerContainer">
-        <audio id="player" controls="controls" src="/media/songs/sampleSong.mp3" msAudioCategory="BackgroundCapableMedia"></audio>
+            <audio id="player" controls="controls" src="/media/songs/sampleSong.mp3" msaudiocategory="BackgroundCapableMedia"></audio>
             <button id="nextSong">next song</button>
             <button id="skipSong">skip song</button>
-    </div><span id="lastTrackNotif">At last track!</span>
+        </div>
+        <span id="lastTrackNotif">At last track!</span>
+    </div>
 </body>
 </html>

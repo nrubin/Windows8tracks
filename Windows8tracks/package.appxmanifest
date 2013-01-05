@@ -15,9 +15,9 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="Windows8tracks" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Windows8tracks" ForegroundText="light" BackgroundColor="#464646">
+      <VisualElements DisplayName="Windows8tracks" Logo="images\logo.png" SmallLogo="media\images\smalllogo.png" Description="Windows8tracks" ForegroundText="light" BackgroundColor="#464646">
         <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="images\splashscreen.png" />
+        <SplashScreen Image="media\images\splashscreen.png" />
       </VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" StartPage="default.html">
@@ -25,6 +25,7 @@
             <Task Type="audio" />
           </BackgroundTasks>
         </Extension>
+        <Extension Category="windows.search" StartPage="default.html" />
       </Extensions>
     </Application>
   </Applications>
