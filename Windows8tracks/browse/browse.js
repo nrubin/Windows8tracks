@@ -35,6 +35,93 @@
             addMixToAllMixes(mix);
         }
     }
+    function getMixDJMixes() {
+        console.log("getting mix dj mixes");
+        Networker.getMixDJ(app.sessionState.userId, "5", "1").then(
+            function completed(mixes) {
+                renderDJMixList(mixes);
+            },
+            function errored(response) {
+            },
+            function progress() {
+            });
+    }
+
+    function renderDJMixList(mixes) {
+        tagMixesWithMixSet(mixes, "dj");
+        addMixesToAllMixes(mixes);
+        linkMixes(mixes);
+        app.sessionState.latestMixSet = mixes;
+        var listView = document.querySelector("#djListView").winControl;
+        var dataList = new WinJS.Binding.List(mixes);
+        listView.itemDataSource = dataList.dataSource;
+    }
+
+    function getRecommendedMixes() {
+        console.log("getting recommended mixes");
+        Networker.getRecommendedMixes(app.sessionState.userId, "5", "1").then(
+            function completed(mixes) {
+                renderRecommendedMixList(mixes);
+            },
+            function errored(response) {
+            },
+            function progress() {
+            });
+    }
+
+    function renderRecommendedMixList(mixes) {
+        tagMixesWithMixSet(mixes, "recommended");
+        addMixesToAllMixes(mixes);
+        linkMixes(mixes);
+        app.sessionState.latestMixSet = mixes;
+        var listView = document.querySelector("#recommendedMixesListView").winControl;
+        var dataList = new WinJS.Binding.List(mixes);
+        listView.itemDataSource = dataList.dataSource;
+    }
+
+    function getMixFeedMixes() {
+        console.log("getting mix feed");
+        Networker.getMixFeed(app.sessionState.userId, "5", "1").then(
+            function completed(mixes) {
+                renderMixFeedMixList(mixes);
+            },
+            function errored(response) {
+            },
+            function progress() {
+            });
+    }
+
+    function renderMixFeedMixList(mixes) {
+        tagMixesWithMixSet(mixes, "mixFeed");
+        addMixesToAllMixes(mixes);
+        linkMixes(mixes);
+        app.sessionState.latestMixSet = mixes;
+        var listView = document.querySelector("#mixFeedListView").winControl;
+        var dataList = new WinJS.Binding.List(mixes);
+        listView.itemDataSource = dataList.dataSource;
+    }
+
+    function getListeningHistoryMixes() {
+        console.log("getting listening history");
+        Networker.getListeningHistory(app.sessionState.userId, "5", "1").then(
+            function completed(mixes) {
+                renderListeningHistoryMixList(mixes);
+            },
+            function errored(response) {
+            },
+            function progress() { 
+            });
+    }
+
+    function renderListeningHistoryMixList(mixes) {
+        tagMixesWithMixSet(mixes, "listeningHistory");
+        addMixesToAllMixes(mixes);
+        linkMixes(mixes);
+        app.sessionState.latestMixSet = mixes;
+        var listView = document.querySelector("#listeningHistoryListView").winControl;
+        var dataList = new WinJS.Binding.List(mixes);
+        listView.itemDataSource = dataList.dataSource;
+    }
 
     function getLatestMixes(eventargs) {
         console.log("getting latest mixes....");
@@ -101,6 +188,10 @@
             // TODO: Initialize the page here.
             getLatestMixes();
             getFavoriteMixes();
+            getListeningHistoryMixes();
+            getMixFeedMixes();
+            getRecommendedMixes();
+            getMixDJMixes();
             //document.querySelector("#getLatestMixes").addEventListener("click", getLatestMixes);
             //document.querySelector("#getFavoriteMixes").addEventListener("click", getFavoriteMixes);
             addLoadCompleteEventListenersToListViews();

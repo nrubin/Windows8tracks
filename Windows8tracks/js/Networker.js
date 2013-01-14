@@ -140,7 +140,7 @@
 
     Networker.getListeningHistory = function (userId, perPage, pageNumber) {
         //RETURNS A PROMISE
-        defaultOptions.url = "http://8tracks.com/mix_sets/history:" + userId + ".json" + urlPrefix + "include=mixes&per_page=" + perPage + "&page=" + pageNumber;
+        defaultOptions.url = "http://8tracks.com/mix_sets/listened:" + userId + ".json" + urlPrefix + "include=mixes&per_page=" + perPage + "&page=" + pageNumber;
         return new WinJS.Promise(function (completed, errored, progress) {
             WinJS.xhr(defaultOptions).then(
             function onCompleted(response) {
