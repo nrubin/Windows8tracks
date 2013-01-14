@@ -11,7 +11,6 @@
     var player = null;
 
     function reportSong(eventargs) {
-        console.log(player.currentTime);
         if (player.currentTime >= 30 && player.currentTime <= 31 && !app.sessionState.currentSetReported) {
             app.sessionState.currentSetReported = true;
             var mix = app.sessionState.currentMix;
