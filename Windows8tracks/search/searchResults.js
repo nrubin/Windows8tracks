@@ -68,51 +68,10 @@
         searchData(pageControl, args.queryText);
     };
 
-
-    function searchEventHandler(queryText) {
-        var searchList = new WinJS.Binding.List();
-        return new WinJS.Promise(function (completed, errored, progress) {
-            var userId = app.sessionState.userId;
-            var urlPrefix = "?api_version=2.1&format=jsonh&"
-            var escapedQueryText = encodeURIComponent(queryText);
-            var perPage = 10;
-            var pageNumber = 1;
-            var options = {
-                headers: {
-                    "X-Api-Key": "a355db8b5d8c4c15b7a719484b1fd6cbec1c2067",
-                    "If-Modified-Since": "Mon, 27 Mar 1972 00:00:00 GMT"
-                },
-                type: "GET",
-                url: "http://8tracks.com/mixes.json" + urlPrefix + "include=mixes&tags=" + escapedQueryText + "&per_page=" + perPage + "&page=" + pageNumber
-            }
-            WinJS.xhr(options).done(
-            function onCompleted(response) {
-                var responseObj = JSON.parse(response.responseText);
-                if (responseObj.status === "200 OK") {
-                    console.log("received searched mixes");
-                    console.log(response.responseText);
-                    var mixes = responseObj.mix_set.mixes;
-                    completed(mixes);
-                } else {
-                    console.log("did not receive searched mixes");
-                    console.log(response.responseText);
-                    errored(response);
-                }
-            }, function onError(response) {
-                console.log("did not receive searched mixes");
-                console.log(response.responseText);
-                errored(response);
-            }, function inProgress(response) {
-                console.log("receiving searched mixes...");
-                progress();
-            });
-        });
-    };
-
     function searchData(element, queryText) {
         var originalResults;
         var resultsMessage = document.querySelector('.resultsmessage');
-        searchEventHandler(queryText).done(
+        Networker.getMixesBySearchTerm(queryText, 10, 1).done(
         function completed(mixes) {
             originalResults = mixes;
             formatResults(element, mixes);
