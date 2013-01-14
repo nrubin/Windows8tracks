@@ -30,13 +30,18 @@
                 </div>
             </div>
             <div id="latest" class="mix-set-view">
-                <button id="getLatestMixes">Get Latest Mixes</button>
+                <h3>Latest Mixes</h3>
                 <div id="latestMixesListView" data-win-control="WinJS.UI.ListView" data-win-options="{itemTemplate: select('#mixTemplate')}" class="latest-mix">
                 </div>
             </div>
             <div id="favorite" class="mix-set-view">
-                <button id="getFavoriteMixes">Get Favorite Mixes</button>
+                <h3 id="getFavoriteMixes">Favorite Mixes</h3>
                 <div id="favoriteMixesListView" data-win-control="WinJS.UI.ListView" data-win-options="{itemTemplate: select('#mixTemplate')}" class="favorite-mix">
+                </div>
+            </div>
+              <div id="history" class="mix-set-view">
+                <h3>Listening History</h3>
+                <div id="listeningHistoryListView" data-win-control="WinJS.UI.ListView" data-win-options="{itemTemplate: select('#mixTemplate')}" class="listening-history-mix">
                 </div>
             </div>
         </section>

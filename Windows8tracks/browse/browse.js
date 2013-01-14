@@ -99,8 +99,10 @@
         // populates the page elements with the app's data.
         ready: function (element, options) {
             // TODO: Initialize the page here.
-            document.querySelector("#getLatestMixes").addEventListener("click", getLatestMixes);
-            document.querySelector("#getFavoriteMixes").addEventListener("click", getFavoriteMixes);
+            getLatestMixes();
+            getFavoriteMixes();
+            //document.querySelector("#getLatestMixes").addEventListener("click", getLatestMixes);
+            //document.querySelector("#getFavoriteMixes").addEventListener("click", getFavoriteMixes);
             addLoadCompleteEventListenersToListViews();
             //document.querySelectorAll("[data-win-control='WinJS.UI.ListView']")
         },

@@ -76,7 +76,6 @@
     <Content Include="search\searchResults.css" />
     <Content Include="search\searchResults.html" />
     <Content Include="search\searchResults.js" />
-    <None Include="Windows8tracks_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="Microsoft.WinJS.1.0, Version=1.0" />

@@ -138,7 +138,124 @@
         });
     };
 
-    Networker.getMixesByTag = function (queryText, perPage,pageNumber, callback) {
+    Networker.getListeningHistory = function (userId, perPage, pageNumber) {
+        //RETURNS A PROMISE
+        defaultOptions.url = "http://8tracks.com/mix_sets/history:" + userId + ".json" + urlPrefix + "include=mixes&per_page=" + perPage + "&page=" + pageNumber;
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(defaultOptions).then(
+            function onCompleted(response) {
+                var responseObj = JSON.parse(response.responseText);
+                if (responseObj.status === "200 OK") {
+                    console.log("received listening history mixes");
+                    console.log(response.responseText);
+                    var mixes = responseObj.mix_set.mixes;
+                    completed(mixes);
+                } else {
+                    console.log("did not receive listening history mixes");
+                    console.log(response.responseText);
+                    errored(response);
+                }
+            },
+            function onError(response) {
+                console.log("did not receive listening history mixes");
+                console.log(response.responseText);
+                errored(response);
+            },
+            function inProgress() {
+                progress();
+            });
+        });
+    };
+
+    Networker.getMixFeed = function (userId, perPage, pageNumber) {
+        //RETURNS A PROMISE
+        defaultOptions.url = "http://8tracks.com/mix_sets/feed:" + userId + ".json" + urlPrefix + "include=mixes&per_page=" + perPage + "&page=" + pageNumber;
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(defaultOptions).then(
+            function onCompleted(response) {
+                var responseObj = JSON.parse(response.responseText);
+                if (responseObj.status === "200 OK") {
+                    console.log("received mix feed mixes");
+                    console.log(response.responseText);
+                    var mixes = responseObj.mix_set.mixes;
+                    completed(mixes);
+                } else {
+                    console.log("did not receive mix feed mixes");
+                    console.log(response.responseText);
+                    errored(response);
+                }
+            },
+            function onError(response) {
+                console.log("did not receive mix feed mixes");
+                console.log(response.responseText);
+                errored(response);
+            },
+            function inProgress() {
+                progress();
+            });
+        });
+
+    };
+
+    Networker.getRecommendedMixes = function (userId, perPage, pageNumber) {
+        //RETURNS A PROMISE
+        defaultOptions.url = "http://8tracks.com/mix_sets/recommended:" + userId + ".json" + urlPrefix + "include=mixes&per_page=" + perPage + "&page=" + pageNumber;
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(defaultOptions).then(
+            function onCompleted(response) {
+                var responseObj = JSON.parse(response.responseText);
+                if (responseObj.status === "200 OK") {
+                    console.log("received recommended mixes");
+                    console.log(response.responseText);
+                    var mixes = responseObj.mix_set.mixes;
+                    completed(mixes);
+                } else {
+                    console.log("did not receive recommended mixes");
+                    console.log(response.responseText);
+                    errored(response);
+                }
+            },
+            function onError(response) {
+                console.log("did not receive recommended mixes");
+                console.log(response.responseText);
+                errored(response);
+            },
+            function inProgress() {
+                progress();
+            });
+        });
+    };
+
+    Networker.getMixDJ = function (userId, perPage, pageNumber) {
+        //RETURNS A PROMISE
+        defaultOptions.url = "http://8tracks.com/mix_sets/dj:" + userId + ".json" + urlPrefix + "include=mixes&per_page=" + perPage + "&page=" + pageNumber;
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(defaultOptions).then(
+            function onCompleted(response) {
+                var responseObj = JSON.parse(response.responseText);
+                if (responseObj.status === "200 OK") {
+                    console.log("received dj mixes");
+                    console.log(response.responseText);
+                    var mixes = responseObj.mix_set.mixes;
+                    completed(mixes);
+                } else {
+                    console.log("did not receive dj mixes");
+                    console.log(response.responseText);
+                    errored(response);
+                }
+            },
+            function onError(response) {
+                console.log("did not receive dj mixes");
+                console.log(response.responseText);
+                errored(response);
+            },
+            function inProgress() {
+                progress();
+            });
+        });
+    };
+
+    Networker.getMixesByTag = function (queryText, perPage,pageNumber) {
         /*
         receives query text from the search charm and searches for mixes according to those tags
       */
@@ -149,18 +266,18 @@
             function onCompleted(response) {
                 var responseObj = JSON.parse(response.responseText);
                 if (responseObj.status === "200 OK") {
-                    console.log("received searched mixes");
+                    console.log("received tagged mixes");
                     console.log(response.responseText);
                     var mixes = responseObj.mix_set.mixes;
                     completed(mixes);
                 } else {
-                    console.log("did not receive searched mixes");
+                    console.log("did not receive tagged mixes");
                     console.log(response.responseText);
                     errored(response);
                 }
             },
             function onError(response) {
-                console.log("did not receive searched mixes");
+                console.log("did not receive tagged mixes");
                 console.log(response.responseText);
                 errored(response);
             },
