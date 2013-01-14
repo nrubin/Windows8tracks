@@ -8,6 +8,7 @@
 
     function beginListening(eventargs) {
         //eventargs.srcElement.removeEventListener("click");
+        console.log("beginning to listen");
         var playToken = app.sessionState.playToken;
         var mix = app.sessionState.currentMix;
         Networker.beginMix(playToken, mix.id, loadSet);
@@ -41,6 +42,19 @@
         ready: function (element, options) {
             // TODO: Initialize the page here.
             setup();
+            if (!app.sessionState.playToken) {
+                var credentialOptions = Windows.Security.Credentials.UI.CredentialPickerOptions();
+                credentialOptions.authenticationProtocol = Windows.Security.Credentials.UI.AuthenticationProtocol.basic;
+                credentialOptions.credentialSaveOption = Windows.Security.Credentials.UI.CredentialSaveOption.hidden;
+                credentialOptions.callerSavesCredential = true;
+                credentialOptions.caption = "Please log in to 8tracks";
+                credentialOptions.message = "You must be logged in to listen to a mix";
+                credentialOptions.targetName = ".";
+                Windows.Security.Credentials.UI.CredentialPicker.pickAsync(credentialOptions).then(function (results) {
+                    console.log("the credential results are");
+                    console.log(results);
+                });
+            }
         },
 
         unload: function () {

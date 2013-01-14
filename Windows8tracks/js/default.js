@@ -137,11 +137,6 @@
         mediaControl.albumArt = Windows.Foundation.Uri("ms-appx:///media/images/sampleAlbumArt.jpg");
     }
 
-    function search(eventObject) {
-        var searchQuery = eventObject.queryText;
-    }
-
-    Windows.ApplicationModel.Search.SearchPane.getForCurrentView().onquerysubmitted = search;
 
     app.onactivated = function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {

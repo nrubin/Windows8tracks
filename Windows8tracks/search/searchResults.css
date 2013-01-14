@@ -1,4 +1,12 @@
-﻿.searchResults header[role=banner] .titlearea {
+﻿.mix-id {
+display: none;
+}
+
+.mix-description {
+text-overflow: ellipsis;
+}
+
+.searchResults header[role=banner] .titlearea {
     -ms-grid-column: 2;
     -ms-grid-columns: auto 20px 1fr 20px;
     display: -ms-grid;
@@ -51,10 +59,6 @@
                     opacity: 1.00;
                 }
 
-        /* Hide the <select> filter list. It will be shown in snapped mode only. */
-        .searchResults section[role=main] .filterarea .filterselect {
-            display: none;
-        }
 
     .searchResults section[role=main] .resultslist {
         -ms-grid-row: 1;
@@ -78,8 +82,8 @@
             margin-right: 23px;
         }
 
-        .searchResults section[role=main] .resultslist .item {
-            /* Define a grid with columns for an icon, spacing and item details */
+        .searchResults section[role=main] .resultslist .mix {
+            /* Define a grid with columns for an icon, spacing and mix details */
             -ms-grid-columns: 40px 1fr;
             -ms-grid-rows: 1fr;
             display: -ms-grid;
@@ -90,7 +94,7 @@
             width: 280px;
         }
 
-            .searchResults section[role=main] .resultslist .item .item-image {
+            .searchResults section[role=main] .resultslist .mix .mix-image {
                 -ms-grid-column: 1;
                 -ms-grid-row: 1;
                 height: 40px;
@@ -98,20 +102,14 @@
                 width: 40px;
             }
 
-            .searchResults section[role=main] .resultslist .item .item-content {
+            .searchResults section[role=main] .resultslist .mix .mix-content {
                 -ms-grid-column: 2;
                 -ms-grid-row: 1;
                 margin-left: 10px;
             }
 
-                .searchResults section[role=main] .resultslist .item .item-content .item-subtitle, .searchResults section[role=main] .resultslist .item .item-content .item-description {
+                .searchResults section[role=main] .resultslist .mix .mix-content .mix-subtitle, .searchResults section[role=main] .resultslist .mix .mix-content .mix-description {
                     opacity: 0.6;
-                }
-
-                /* Define a style for both selected filters and text matching the query. */
-                .searchResults section[role=main] .resultslist .item .item-content mark {
-                    background: transparent;
-                    color: rgba(90, 183, 227, 1);
                 }
 
 @media screen and (-ms-view-state: snapped) {
@@ -136,36 +134,6 @@
             margin-left: 20px;
             margin-top: 36px;
         }
-
-        /* Hide the horizontal list of filters in snapped mode. */
-        .searchResults section[role=main] .filterarea .filterbar {
-            display: none;
-        }
-
-        /* Show a <select> list of filters in snapped mode */
-        .searchResults section[role=main] .filterarea .filterselect {
-            display: inline;
-            margin-left: 20px;
-            margin-top: 2px;
-            max-width: calc(100% - 38px);
-        }
-
-        .searchResults section[role=main] .resultslist {
-            height: calc(100% - 30px);
-            -ms-grid-row: 2;
-            -ms-grid-row-span: 1;
-            margin-top: 30px;
-        }
-
-            .searchResults section[role=main] .resultslist .win-vertical.win-viewport .win-surface {
-                margin-bottom: 60px;
-                margin-top: 18px;
-            }
-
-            .searchResults section[role=main] .resultslist .win-container {
-                margin-left: 13px;
-                margin-right: 22px;
-            }
 }
 
 @media screen and (-ms-view-state: fullscreen-portrait) {

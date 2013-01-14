@@ -54,10 +54,10 @@
         console.log("getting favorite mixes....");
         Networker.getFavoriteMixes(app.sessionState.userId,"5","1",renderFavoriteMixList);
     }
+
     function renderFavoriteMixList(mixes) {
         tagMixesWithMixSet(mixes, "favorite");
         app.sessionState.favoriteMixSet = mixes;
-        addMixesToAllMixes(mixes);
         linkMixes(mixes);
         console.log("rendering favorite mixes");
         var listView = document.querySelector("#favoriteMixesListView").winControl;
@@ -69,12 +69,6 @@
         var mixId = eventargs.srcElement.parentNode.parentNode.querySelector(".mix-id").innerText;
         var selectedMix = allMixes[mixId];
         app.sessionState.currentMix = selectedMix;
-        //switch (selectedMix.mixSetName) {
-        //    case "latest":
-        //        app.sessionState.currentMixSet = app.sessionState.latestMixSet;
-        //    case "favorite":
-        //        app.sessionState.currentMixSet = app.sessionState.favoriteMixSet;
-        //}
         nav.navigate("/listen/listen.html");
     }
 
