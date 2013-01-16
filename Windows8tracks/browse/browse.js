@@ -5,6 +5,13 @@
     var app = WinJS.Application;
     var nav = WinJS.Navigation;
     var allMixes = {};
+    var globalMixList = new WinJS.Binding.List(); 
+    var tagsToTitles = {
+        "favorite": "Liked By You",
+        "latest": "Featured",
+        "listeningHistory": "Listening History",
+        "recommended" : "Recommeded For You"
+    }
 
     function getDummyMixData(mixSetName) {
         return {
@@ -27,7 +34,7 @@
 
     function getGroupData(item) {
         return {
-            name: item.mixSetName
+            name: tagsToTitles[item.mixSetName]
         };
     }
 
@@ -66,10 +73,21 @@
     }
     function testDefaultMixes() {
         var myArray = new Array();
+        var str = "latest";
         for (var i = 0; i < 5; i++) {
-            for (var j = 0; j < 5; j++) {
-                myArray.push(getDummyMixData(i.toString()));
-            }
+                myArray.push(getDummyMixData(str));
+        }
+        var str = "favorite";
+        for (var i = 0; i < 5; i++) {
+            myArray.push(getDummyMixData(str));
+        }
+        var str = "listeningHistory";
+        for (var i = 0; i < 5; i++) {
+            myArray.push(getDummyMixData(str));
+        }
+        var str = "recommended";
+        for (var i = 0; i < 5; i++) {
+            myArray.push(getDummyMixData(str));
         }
         var arrayPromise = WinJS.Promise.wrap(myArray);
         arrayPromise.then(function completed(mixes) {
@@ -82,8 +100,10 @@
         linkMixes(mixes);
         app.sessionState.defaultMixSet = mixes;
         var listView = document.querySelector("#allMixesListView").winControl;
-        var dataList = new WinJS.Binding.List(mixes);
-        var myGroupedList = dataList.createGrouped(getGroupKey, getGroupData, compareMixSetNames);
+        for (var i = 0; i < mixes.length; i++) {
+            globalMixList.push(mixes[i]);
+        }
+        var myGroupedList = globalMixList.createGrouped(getGroupKey, getGroupData, compareMixSetNames);
         listView.itemDataSource = myGroupedList.dataSource;
         listView.groupDataSource = myGroupedList.groups.dataSource;
     }
@@ -208,18 +228,56 @@
         }
     }
 
+    function reRenderMixSets(eventargs) {
+        var listView = document.querySelector("#all");
+        replacePlaceholderMixes("latest", app.sessionState.latestMixSet);
+    }
+
+    function replacePlaceholderMixes(mixSetName, actualMixes) {
+        //setAt allows me to set items that exist at certain indicies.
+        //So, I'll grab all the indices that have a certain mixSetName and in id of -1,
+        //log those indices, and then set as many of those indices as I can
+        //with mixes. If I don't have enough indices, I'll just add the mixes 
+        //to the end
+        var indices = new Array();
+        for (var i = 0; i < globalMixList.length; i++) {
+            if (globalMixList.getAt(i).mixSetName === mixSetName && globalMixList.getAt(i).id === "-1") {
+                console.log("finding indices");
+                indices.push(i);
+            }
+        }
+            if (indices.length < actualMixes.length) {
+                for (var i = indices.length; i < actualMixes.length; i++) {
+                    console.log("more mixes than indicies");
+                    globalMixList.push(actualMixes[i]);
+                }
+                for (var i = 0; i < indices.length; i++) {
+                    console.log("case 0, adding mixes");
+                    globalMixList.setAt(indices[i], actualMixes[i]);
+                }
+            } else if (indices.length >= actualMixes.length) {
+                for (var i = 0; i < actualMixes.length; i++) {
+                    console.log("case 1, adding mixes");
+                    globalMixList.setAt(indices[i], actualMixes[i]);
+                }
+        }
+        //for (var i = 0; i < actualMixes.length; i++) {
+        //    globalMixList.setAt(i,actualMixes[i]);
+        //}
+    }
+
 
     WinJS.UI.Pages.define("/browse/browse.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
+            document.querySelector("#reRenderMixSets").addEventListener("click", reRenderMixSets);
             testDefaultMixes();
             getLatestMixes();
             getFavoriteMixes();
             getListeningHistoryMixes();
             getMixFeedMixes();
             getRecommendedMixes();
-            testDefaultMixes();
             //document.querySelector("#getLatestMixes").addEventListener("click", getLatestMixes);
             //document.querySelector("#getFavoriteMixes").addEventListener("click", getFavoriteMixes);
             //addLoadCompleteEventListenersToListViews();
