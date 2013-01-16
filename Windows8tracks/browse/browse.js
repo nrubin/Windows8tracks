@@ -66,19 +66,26 @@
     }
     function testDefaultMixes() {
         var myArray = new Array();
-        for (var i = 0; i < 20; i++) {
-            myArray.push(getDummyMixData("dummy"));
+        for (var i = 0; i < 5; i++) {
+            for (var j = 0; j < 5; j++) {
+                myArray.push(getDummyMixData(i.toString()));
+            }
         }
-        renderDefaultMixes(myArray);
+        var arrayPromise = WinJS.Promise.wrap(myArray);
+        arrayPromise.then(function completed(mixes) {
+            renderDefaultMixes(mixes);
+        }, function errored(response) { });
     }
     function renderDefaultMixes(mixes) {
-        tagMixesWithMixSet(mixes, "dj");
+        //tagMixesWithMixSet(mixes, "dj");
         addMixesToAllMixes(mixes);
         linkMixes(mixes);
         app.sessionState.defaultMixSet = mixes;
-        var listView = document.querySelector("#djListView").winControl;
+        var listView = document.querySelector("#allMixesListView").winControl;
         var dataList = new WinJS.Binding.List(mixes);
-        listView.itemDataSource = dataList.dataSource;
+        var myGroupedList = dataList.createGrouped(getGroupKey, getGroupData, compareMixSetNames);
+        listView.itemDataSource = myGroupedList.dataSource;
+        listView.groupDataSource = myGroupedList.groups.dataSource;
     }
 
     function getRecommendedMixes() {
@@ -206,7 +213,7 @@
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
-            // TODO: Initialize the page here.
+            testDefaultMixes();
             getLatestMixes();
             getFavoriteMixes();
             getListeningHistoryMixes();
@@ -215,8 +222,7 @@
             testDefaultMixes();
             //document.querySelector("#getLatestMixes").addEventListener("click", getLatestMixes);
             //document.querySelector("#getFavoriteMixes").addEventListener("click", getFavoriteMixes);
-            addLoadCompleteEventListenersToListViews();
-            //document.querySelectorAll("[data-win-control='WinJS.UI.ListView']")
+            //addLoadCompleteEventListenersToListViews();
         },
 
         unload: function () {

@@ -21,6 +21,11 @@
             </h1>
         </header>
         <section aria-label="Main content" role="main">
+            <div id="mixSetTemplate" data-win-control="WinJS.Binding.Template">
+                <div class="mix-set-title">
+                    <h1 data-win-bind="innerText: name"></h1>
+                </div>
+            </div>
             <div id="mixTemplate" data-win-control="WinJS.Binding.Template">
                 <div class="mix" data-win-bind="style.backgroundImage: escapedCoverUrls.max200">
                     <div class="mix-title-container">
@@ -55,9 +60,10 @@
                 <div id="recommendedMixesListView" data-win-control="WinJS.UI.ListView" data-win-options="{itemTemplate: select('#mixTemplate')}" class="recommended-mix">
                 </div>
             </div>
-            <div id="DJ" class="mix-set-view">
-                <h3>Mix DJ</h3>
-                <div id="djListView" data-win-control="WinJS.UI.ListView" data-win-options="{itemTemplate: select('#mixTemplate')}" class="dj-mix">
+            <div id="all" class="mix-set-view">
+                <h3>Everything!!</h3>
+                <div id="allMixesListView" data-win-control="WinJS.UI.ListView" 
+                    data-win-options="{itemTemplate: select('#mixTemplate'),groupHeaderTemplate: select('#mixSetTemplate'), layout: {type: WinJS.UI.GridLayout}}" class="all-mix">
                 </div>
             </div>
         </section>

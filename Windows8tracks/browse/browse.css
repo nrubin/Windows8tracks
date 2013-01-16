@@ -37,4 +37,5 @@ bottom:0;
 .mix {
 width:200px;
 height: 200px;
+display: -ms-grid;
 }
