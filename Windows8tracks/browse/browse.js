@@ -7,7 +7,14 @@
     var allMixes = {};
 
     function getDummyMixData(mixSetName) {
-
+        return {
+            name: "Mix",
+            escapedCoverUrls: { max200: "url('/media/images/default-mix-thumb.png')" },
+            cover_urls: {max200: "/media/images/default-mix-thumb.png"},
+            id: "-1",
+            mixSetName: mixSetName,
+            description: "this is fake"
+        }
     }
 
     function compareMixSetNames(leftName, rightName) {
@@ -31,7 +38,7 @@
             mix.mixSetName = mixSetName;
             mix.escapedCoverUrls = {}
             for (var imgName in mix.cover_urls) {
-                mix.escapedCoverUrls[imgName] = "url('" + mix.cover_urls[imgName] + "')";
+                mix.escapedCoverUrls[imgName] = "url('" + mix.cover_urls[imgName] + "')";//enabled cover urls in css
             }
         }
     }
@@ -57,22 +64,18 @@
             addMixToAllMixes(mix);
         }
     }
-    function getMixDJMixes() {
-        console.log("getting mix dj mixes");
-        Networker.getMixDJ(app.sessionState.userId, "5", "1").then(
-            function completed(mixes) {
-                renderDJMixList(mixes);
-            },
-            function errored(response) {
-            },
-            function progress() {
-            });
+    function testDefaultMixes() {
+        var myArray = new Array();
+        for (var i = 0; i < 20; i++) {
+            myArray.push(getDummyMixData("dummy"));
+        }
+        renderDefaultMixes(myArray);
     }
-    function renderDJMixList(mixes) {
+    function renderDefaultMixes(mixes) {
         tagMixesWithMixSet(mixes, "dj");
         addMixesToAllMixes(mixes);
         linkMixes(mixes);
-        app.sessionState.latestMixSet = mixes;
+        app.sessionState.defaultMixSet = mixes;
         var listView = document.querySelector("#djListView").winControl;
         var dataList = new WinJS.Binding.List(mixes);
         listView.itemDataSource = dataList.dataSource;
@@ -93,7 +96,7 @@
         tagMixesWithMixSet(mixes, "recommended");
         addMixesToAllMixes(mixes);
         linkMixes(mixes);
-        app.sessionState.latestMixSet = mixes;
+        app.sessionState.recommendedMixSet = mixes;
         var listView = document.querySelector("#recommendedMixesListView").winControl;
         var dataList = new WinJS.Binding.List(mixes);
         listView.itemDataSource = dataList.dataSource;
@@ -114,7 +117,7 @@
         tagMixesWithMixSet(mixes, "mixFeed");
         addMixesToAllMixes(mixes);
         linkMixes(mixes);
-        app.sessionState.latestMixSet = mixes;
+        app.sessionState.mixFeedMixSet = mixes;
         var listView = document.querySelector("#mixFeedListView").winControl;
         var dataList = new WinJS.Binding.List(mixes);
         listView.itemDataSource = dataList.dataSource;
@@ -135,7 +138,7 @@
         tagMixesWithMixSet(mixes, "listeningHistory");
         addMixesToAllMixes(mixes);
         linkMixes(mixes);
-        app.sessionState.latestMixSet = mixes;
+        app.sessionState.listeningHistoryMixSet = mixes;
         var listView = document.querySelector("#listeningHistoryListView").winControl;
         var dataList = new WinJS.Binding.List(mixes);
         listView.itemDataSource = dataList.dataSource;
@@ -209,7 +212,7 @@
             getListeningHistoryMixes();
             getMixFeedMixes();
             getRecommendedMixes();
-            getMixDJMixes();
+            testDefaultMixes();
             //document.querySelector("#getLatestMixes").addEventListener("click", getLatestMixes);
             //document.querySelector("#getFavoriteMixes").addEventListener("click", getFavoriteMixes);
             addLoadCompleteEventListenersToListViews();

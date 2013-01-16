@@ -27,8 +27,9 @@ float:right;
 
 .mix-title-container {
 /*margin-top: calc(.75*1fr);*/
-vertical-align: bottom;
+position:absolute;
 background-color: rgba(52, 50, 50, 0.76);
+bottom:0;
 }
 .mix-title {
     font-size:x-large;

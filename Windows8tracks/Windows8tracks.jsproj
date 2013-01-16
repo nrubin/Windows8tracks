@@ -67,6 +67,7 @@
     <Content Include="listen\listen.css" />
     <Content Include="listen\listen.html" />
     <Content Include="listen\listen.js" />
+    <Content Include="media\images\default-mix-thumb.png" />
     <Content Include="media\images\logo.png" />
     <Content Include="media\images\sampleAlbumArt.jpg" />
     <Content Include="media\images\smalllogo.png" />

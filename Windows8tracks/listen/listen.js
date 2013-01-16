@@ -31,7 +31,7 @@
         var playToken = app.sessionState.playToken;
         var mix = app.sessionState.currentMix;
         document.querySelector(".pagesubtitle").innerText = mix.name;
-        document.querySelector(".mix-pic").src = mix.cover_urls.sq100;
+        document.querySelector(".mix-pic").src = mix.cover_urls.max200;
         document.querySelector(".mix-description").innerText = mix.description;
         document.querySelector(".mix-pic").addEventListener("click", beginListening);
     }
