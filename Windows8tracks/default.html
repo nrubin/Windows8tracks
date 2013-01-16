@@ -22,6 +22,7 @@
         data-win-control="Application.PageControlNavigator"
         data-win-options="{home: '/home/home.html'}">
     </div>
+
     <div class="footer">
         <div id="playerContainer">
             <audio id="player" controls="controls" src="/media/songs/sampleSong.mp3" msaudiocategory="BackgroundCapableMedia"></audio>
@@ -30,5 +31,17 @@
         </div>
         <span id="lastTrackNotif">At last track!</span>
     </div>
+    <div id="createAppBar" data-win-control="WinJS.UI.AppBar" data-win-options="">
+        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdAdd',label:'Add',icon:'add',section:'global',tooltip:'Add item'}">
+        </button>
+        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',section:'global',tooltip:'Remove item'}">
+        </button>
+        <hr data-win-control="WinJS.UI.AppBarCommand" data-win-options="{type:'separator',section:'global'}" />
+        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdDelete',label:'Delete',icon:'delete',section:'global',tooltip:'Delete item'}">
+        </button>
+        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdCamera',label:'Camera',icon:'camera',section:'selection',tooltip:'Take a picture'}">
+        </button>
+    </div>
+
 </body>
 </html>
