@@ -150,6 +150,7 @@
                 
                 document.querySelector("#nextSong").addEventListener("click", nextSong);
                 document.querySelector("#skipSong").addEventListener("click", skipSong);
+                app.sessionState.mixSets = {};
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.

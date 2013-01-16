@@ -88,7 +88,7 @@
        
     };
 
-    Networker.getLatestMixes = function (perPage, pageNumber, callback) {
+    Networker.getLatestMixes = function (perPage, pageNumber) {
         /*
         fetches the latest mixes from 8tracks, returns a promise
         */
@@ -100,7 +100,7 @@
                 if (responseObj.status === "200 OK") {
                     console.log("received latest mixes");
                     console.log(response.responseText);
-                    var mixes = responseObj.mix_set.mixes;
+                    var mixes = responseObj.mixes;
                     completed(mixes);
                 } else {
                     console.log("did not receive latest mixes");
@@ -119,7 +119,7 @@
         });
     };
 
-    Networker.getFavoriteMixes = function (userId,perPage,pageNumber,callback){  
+    Networker.getFavoriteMixes = function (userId,perPage,pageNumber){  
         /*
         fetches the logged in user's mixes from 8tracks, then calls callback on the list of mixes
         if the fetch fails, callback receives null
@@ -141,7 +141,7 @@
                 }
             },
             function onError(response) {
-                console.log("did not receive listening favorite mixes");
+                console.log("did not receive favorite mixes");
                 console.log(response.responseText);
                 errored(response);
             },

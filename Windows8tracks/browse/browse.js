@@ -5,19 +5,19 @@
     var app = WinJS.Application;
     var nav = WinJS.Navigation;
     var allMixes = {};
-    var globalMixList = new WinJS.Binding.List(); 
+    var globalMixList = new WinJS.Binding.List();
     var tagsToTitles = {
         "favorite": "Liked By You",
         "latest": "Featured",
         "listeningHistory": "Listening History",
-        "recommended" : "Recommeded For You"
+        "recommended": "Recommeded For You"
     }
 
     function getDummyMixData(mixSetName) {
         return {
             name: "Mix",
             escapedCoverUrls: { max200: "url('/media/images/default-mix-thumb.png')" },
-            cover_urls: {max200: "/media/images/default-mix-thumb.png"},
+            cover_urls: { max200: "/media/images/default-mix-thumb.png" },
             id: "-1",
             mixSetName: mixSetName,
             description: "this is fake"
@@ -54,7 +54,7 @@
         /*
         I want to know the next item in a mix set, so I'll get to it by turning mix sets into a linked list. This way I can also know if I'm at the end of a mix set (since the last mix won't have a nextMix attr)
         */
-        for (var i = 0; i < mixes.length-1; i++) {
+        for (var i = 0; i < mixes.length - 1; i++) {
             var mix = mixes[i];
             mix.nextMix = mixes[i + 1];
         }
@@ -75,7 +75,7 @@
         var myArray = new Array();
         var str = "latest";
         for (var i = 0; i < 5; i++) {
-                myArray.push(getDummyMixData(str));
+            myArray.push(getDummyMixData(str));
         }
         var str = "favorite";
         for (var i = 0; i < 5; i++) {
@@ -112,91 +112,54 @@
         console.log("getting recommended mixes");
         Networker.getRecommendedMixes(app.sessionState.userId, "5", "1").then(
             function completed(mixes) {
-                renderRecommendedMixList(mixes);
+                processMixSet(mixes,"recommended");
             },
             function errored(response) {
             },
             function progress() {
             });
-    }
-    function renderRecommendedMixList(mixes) {
-        tagMixesWithMixSet(mixes, "recommended");
-        addMixesToAllMixes(mixes);
-        linkMixes(mixes);
-        app.sessionState.recommendedMixSet = mixes;
-        var listView = document.querySelector("#recommendedMixesListView").winControl;
-        var dataList = new WinJS.Binding.List(mixes);
-        listView.itemDataSource = dataList.dataSource;
     }
 
     function getMixFeedMixes() {
         console.log("getting mix feed");
         Networker.getMixFeed(app.sessionState.userId, "5", "1").then(
             function completed(mixes) {
-                renderMixFeedMixList(mixes);
+                processMixSet(mixes,"mixFeed");
             },
             function errored(response) {
             },
             function progress() {
             });
     }
-    function renderMixFeedMixList(mixes) {
-        tagMixesWithMixSet(mixes, "mixFeed");
-        addMixesToAllMixes(mixes);
-        linkMixes(mixes);
-        app.sessionState.mixFeedMixSet = mixes;
-        var listView = document.querySelector("#mixFeedListView").winControl;
-        var dataList = new WinJS.Binding.List(mixes);
-        listView.itemDataSource = dataList.dataSource;
-    }
+
 
     function getListeningHistoryMixes() {
         console.log("getting listening history");
         Networker.getListeningHistory(app.sessionState.userId, "5", "1").then(
             function completed(mixes) {
-                renderListeningHistoryMixList(mixes);
+                processMixSet(mixes, "listeningHistory");
             },
             function errored(response) {
             },
-            function progress() { 
+            function progress() {
             });
-    }
-    function renderListeningHistoryMixList(mixes) {
-        tagMixesWithMixSet(mixes, "listeningHistory");
-        addMixesToAllMixes(mixes);
-        linkMixes(mixes);
-        app.sessionState.listeningHistoryMixSet = mixes;
-        var listView = document.querySelector("#listeningHistoryListView").winControl;
-        var dataList = new WinJS.Binding.List(mixes);
-        listView.itemDataSource = dataList.dataSource;
     }
 
     function getLatestMixes(eventargs) {
         console.log("getting latest mixes....");
-        Networker.getLatestMixes("5", "1", renderLatestMixList);
+        Networker.getLatestMixes("5", "1").then(
+            function completed(mixes) {
+                processMixSet(mixes,"latest");
+            }, function errored(response) {
+            });
     }
-    function renderLatestMixList(mixes) {
-        tagMixesWithMixSet(mixes, "latest");
-        addMixesToAllMixes(mixes);
-        linkMixes(mixes);
-        app.sessionState.latestMixSet = mixes;
-        var listView = document.querySelector("#latestMixesListView").winControl;
-        var dataList = new WinJS.Binding.List(mixes);
-        listView.itemDataSource = dataList.dataSource;
-    }
+  
 
     function getFavoriteMixes(eventargs) {
         console.log("getting favorite mixes....");
-        Networker.getFavoriteMixes(app.sessionState.userId,"5","1",renderFavoriteMixList);
-    }
-    function renderFavoriteMixList(mixes) {
-        tagMixesWithMixSet(mixes, "favorite");
-        app.sessionState.favoriteMixSet = mixes;
-        linkMixes(mixes);
-        console.log("rendering favorite mixes");
-        var listView = document.querySelector("#favoriteMixesListView").winControl;
-        var dataList = new WinJS.Binding.List(mixes);
-        listView.itemDataSource = dataList.dataSource;
+        Networker.getFavoriteMixes(app.sessionState.userId, "5", "1").then(function completed(mixes) {
+            processMixSet(mixes,"favorite");
+        }, function errored(response) { });
     }
 
     function playSelectedMix(eventargs) {
@@ -219,8 +182,7 @@
         }
     }
 
-    function addLoadCompleteEventListenersToListViews( )
-    {
+    function addLoadCompleteEventListenersToListViews() {
         var listViews = document.querySelectorAll(".win-listview");
         for (var i = 0; i < listViews.length; i++) {
             var listView = listViews[i];
@@ -228,9 +190,12 @@
         }
     }
 
-    function reRenderMixSets(eventargs) {
-        var listView = document.querySelector("#all");
-        replacePlaceholderMixes("latest", app.sessionState.latestMixSet);
+    function processMixSet(mixes,mixSetName) {
+        tagMixesWithMixSet(mixes, mixSetName);
+        addMixesToAllMixes(mixes);
+        linkMixes(mixes);
+        app.sessionState.mixSets[mixSetName] = mixes;
+        replacePlaceholderMixes(mixSetName, mixes);
     }
 
     function replacePlaceholderMixes(mixSetName, actualMixes) {
@@ -246,20 +211,20 @@
                 indices.push(i);
             }
         }
-            if (indices.length < actualMixes.length) {
-                for (var i = indices.length; i < actualMixes.length; i++) {
-                    console.log("more mixes than indicies");
-                    globalMixList.push(actualMixes[i]);
-                }
-                for (var i = 0; i < indices.length; i++) {
-                    console.log("case 0, adding mixes");
-                    globalMixList.setAt(indices[i], actualMixes[i]);
-                }
-            } else if (indices.length >= actualMixes.length) {
-                for (var i = 0; i < actualMixes.length; i++) {
-                    console.log("case 1, adding mixes");
-                    globalMixList.setAt(indices[i], actualMixes[i]);
-                }
+        if (indices.length < actualMixes.length) {
+            for (var i = indices.length; i < actualMixes.length; i++) {
+                console.log("more mixes than indicies");
+                globalMixList.push(actualMixes[i]);
+            }
+            for (var i = 0; i < indices.length; i++) {
+                console.log("case 0, adding mixes");
+                globalMixList.setAt(indices[i], actualMixes[i]);
+            }
+        } else if (indices.length >= actualMixes.length) {
+            for (var i = 0; i < actualMixes.length; i++) {
+                console.log("case 1, adding mixes");
+                globalMixList.setAt(indices[i], actualMixes[i]);
+            }
         }
         //for (var i = 0; i < actualMixes.length; i++) {
         //    globalMixList.setAt(i,actualMixes[i]);
@@ -280,7 +245,7 @@
             getRecommendedMixes();
             //document.querySelector("#getLatestMixes").addEventListener("click", getLatestMixes);
             //document.querySelector("#getFavoriteMixes").addEventListener("click", getFavoriteMixes);
-            //addLoadCompleteEventListenersToListViews();
+            addLoadCompleteEventListenersToListViews();
         },
 
         unload: function () {
