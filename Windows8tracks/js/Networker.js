@@ -90,31 +90,32 @@
 
     Networker.getLatestMixes = function (perPage, pageNumber, callback) {
         /*
-        fetches the latest mixes from 8tracks, then calls callback on the list of mixes
-        if the fetch fails, callback receives null
+        fetches the latest mixes from 8tracks, returns a promise
         */
         defaultOptions.url = "http://8tracks.com/mixes.json?per_page=" + perPage + "&page=" + pageNumber;
-        return WinJS.xhr(defaultOptions).then(
-        function onCompleted(response) {
-            var responseObj = JSON.parse(response.responseText);
-            if (responseObj.status === "200 OK") {
-                console.log("received latest mixes");
-                console.log(response.responseText);
-                var mixes = responseObj.mixes;
-                callback(mixes);
-            } else {
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(defaultOptions).then(
+            function onCompleted(response) {
+                var responseObj = JSON.parse(response.responseText);
+                if (responseObj.status === "200 OK") {
+                    console.log("received latest mixes");
+                    console.log(response.responseText);
+                    var mixes = responseObj.mix_set.mixes;
+                    completed(mixes);
+                } else {
+                    console.log("did not receive latest mixes");
+                    console.log(response.responseText);
+                    errored(response);
+                }
+            },
+            function onError(response) {
                 console.log("did not receive latest mixes");
                 console.log(response.responseText);
-                callback(null);
-            }
-        },
-        function onError(response) {
-            console.log("did not receive latest mixes");
-            console.log(response.responseText);
-            callback(null);
-        },
-        function inProgress(response) {
-            console.log("receiving latest mixes...");
+                errored(response);
+            },
+            function inProgress() {
+                progress();
+            });
         });
     };
 
@@ -124,27 +125,29 @@
         if the fetch fails, callback receives null
         */
         defaultOptions.url = "http://8tracks.com/users/" + userId + "/mixes.json" + urlPrefix + "view=liked&per_page=" + perPage + "&page=" + pageNumber;
-        WinJS.xhr(defaultOptions).then(
-        function onCompleted(response) {
-            var responseObj = JSON.parse(response.responseText);
-            if (responseObj.status === "200 OK") {
-                console.log("received favorite mixes");
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(defaultOptions).then(
+            function onCompleted(response) {
+                var responseObj = JSON.parse(response.responseText);
+                if (responseObj.status === "200 OK") {
+                    console.log("received favorite mixes");
+                    console.log(response.responseText);
+                    var mixes = responseObj.mix_set.mixes;
+                    completed(mixes);
+                } else {
+                    console.log("did not receive favorite mixes");
+                    console.log(response.responseText);
+                    errored(response);
+                }
+            },
+            function onError(response) {
+                console.log("did not receive listening favorite mixes");
                 console.log(response.responseText);
-                var mixes = responseObj.mix_set.mixes;
-                callback(mixes);
-            } else {
-                console.log("did not receive favorite mixes");
-                console.log(response.responseText);
-                callback(null);
-            }
-        },
-        function onError(response) {
-            console.log("did not receive favorite mixes");
-            console.log(response.responseText);
-            callback(null);
-        },
-        function inProgress(response) {
-            console.log("receiving favorite mixes...");
+                errored(response);
+            },
+            function inProgress() {
+                progress();
+            });
         });
     };
 
