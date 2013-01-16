@@ -37,6 +37,46 @@
         player.load();
     }
 
+
+    function launchLogout() {
+        document.querySelector("#loginContainer").style.display = "inline";
+        document.querySelector("#loggedInContainer").style.display = "none";
+        app.sessionState.loggedIn = false;
+    }
+
+    function launchLogin() {
+        var credentialOptions = Windows.Security.Credentials.UI.CredentialPickerOptions();
+        credentialOptions.authenticationProtocol = Windows.Security.Credentials.UI.AuthenticationProtocol.basic;
+        credentialOptions.credentialSaveOption = Windows.Security.Credentials.UI.CredentialSaveOption.hidden;
+        credentialOptions.callerSavesCredential = true;
+        credentialOptions.caption = "Log in to 8tracks";
+        credentialOptions.message = "You must be logged in to listen to a mix";
+        credentialOptions.targetName = ".";
+        Windows.Security.Credentials.UI.CredentialPicker.pickAsync(credentialOptions).then(function (results) {
+            console.log("the credential results are");
+            console.log(results);
+            var username = results.credentialUserName;
+            var password = results.credentialPassword;
+            Networker.login(username, password).then(
+                function completed(user) {
+                    app.sessionState.userToken = user.user_token;
+                    app.sessionState.userId = user.id;
+                    app.sessionState.currentUser = user;
+                    app.sessionState.loggedIn = true;
+                    document.querySelector("#userAvatar").src = user.avatar_urls.sq100;
+                    document.querySelector("#username").innerText = user.login;
+                    document.querySelector("#loginContainer").style.display = "none";
+                    document.querySelector("#loggedInContainer").style.display = "inline";
+                    Networker.getPlayToken().then(function completed(playToken) { app.sessionState.playToken = playToken }, function errored(response) { });
+                },
+                function errored(response) {
+                    console.log("login failed");
+                },
+                function progress() {
+                });
+        });
+    };
+
     function nextSong() {
         //this gets called at the end of a song, not when a skip occurs
         //it needs to handle the end of a mix, so it unpacks the next mix ffom the current one and handles things nicely.
@@ -150,7 +190,10 @@
                 
                 document.querySelector("#nextSong").addEventListener("click", nextSong);
                 document.querySelector("#skipSong").addEventListener("click", skipSong);
+                document.querySelector("#launchLogin").addEventListener("click", launchLogin);
+                document.querySelector("#launchLogout").addEventListener("click", launchLogout);
                 app.sessionState.mixSets = {};
+                app.sessionState.loggedIn = false;
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.

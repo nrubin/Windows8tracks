@@ -18,11 +18,20 @@
 </head>
 <body>
     <h6 id="staticHeader">Windows8tracks</h6>
+    <div id="userContainer">
+        <div id="loginContainer">
+            <button id="launchLogin">Login</button>
+        </div>
+        <div id="loggedInContainer">
+            <img id="userAvatar" src="#" alt="current user" />
+            <span id="username"></span>
+            <span id="launchLogout"><a>Logout</a></span>
+        </div>
+    </div>
     <div id="contenthost"
         data-win-control="Application.PageControlNavigator"
-        data-win-options="{home: '/home/home.html'}">
+        data-win-options="{home: '/browse/browse.html'}">
     </div>
-
     <div class="footer">
         <div id="playerContainer">
             <audio id="player" controls="controls" src="/media/songs/sampleSong.mp3" msaudiocategory="BackgroundCapableMedia"></audio>

@@ -231,20 +231,24 @@
         //}
     }
 
+    function loadCustomMixes(eventargs) {
+        console.log("properties have changed");
+    }
+
 
     WinJS.UI.Pages.define("/browse/browse.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
             document.querySelector("#reRenderMixSets").addEventListener("click", reRenderMixSets);
-            testDefaultMixes();
+            document.querySelector("#loggedInContainer").addEventListener("propertychange", loadCustomMixes);
             getLatestMixes();
-            getFavoriteMixes();
-            getListeningHistoryMixes();
-            getMixFeedMixes();
-            getRecommendedMixes();
-            //document.querySelector("#getLatestMixes").addEventListener("click", getLatestMixes);
-            //document.querySelector("#getFavoriteMixes").addEventListener("click", getFavoriteMixes);
+            if (app.sessionState.loggedIn) {
+                getFavoriteMixes();
+                getListeningHistoryMixes();
+                getMixFeedMixes();
+                getRecommendedMixes();
+            }
             addLoadCompleteEventListenersToListViews();
         },
 

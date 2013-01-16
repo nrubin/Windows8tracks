@@ -31,3 +31,13 @@ display:block;
 #contenthost {
 height:500px;
 }
+
+#userContainer {
+float:right;
+margin-top:50px;
+margin-right:100px;
+}
+
+#loggedInContainer {
+display: none;
+}

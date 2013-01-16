@@ -20,34 +20,36 @@
         type: "GET",
         headers: headers,
     }
-    Networker.login = function (username, password,callback) {
+    Networker.login = function (username, password) {
         /* 
         logs a given unane/pw combo into 8tracks. Sets the user token and play tokens
         callback receives a boolean if the user is or is not loggen in
         */
-        defaultOptions.url = "https://8tracks.com/sessions/create_get" + urlPrefix + "&login=" + username + "&password=" + password
-        WinJS.xhr(defaultOptions).done(
-        function onCompleted(response) {
-            responseObj = JSON.parse(response.responseText);
-            if (responseObj.status === "200 OK") {
-                var userToken = responseObj.user.user_token;
-                var userId = responseObj.user.id;
-                callback(true,userToken,userId);
-            } else {
-                console.log("login unsuccessful");
-                console.log(response.responseText);
-                callback(false,null);
-            }
-        },
+        defaultOptions.url = "https://8tracks.com/sessions/create_get" + urlPrefix + "&login=" + username + "&password=" + password;
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(defaultOptions).done(
+           function onCompleted(response) {
+               responseObj = JSON.parse(response.responseText);
+               if (responseObj.status === "200 OK") {
+                   console.log(response);
+                   completed(responseObj.user);
+               } else {
+                   console.log("login unsuccessful");
+                   console.log(response.responseText);
+                   errored(response)
+               }
+           },
 
-        function onError(response) {
-            console.log("login not successful");
-            console.log(response.responseText);
-            callback(false,null);
-        },
+           function onError(response) {
+               console.log("login not successful");
+               console.log(response.responseText);
+               errored(response)
+           },
 
-        function inProgress(response) {
-            console.log("logging " + username + " into 8tracks");
+           function inProgress(response) {
+               console.log("logging " + username + " into 8tracks");
+               progress();
+           });
         });
     };
 
@@ -85,7 +87,7 @@
                progress();
            });
         });
-       
+
     };
 
     Networker.getLatestMixes = function (perPage, pageNumber) {
@@ -119,7 +121,7 @@
         });
     };
 
-    Networker.getFavoriteMixes = function (userId,perPage,pageNumber){  
+    Networker.getFavoriteMixes = function (userId, perPage, pageNumber) {
         /*
         fetches the logged in user's mixes from 8tracks, then calls callback on the list of mixes
         if the fetch fails, callback receives null
@@ -268,7 +270,7 @@
         });
     };
 
-    Networker.getMixesByTag = function (queryText, perPage,pageNumber) {
+    Networker.getMixesByTag = function (queryText, perPage, pageNumber) {
         /*
         receives query text from the search charm and searches for mixes according to those tags
       */
