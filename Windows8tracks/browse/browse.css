@@ -19,10 +19,21 @@ float:left;
 display: none;
 }
 
-.mix {
-width:250px;
-}
+
 
 .mix-pic {
 float:right;
+}
+
+.mix-title-container {
+/*margin-top: calc(.75*1fr);*/
+vertical-align: bottom;
+background-color: rgba(52, 50, 50, 0.76);
+}
+.mix-title {
+    font-size:x-large;
+}
+.mix {
+width:200px;
+height: 200px;
 }

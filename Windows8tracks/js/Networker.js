@@ -51,31 +51,41 @@
         });
     };
 
-    Networker.getPlayToken = function (callback) {
+    Networker.getPlayToken = function () {
         /*
         retrieves the play token for the session
         callback receives the play token, or "-1" if the request fails
         */
         defaultOptions.url = "http://8tracks.com/sets/new.json" + urlPrefix
-        WinJS.xhr(defaultOptions).done(
-        function onCompleted(response) {
-            console.log("received play token");
-            console.log(response.responseText);
-            var responseObj = JSON.parse(response.responseText);
-            playToken = responseObj.play_token;
-            callback(playToken);
-        },
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(defaultOptions).done(
+           function onCompleted(response) {
+               console.log("received play token");
+               console.log(response.responseText);
+               try {
+                   var responseObj = JSON.parse(response.responseText);
+                   playToken = responseObj.play_token;
+                   completed(playToken);
+               } catch (e) {
+                   console.log("did not receive play token");
+                   console.log(response.responseText);
+                   playToken = "-1"
+                   errored(playToken);
+               }
+           },
 
-        function onError(response) {
-            console.log("did not receive play token");
-            console.log(response.responseText);
-            playToken = "-1"
-            callback(playToken);
-        },
+           function onError(response) {
+               console.log("did not receive play token");
+               console.log(response.responseText);
+               errored(response);
+           },
 
-        function inProgress(response) {
-            console.log("retrieving play token...");
+           function inProgress(response) {
+               console.log("retrieving play token...");
+               progress();
+           });
         });
+       
     };
 
     Networker.getLatestMixes = function (perPage, pageNumber, callback) {

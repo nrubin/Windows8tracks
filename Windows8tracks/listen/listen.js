@@ -41,31 +41,11 @@
         // populates the page elements with the app's data.
         ready: function (element, options) {
             // TODO: Initialize the page here.
-            setup();
             if (!app.sessionState.playToken) {
-                var credentialOptions = Windows.Security.Credentials.UI.CredentialPickerOptions();
-                credentialOptions.authenticationProtocol = Windows.Security.Credentials.UI.AuthenticationProtocol.basic;
-                credentialOptions.credentialSaveOption = Windows.Security.Credentials.UI.CredentialSaveOption.hidden;
-                credentialOptions.callerSavesCredential = true;
-                credentialOptions.caption = "Please log in to 8tracks";
-                credentialOptions.message = "You must be logged in to listen to a mix";
-                credentialOptions.targetName = ".";
-                Windows.Security.Credentials.UI.CredentialPicker.pickAsync(credentialOptions).then(function (results) {
-                    console.log("the credential results are");
-                    console.log(results);
-                    var username = results.credentialUserName;
-                    var password = results.credentialPassword;
-                    Networker.login(username, password, function (loginSuccessful, userToken, userId) {
-                        if (loginSuccessful) {
-                            app.sessionState.userToken = userToken;
-                            app.sessionState.userId = userId;
-                            Networker.getPlayToken(function (token) { app.sessionState.playToken = token });
-                        } else {
-                            // login failed
-                        }
-                    });
-                });
+                Networker.getPlayToken().then(function completed(playToken) { app.sessionState.playToken = playToken}, function errored(response) { }, function progress() { });
             }
+            setup();
+
         },
 
         unload: function () {
@@ -78,4 +58,29 @@
             // TODO: Respond to changes in viewState.
         }
     });
+
+    //if (!app.sessionState.playToken) {
+    //    var credentialOptions = Windows.Security.Credentials.UI.CredentialPickerOptions();
+    //    credentialOptions.authenticationProtocol = Windows.Security.Credentials.UI.AuthenticationProtocol.basic;
+    //    credentialOptions.credentialSaveOption = Windows.Security.Credentials.UI.CredentialSaveOption.hidden;
+    //    credentialOptions.callerSavesCredential = true;
+    //    credentialOptions.caption = "Please log in to 8tracks";
+    //    credentialOptions.message = "You must be logged in to listen to a mix";
+    //    credentialOptions.targetName = ".";
+    //    Windows.Security.Credentials.UI.CredentialPicker.pickAsync(credentialOptions).then(function (results) {
+    //        console.log("the credential results are");
+    //        console.log(results);
+    //        var username = results.credentialUserName;
+    //        var password = results.credentialPassword;
+    //        Networker.login(username, password, function (loginSuccessful, userToken, userId) {
+    //            if (loginSuccessful) {
+    //                app.sessionState.userToken = userToken;
+    //                app.sessionState.userId = userId;
+    //                Networker.getPlayToken(function (token) { app.sessionState.playToken = token });
+    //            } else {
+    //                // login failed
+    //            }
+    //        });
+    //    });
+    //}
 })();

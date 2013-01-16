@@ -22,12 +22,13 @@
         </header>
         <section aria-label="Main content" role="main">
             <div id="mixTemplate" data-win-control="WinJS.Binding.Template">
-                <div class="mix">
-                    <h2 data-win-bind="innerText : name"></h2>
-                    <img class="mix-pic" src="#" data-win-bind="src: cover_urls.sq100" />
+                <div class="mix" data-win-bind="style.backgroundImage: escapedCoverUrls.max200">
+                    
                     <span class="mix-id" data-win-bind="innerText: id"></span>
-                    <p class="mix-description" data-win-bind="innerText: description"></p>
                 </div>
+                <div class="mix-title-container">
+                        <h2 class="mix-title" data-win-bind="innerText : name"></h2>
+                    </div>
             </div>
             <div id="latest" class="mix-set-view">
                 <h3>Latest Mixes</h3>

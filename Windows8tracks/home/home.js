@@ -9,7 +9,6 @@
         var username = document.querySelector("#username").value;
         var password = document.querySelector("#password").value;
         Networker.login(username, password, loginCallback);
-        Networker.getPlayToken(function (token) { app.sessionState.playToken = token });
     };
 
     function loginCallback(loginSuccessful,userToken, userId) {

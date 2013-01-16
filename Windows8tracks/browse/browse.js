@@ -6,11 +6,33 @@
     var nav = WinJS.Navigation;
     var allMixes = {};
 
+    function getDummyMixData(mixSetName) {
+
+    }
+
+    function compareMixSetNames(leftName, rightName) {
+        return leftName.charCodeAt(0) - rightName.charCodeAt(0);
+    }
+
+    function getGroupKey(item) {
+        return item.mixSetName;
+    }
+
+    function getGroupData(item) {
+        return {
+            name: item.mixSetName
+        };
+    }
+
     function tagMixesWithMixSet(mixes, mixSetName) {
         //tags a mix with the mix set it belongs to (e.g. "latest" or "favorite")
         for (var i = 0; i < mixes.length; i++) {
             var mix = mixes[i];
             mix.mixSetName = mixSetName;
+            mix.escapedCoverUrls = {}
+            for (var imgName in mix.cover_urls) {
+                mix.escapedCoverUrls[imgName] = "url('" + mix.cover_urls[imgName] + "')";
+            }
         }
     }
 
@@ -46,7 +68,6 @@
             function progress() {
             });
     }
-
     function renderDJMixList(mixes) {
         tagMixesWithMixSet(mixes, "dj");
         addMixesToAllMixes(mixes);
@@ -68,7 +89,6 @@
             function progress() {
             });
     }
-
     function renderRecommendedMixList(mixes) {
         tagMixesWithMixSet(mixes, "recommended");
         addMixesToAllMixes(mixes);
@@ -90,7 +110,6 @@
             function progress() {
             });
     }
-
     function renderMixFeedMixList(mixes) {
         tagMixesWithMixSet(mixes, "mixFeed");
         addMixesToAllMixes(mixes);
@@ -112,7 +131,6 @@
             function progress() { 
             });
     }
-
     function renderListeningHistoryMixList(mixes) {
         tagMixesWithMixSet(mixes, "listeningHistory");
         addMixesToAllMixes(mixes);
@@ -141,7 +159,6 @@
         console.log("getting favorite mixes....");
         Networker.getFavoriteMixes(app.sessionState.userId,"5","1",renderFavoriteMixList);
     }
-
     function renderFavoriteMixList(mixes) {
         tagMixesWithMixSet(mixes, "favorite");
         app.sessionState.favoriteMixSet = mixes;
@@ -159,7 +176,8 @@
         nav.navigate("/listen/listen.html");
     }
 
-    function addEventListenerstoMix(eventargs) {
+    function mixesLoaded(eventargs) {
+        //add click event listeners
         var listViewDOM = eventargs.srcElement;
         var listViewWinControl = listViewDOM.winControl;
         if (listViewWinControl.loadingState === "complete") {
@@ -176,7 +194,7 @@
         var listViews = document.querySelectorAll(".win-listview");
         for (var i = 0; i < listViews.length; i++) {
             var listView = listViews[i];
-            listView.addEventListener("loadingstatechanged", addEventListenerstoMix);
+            listView.addEventListener("loadingstatechanged", mixesLoaded);
         }
     }
 
