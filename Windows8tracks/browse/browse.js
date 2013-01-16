@@ -71,7 +71,7 @@
             addMixToAllMixes(mix);
         }
     }
-    function testDefaultMixes() {
+    function getPlaceholderMixes() {
         var myArray = new Array();
         var str = "latest";
         for (var i = 0; i < 5; i++) {
@@ -226,22 +226,27 @@
                 globalMixList.setAt(indices[i], actualMixes[i]);
             }
         }
-        //for (var i = 0; i < actualMixes.length; i++) {
-        //    globalMixList.setAt(i,actualMixes[i]);
-        //}
     }
-
-    function loadCustomMixes(eventargs) {
-        console.log("properties have changed");
+    function loggedInNow(eventargs) {
+        console.log(app.sessionState.loggedIn);
+        globalMixList = new WinJS.Binding.List();
+        getPlaceholderMixes();
+        getLatestMixes();
+        if (app.sessionState.loggedIn) {
+            getFavoriteMixes();
+            getListeningHistoryMixes();
+            getMixFeedMixes();
+            getRecommendedMixes();
+        }
     }
-
 
     WinJS.UI.Pages.define("/browse/browse.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
             document.querySelector("#reRenderMixSets").addEventListener("click", reRenderMixSets);
-            document.querySelector("#loggedInContainer").addEventListener("propertychange", loadCustomMixes);
+            document.querySelector("#loggedInContainer").attachEvent("onpropertychange", loggedInNow);
+            getPlaceholderMixes();
             getLatestMixes();
             if (app.sessionState.loggedIn) {
                 getFavoriteMixes();

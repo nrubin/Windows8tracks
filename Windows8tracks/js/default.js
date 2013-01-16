@@ -39,9 +39,9 @@
 
 
     function launchLogout() {
+        app.sessionState.loggedIn = false;
         document.querySelector("#loginContainer").style.display = "inline";
         document.querySelector("#loggedInContainer").style.display = "none";
-        app.sessionState.loggedIn = false;
     }
 
     function launchLogin() {
@@ -68,6 +68,7 @@
                     document.querySelector("#loginContainer").style.display = "none";
                     document.querySelector("#loggedInContainer").style.display = "inline";
                     Networker.getPlayToken().then(function completed(playToken) { app.sessionState.playToken = playToken }, function errored(response) { });
+                    //reloadCurrentPage();
                 },
                 function errored(response) {
                     console.log("login failed");
