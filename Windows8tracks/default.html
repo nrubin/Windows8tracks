@@ -43,16 +43,22 @@
         </div>
         <span id="lastTrackNotif">At last track!</span>
     </div>
-    <div id="createAppBar" data-win-control="WinJS.UI.AppBar" data-win-options="">
-        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdAdd',label:'Add',icon:'add',section:'global',tooltip:'Add item'}">
-        </button>
-        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',section:'global',tooltip:'Remove item'}">
-        </button>
-        <hr data-win-control="WinJS.UI.AppBarCommand" data-win-options="{type:'separator',section:'global'}" />
-        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdDelete',label:'Delete',icon:'delete',section:'global',tooltip:'Delete item'}">
-        </button>
-        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'cmdCamera',label:'Camera',icon:'camera',section:'selection',tooltip:'Take a picture'}">
-        </button>
+
+    <div data-win-control="WinJS.UI.AppBar" aria-label="Navigation Bar" id="mainAppBar"
+        data-win-options="{layout:'custom',placement:'bottom'}" >
+        <div id="playControlContainer">
+            <div id="albumArtContainer">
+            <img id="appBarAlbumArt" src="#" alt="img" />
+                </div>
+            <div id="notAlbumArt">
+            <progress class="songProgress" id="songProgressBar" value="0" max="100" ></progress>
+            <div id="appBarButtonContainer">
+            <button id="appBarPlayPause" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'play', label:'Play', section:'global'}"></button>
+            <button id="appBarSkipSong" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'next', label:'Skip', section:'global'}"></button>
+            <button id="appBarNextMix" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'forward', label:'Next Mix', section:'global'}"></button>
+            </div>
+                </div>
+          </div>
     </div>
 
 </body>

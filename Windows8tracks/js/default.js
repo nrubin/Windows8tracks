@@ -11,6 +11,10 @@
     var player = null;
 
     function reportSong(eventargs) {
+        var totalTime = player.duration;
+        var currentTime = player.currentTime;
+        var fraction = currentTime / totalTime;
+        document.getElementById("songProgressBar").value = fraction * 100;
         if (player.currentTime >= 30 && player.currentTime <= 31 && !app.sessionState.currentSetReported) {
             app.sessionState.currentSetReported = true;
             var mix = app.sessionState.currentMix;
@@ -27,19 +31,25 @@
         */
         var mediaControl = Windows.Media.MediaControl;
         var mix = app.sessionState.currentMix
-        document.querySelector(".pagesubtitle").innerText = mix.name;
-        document.querySelector(".mix-pic").src = mix.cover_urls.sq100;
-        document.querySelector(".mix-description").innerText = mix.description;
+        try {
+            document.querySelector(".pagesubtitle").innerText = mix.name;
+            document.querySelector(".mix-pic").src = mix.cover_urls.sq100;
+            document.querySelector(".mix-description").innerText = mix.description;
+        } catch (e) {
+            //I'm not on the listen page
+        }
         var player = document.querySelector("#player"); //namespace issues w/ callbacks
         app.sessionState.currentSet = set;
         app.sessionState.currentSetReported = false;
         var song = set.track;
         mediaControl.artistName = song.performer;
         mediaControl.trackName = song.name;
-        //mediaControl.albumArt = nWindows.Foundation.Uri(app.sessionState.currentMix.cover_urls.sq56);
+        document.getElementById("appBarAlbumArt").src = app.sessionState.currentMix.cover_urls.sq100;
+        //mediaControl.albumArt = Windows.Foundation.Uri(app.sessionState.currentMix.cover_urls.original_url);
         player.src = song.track_file_stream_url; //immediately start buffering track
         player.load();
         player.play();
+        document.querySelector("#mainAppBar").winControl.show();
     }
 
 
@@ -64,7 +74,7 @@
         credentialOptions.credentialSaveOption = Windows.Security.Credentials.UI.CredentialSaveOption.hidden;
         credentialOptions.callerSavesCredential = true;
         credentialOptions.caption = "Log in to 8tracks";
-        credentialOptions.message = "You must be logged in to listen to a mix";
+        credentialOptions.message = "You'll be able to view your favorite mixes, and much more";
         credentialOptions.targetName = ".";
         Windows.Security.Credentials.UI.CredentialPicker.pickAsync(credentialOptions).then(function (results) {
             var username = results.credentialUserName;
@@ -116,6 +126,18 @@
         }
     }
 
+    function nextMix(){
+        app.sessionState.goToNextMix = false;
+        var nextMix = app.sessionState.currentMix.nextMix;
+        if (nextMix) {
+            app.sessionState.currentMix = nextMix; //set the current mix
+            var mixId = app.sessionState.currentMix.id;
+            Networker.beginMix(app.sessionState.playToken, mixId, playNewMix);
+        }else {
+            console.log("the mix set is over");
+        }
+    }
+
     function loadNextSong(responseObj) {
         var mediaControl = Windows.Media.MediaControl;
         var set = responseObj.set;
@@ -132,6 +154,7 @@
         player.src = song.track_file_stream_url; //immediately start buffering track
         player.load();
         player.play();
+        document.querySelector("#mainAppBar").winControl.show();
     }
 
     function skipSong() {
@@ -151,37 +174,37 @@
         } else {
             console.log("no more skips!!");
         }
-        //var player = document.querySelector("#player"); //namespace issues w/ callbacks
-        //var song = set.track;
-        //player.src = song.track_file_stream_url; //immediately start buffering track
-        //player.load();
     }
 
-    // Define functions that will be the event handlers
     function pause() {
         player.pause();
     }
     function playpause() {
         if (!player.paused) {
             player.pause();
+            document.querySelector("#appBarPlayPause").winControl.icon = 'play';
+            document.querySelector("#appBarPlayPause").winControl.label = 'Play';
             Windows.Media.MediaControl.isPlaying = false;
         } else {
             player.play();
+            document.querySelector("#appBarPlayPause").winControl.icon = 'pause';
+            document.querySelector("#appBarPlayPause").winControl.label = 'Pause';
             Windows.Media.MediaControl.isPlaying = true;
         }
     }
     function play() {
-        // Handle the Play event and print status to screen..
         player.play();
+        document.querySelector("#appBarPlayPause").winControl.icon = 'pause';
+        document.querySelector("#appBarPlayPause").winControl.label = 'Pause';
         Windows.Media.MediaControl.isPlaying = true;
     }
     function pause() {
-        // Handle the Pause event and print status to screen.
         player.pause();
+        document.querySelector("#appBarPlayPause").winControl.icon = 'play';
+        document.querySelector("#appBarPlayPause").winControl.label = 'Play';
         Windows.Media.MediaControl.isPlaying = false;
     }
     function stop() {
-        console.log("fuck off");
     }
 
     function setupMediaControls() {
@@ -190,19 +213,20 @@
         mediaControl.addEventListener("playpressed", play, false);
         mediaControl.addEventListener("stoppressed", stop, false);
         mediaControl.addEventListener("pausepressed", pause, false);
+        mediaControl.addEventListener("nexttrackpressed", skipSong, false);
+        document.getElementById("appBarPlayPause").addEventListener("click", playpause);
+        document.getElementById("appBarSkipSong").addEventListener("click", skipSong);
+        document.getElementById("appBarNextMix").addEventListener("click", nextMix);
+        
         //mediaControl.albumArt = Windows.Foundation.Uri("ms-appx:///media/images/sampleAlbumArt.jpg");
-    }
+    };
 
-    //function getAlbumArt(eventargs) {
-    //    Networker.getAlbumArt("Kanye West", "Graduation").then(
-    //        function complete(response) {
-    //            console.log("album art success");
-    //            console.log(response);
-    //    }, function errored(response) {
-    //        console.log("album art error");
-    //        console.log(response);
-    //    });
-    //}
+    function setupAppBar() {
+        var appBar = document.querySelector("#mainAppBar").winControl;
+        var appBarPlayPause = document.querySelector("#appBarPlayPause").winControl;
+        var progressBar = document.querySelector("#songProgressBar");
+        //appBarPlayPause.icon = 'play';
+    }
 
 
     app.onactivated = function (args) {
@@ -222,6 +246,8 @@
                 app.sessionState.mixSets = {};
                 app.sessionState.currentlyLoggedIn = false;
                 app.sessionState.previouslyLoggedIn = false;
+                //appBar.show();
+                //document.querySelector("#appBarPlayPause").winControl.icon = 'play';
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.
@@ -231,9 +257,11 @@
                 nav.history = app.sessionState.history;
             }
             args.setPromise(WinJS.UI.processAll().then(function () {
+                setupAppBar();
                 if (nav.location) {
                     nav.history.current.initialPlaceholder = true;
                     return nav.navigate(nav.location, nav.state);
+                    
                 } else {
                     return nav.navigate(Application.navigator.home);
                 }

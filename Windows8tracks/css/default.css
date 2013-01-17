@@ -19,7 +19,7 @@ color:lightblue;
 }
 
 #playerContainer {
-display:block;
+display:none;
 }
 
 #last-track {
@@ -41,3 +41,34 @@ margin-right:100px;
 #loggedInContainer {
 display: none;
 }
+
+#appBarButtonContainer {
+position:absolute;
+bottom: 0px;
+left: 125px;
+}
+
+#appBarAlbumArt {
+position:absolute;
+left:15px;
+right:15px;
+top: 10px;
+bottom:10px;
+width:100px;
+height: 100px;
+}
+
+.songProgress {
+margin-left:130px;
+margin-top:15px;
+width: 300px;
+height:20px;
+background-color:#122C4B;
+color:rgba(35, 34, 34, 0.91);   
+}
+
+#mainAppBar {
+height:120px;
+background-color:rgba(35, 34, 34, 0.91);
+}
+

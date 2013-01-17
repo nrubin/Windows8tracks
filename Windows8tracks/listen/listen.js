@@ -28,8 +28,11 @@
         mediaControl.trackName = song.name;
         //mediaControl.albumArt = Windows.Foundation.Uri(app.sessionState.currentMix.cover_urls.sq56);
         player.src = song.track_file_stream_url; //immediately start buffering track
-
         player.load();
+        player.play();
+        document.getElementById("appBarPlayPause").winControl.icon = 'pause';
+        document.getElementById("appBarPlayPause").winControl.label = 'Pause';
+        document.getElementById("appBarAlbumArt").src = app.sessionState.currentMix.cover_urls.sq100;
     }
 
     function setup() {
@@ -50,6 +53,7 @@
                 Networker.getPlayToken().then(function completed(playToken) { app.sessionState.playToken = playToken}, function errored(response) { }, function progress() { });
             }
             setup();
+            
 
         },
 
