@@ -25,6 +25,7 @@
         Once a set is received, this method binds the set metadata to the audio player
         and the windows media controls
         */
+        var mediaControl = Windows.Media.MediaControl;
         var mix = app.sessionState.currentMix
         document.querySelector(".pagesubtitle").innerText = mix.name;
         document.querySelector(".mix-pic").src = mix.cover_urls.sq100;
@@ -33,13 +34,16 @@
         app.sessionState.currentSet = set;
         app.sessionState.currentSetReported = false;
         var song = set.track;
+        mediaControl.artistName = song.performer;
+        mediaControl.trackName = song.name;
         player.src = song.track_file_stream_url; //immediately start buffering track
         player.load();
     }
 
 
     function launchLogout() {
-        app.sessionState.loggedIn = false;
+        app.sessionState.previouslyLoggedIn = app.sessionState.currentlyLoggedIn;
+        app.sessionState.currentlyLoggedIn = false;
         document.querySelector("#loginContainer").style.display = "inline";
         document.querySelector("#loggedInContainer").style.display = "none";
     }
@@ -53,8 +57,6 @@
         credentialOptions.message = "You must be logged in to listen to a mix";
         credentialOptions.targetName = ".";
         Windows.Security.Credentials.UI.CredentialPicker.pickAsync(credentialOptions).then(function (results) {
-            console.log("the credential results are");
-            console.log(results);
             var username = results.credentialUserName;
             var password = results.credentialPassword;
             Networker.login(username, password).then(
@@ -62,7 +64,8 @@
                     app.sessionState.userToken = user.user_token;
                     app.sessionState.userId = user.id;
                     app.sessionState.currentUser = user;
-                    app.sessionState.loggedIn = true;
+                    app.sessionState.previouslyLoggedIn = app.sessionState.currentlyLoggedIn;
+                    app.sessionState.currentlyLoggedIn = true;
                     document.querySelector("#userAvatar").src = user.avatar_urls.sq100;
                     document.querySelector("#username").innerText = user.login;
                     document.querySelector("#loginContainer").style.display = "none";
@@ -104,6 +107,7 @@
     }
 
     function loadNextSong(responseObj) {
+        var mediaControl = Windows.Media.MediaControl;
         var set = responseObj.set;
         app.sessionState.currentSet = set;
         app.sessionState.currentSetReported = false;
@@ -113,6 +117,9 @@
         }
         var player = document.querySelector("#player"); //namespace issues w/ callbacks
         var song = set.track;
+        //mediaControl.albumArt = Networker.getAlbumArt(songTitle,artist,etc...).then.... TODO
+        mediaControl.artistName = song.performer;
+        mediaControl.trackName = song.name;
         player.src = song.track_file_stream_url; //immediately start buffering track
         player.load();
         player.play();
@@ -174,7 +181,7 @@
         mediaControl.addEventListener("playpressed", play, false);
         mediaControl.addEventListener("stoppressed", stop, false);
         mediaControl.addEventListener("pausepressed", pause, false);
-        mediaControl.albumArt = Windows.Foundation.Uri("ms-appx:///media/images/sampleAlbumArt.jpg");
+        //mediaControl.albumArt = Windows.Foundation.Uri("ms-appx:///media/images/sampleAlbumArt.jpg");
     }
 
 
@@ -194,7 +201,8 @@
                 document.querySelector("#launchLogin").addEventListener("click", launchLogin);
                 document.querySelector("#launchLogout").addEventListener("click", launchLogout);
                 app.sessionState.mixSets = {};
-                app.sessionState.loggedIn = false;
+                app.sessionState.currentlyLoggedIn = false;
+                app.sessionState.previouslyLoggedIn = false;
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.

@@ -13,6 +13,7 @@
         "recommended": "Recommeded For You"
     }
 
+
     function getDummyMixData(mixSetName) {
         return {
             name: "Mix",
@@ -157,7 +158,7 @@
 
     function getFavoriteMixes(eventargs) {
         console.log("getting favorite mixes....");
-        Networker.getFavoriteMixes(app.sessionState.userId, "5", "1").then(function completed(mixes) {
+        Networker.getFavoriteMixes(app.sessionState.userId, "7", "1").then(function completed(mixes) {
             processMixSet(mixes,"favorite");
         }, function errored(response) { });
     }
@@ -208,24 +209,20 @@
         for (var i = 0; i < globalMixList.length; i++) {
             //this for loop gets all the indices of default mixes with this mixset name
             if (globalMixList.getAt(i).mixSetName === mixSetName && globalMixList.getAt(i).id === "-1") {
-                console.log("finding indices");
                 indices.push(i);
             }
         }
         if (indices.length < actualMixes.length) {
             //this for loop replaces all the default mixes, and then appends extras to the end
             for (var i = indices.length; i < actualMixes.length; i++) {
-                console.log("more mixes than indicies");
                 globalMixList.push(actualMixes[i]);
             }
             for (var i = 0; i < indices.length; i++) {
-                console.log("case 0, adding mixes");
                 globalMixList.setAt(indices[i], actualMixes[i]);
             }
         } else if (indices.length >= actualMixes.length) {
             //this one replaces all the default mixes, but does not remove all default mixes
             for (var i = 0; i < actualMixes.length; i++) {
-                console.log("case 1, adding mixes");
                 globalMixList.setAt(indices[i], actualMixes[i]);
             }
             for (var i = globalMixList.length-1; i > 0; i--) {
@@ -238,36 +235,55 @@
         }
     }
     function loginStatusChanged(eventargs) {
-        globalMixList = new WinJS.Binding.List();
-        getPlaceholderMixes();
-        getLatestMixes();
-        if (app.sessionState.loggedIn) {
-            getFavoriteMixes();
-            getListeningHistoryMixes();
-            getMixFeedMixes();
-            getRecommendedMixes();
+        //this should only check if the status is different
+        if (app.sessionState.currentlyLoggedIn != app.sessionState.previouslyLoggedIn) {
+            console.log("login status has changed");
+            globalMixList = new WinJS.Binding.List();
+            getPlaceholderMixes();
+            getLatestMixes();
+            if (app.sessionState.currentlyLoggedIn) {
+                console.log("you've logged in!");
+                getFavoriteMixes();
+                getListeningHistoryMixes();
+                getMixFeedMixes();
+                getRecommendedMixes();
+            } else {
+                console.log("you've logged out!");
+                replacePlaceholderMixes("favorite", []);
+                replacePlaceholderMixes("listeningHistory", []);
+                replacePlaceholderMixes("recommended", []);
+            }
         }
     }
+       
+    
 
     WinJS.UI.Pages.define("/browse/browse.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
+            globalMixList = new WinJS.Binding.List();
             document.querySelector("#reRenderMixSets").addEventListener("click", reRenderMixSets);
             document.querySelector("#loggedInContainer").attachEvent("onpropertychange", loginStatusChanged);
             getPlaceholderMixes();
             getLatestMixes();
-            if (app.sessionState.loggedIn) {
+            if (app.sessionState.currentlyLoggedIn) {
                 getFavoriteMixes();
                 getListeningHistoryMixes();
                 getMixFeedMixes();
                 getRecommendedMixes();
+            }
+            else {
+                replacePlaceholderMixes("favorite", []);
+                replacePlaceholderMixes("listeningHistory", []);
+                replacePlaceholderMixes("recommended", []);
             }
             addLoadCompleteEventListenersToListViews();
         },
 
         unload: function () {
             // TODO: Respond to navigations away from this page.
+            document.querySelector("#loggedInContainer").detachEvent("onpropertychange", loginStatusChanged);
         },
 
         updateLayout: function (element, viewState, lastViewState) {

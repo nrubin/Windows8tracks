@@ -19,11 +19,15 @@
         Once a set is received, this method binds the set metadata to the audio player
         and the windows media controls
         */
+        var mediaControl = Windows.Media.MediaControl;
         var player = document.querySelector("#player"); //namespace issues w/ callbacks
         app.sessionState.currentSet = set;
         app.sessionState.currentSetReported = false;
         var song = set.track;
+        mediaControl.artistName = song.performer;
+        mediaControl.trackName = song.name;
         player.src = song.track_file_stream_url; //immediately start buffering track
+
         player.load();
     }
 

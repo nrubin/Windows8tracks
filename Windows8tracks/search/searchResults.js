@@ -71,7 +71,7 @@
     function searchData(element, queryText) {
         var originalResults;
         var resultsMessage = document.querySelector('.resultsmessage');
-        Networker.getMixesBySearchTerm(queryText, 10, 1).done(
+        Networker.getMixesBySearchTerm(queryText, 20, 1).done(
         function completed(mixes) {
             originalResults = mixes;
             formatResults(element, mixes);
