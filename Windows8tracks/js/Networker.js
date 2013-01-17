@@ -56,6 +56,24 @@
         });
     };
 
+    Networker.logout = function () {
+        var newOptions = {}
+        newOptions.url = "http://8tracks.com/logout";
+        newOptions.type = "POST";
+        newOptions.headers = headers;
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(newOptions).then(
+                function onComplete(response) {
+                    completed(response);
+                },
+            function onError(response) {
+                errored(response);
+            },
+            function onProgress() {
+            });
+        });
+    }
+
     Networker.getPlayToken = function () {
         /*
         retrieves the play token for the session

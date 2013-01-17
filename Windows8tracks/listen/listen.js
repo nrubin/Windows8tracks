@@ -26,6 +26,7 @@
         var song = set.track;
         mediaControl.artistName = song.performer;
         mediaControl.trackName = song.name;
+        //mediaControl.albumArt = Windows.Foundation.Uri(app.sessionState.currentMix.cover_urls.sq56);
         player.src = song.track_file_stream_url; //immediately start buffering track
 
         player.load();

@@ -36,7 +36,7 @@
         var song = set.track;
         mediaControl.artistName = song.performer;
         mediaControl.trackName = song.name;
-        mediaControl.albumArt = new Windows.Foundation.Uri(app.sessionState.currentMix.cover_urls.sq56);
+        //mediaControl.albumArt = nWindows.Foundation.Uri(app.sessionState.currentMix.cover_urls.sq56);
         player.src = song.track_file_stream_url; //immediately start buffering track
         player.load();
         player.play();
@@ -44,6 +44,14 @@
 
 
     function launchLogout() {
+        Networker.logout().then(
+            function completed(response) {
+                console.log("logout successful");
+                console.log(response);
+        }, function errored(response) {
+            console.log("logout unsuccessful");
+            console.log(response);
+        });
         app.sessionState.previouslyLoggedIn = app.sessionState.currentlyLoggedIn;
         app.sessionState.currentlyLoggedIn = false;
         document.querySelector("#loginContainer").style.display = "inline";
