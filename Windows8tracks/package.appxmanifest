@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="Windows8tracks" Logo="images\logo.png" SmallLogo="media\images\smalllogo.png" Description="Windows8tracks" ForegroundText="light" BackgroundColor="#464646">
+      <VisualElements DisplayName="Windows8tracks" Logo="images\logo.png" SmallLogo="media\images\smalllogo.png" Description="Windows8tracks" ForegroundText="light" BackgroundColor="#122C4B">
         <DefaultTile ShowName="allLogos" />
         <SplashScreen Image="media\images\splashscreen.png" />
       </VisualElements>

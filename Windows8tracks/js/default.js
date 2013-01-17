@@ -36,8 +36,10 @@
         var song = set.track;
         mediaControl.artistName = song.performer;
         mediaControl.trackName = song.name;
+        mediaControl.albumArt = new Windows.Foundation.Uri(app.sessionState.currentMix.cover_urls.sq56);
         player.src = song.track_file_stream_url; //immediately start buffering track
         player.load();
+        player.play();
     }
 
 
@@ -117,7 +119,6 @@
         }
         var player = document.querySelector("#player"); //namespace issues w/ callbacks
         var song = set.track;
-        //mediaControl.albumArt = Networker.getAlbumArt(songTitle,artist,etc...).then.... TODO
         mediaControl.artistName = song.performer;
         mediaControl.trackName = song.name;
         player.src = song.track_file_stream_url; //immediately start buffering track
@@ -184,6 +185,17 @@
         //mediaControl.albumArt = Windows.Foundation.Uri("ms-appx:///media/images/sampleAlbumArt.jpg");
     }
 
+    //function getAlbumArt(eventargs) {
+    //    Networker.getAlbumArt("Kanye West", "Graduation").then(
+    //        function complete(response) {
+    //            console.log("album art success");
+    //            console.log(response);
+    //    }, function errored(response) {
+    //        console.log("album art error");
+    //        console.log(response);
+    //    });
+    //}
+
 
     app.onactivated = function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
@@ -195,7 +207,6 @@
                 player.addEventListener("timeupdate", reportSong);
                 player.addEventListener("ended", nextSong);
                 setupMediaControls();
-                
                 document.querySelector("#nextSong").addEventListener("click", nextSong);
                 document.querySelector("#skipSong").addEventListener("click", skipSong);
                 document.querySelector("#launchLogin").addEventListener("click", launchLogin);

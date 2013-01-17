@@ -20,6 +20,9 @@
         type: "GET",
         headers: headers,
     }
+
+    var AmazonSecretKey = "Hze+DufofO8Bky0wNdtErkmPLk4qa6sIDlOSS3kw"
+    var AmazonAccessKey = "AKIAIALLLG2CUNSPGLYQ"
     Networker.login = function (username, password) {
         /* 
         logs a given unane/pw combo into 8tracks. Sets the user token and play tokens
@@ -441,6 +444,36 @@
             console.log("reporting song...");
         });
     };
+
+    Networker.getAlbumArt = function (artistName, album) {
+        //http://webservices.amazon.com/onca/xml?
+        //    Service=AWSECommerceService&
+        //    AWSAccessKeyId=[AWS Access Key ID]&
+        //    Operation=ItemSearch&
+        //    Keywords=Rocket&
+        //    SearchIndex=Toys
+        //    &Timestamp=[YYYY-MM-DDThh:mm:ssZ]
+        //&Signature=[Request Signature]
+        var keywords = artistName + "+" + album;
+        var encodedKeywords = encodeURI(keywords);
+        var urlToSign = "GET\nhttp://webservices.amazon.com\n/onca/xml\nAWSAccessKeyId=" + AmazonAccessKey+"&Keywords=" + encodedKeywords+"&Operation=ItemSearch&SearchIndex=Music&Service=AWSECommerceService";
+        var signedUrl = AWSQS.signQuery(urlToSign, AmazonSecretKey);
+        var options = {
+            url: signedUrl,
+            data: {}
+        };
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(options).then(
+                function onComplete(response) {
+                    completed(response);
+            }, function onError(response) {
+                errored(response);
+            }, function onProgress() {
+                progress();
+            });
+        });
+            
+    }
 
 
 }());
