@@ -206,12 +206,14 @@
         //to the end
         var indices = new Array();
         for (var i = 0; i < globalMixList.length; i++) {
+            //this for loop gets all the indices of default mixes with this mixset name
             if (globalMixList.getAt(i).mixSetName === mixSetName && globalMixList.getAt(i).id === "-1") {
                 console.log("finding indices");
                 indices.push(i);
             }
         }
         if (indices.length < actualMixes.length) {
+            //this for loop replaces all the default mixes, and then appends extras to the end
             for (var i = indices.length; i < actualMixes.length; i++) {
                 console.log("more mixes than indicies");
                 globalMixList.push(actualMixes[i]);
@@ -221,14 +223,21 @@
                 globalMixList.setAt(indices[i], actualMixes[i]);
             }
         } else if (indices.length >= actualMixes.length) {
+            //this one replaces all the default mixes, but does not remove all default mixes
             for (var i = 0; i < actualMixes.length; i++) {
                 console.log("case 1, adding mixes");
                 globalMixList.setAt(indices[i], actualMixes[i]);
             }
+            for (var i = globalMixList.length-1; i > 0; i--) {
+                //this for loop traveres the list backwards, and if there's still a default mix, removes it
+                var currentItem = globalMixList.getAt(i);
+                if (currentItem.mixSetName === mixSetName && currentItem.id === "-1") {
+                    globalMixList.splice(i, 1);
+                }
+            }
         }
     }
-    function loggedInNow(eventargs) {
-        console.log(app.sessionState.loggedIn);
+    function loginStatusChanged(eventargs) {
         globalMixList = new WinJS.Binding.List();
         getPlaceholderMixes();
         getLatestMixes();
@@ -245,7 +254,7 @@
         // populates the page elements with the app's data.
         ready: function (element, options) {
             document.querySelector("#reRenderMixSets").addEventListener("click", reRenderMixSets);
-            document.querySelector("#loggedInContainer").attachEvent("onpropertychange", loggedInNow);
+            document.querySelector("#loggedInContainer").attachEvent("onpropertychange", loginStatusChanged);
             getPlaceholderMixes();
             getLatestMixes();
             if (app.sessionState.loggedIn) {
