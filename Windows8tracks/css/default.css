@@ -1,5 +1,8 @@
 ﻿body {
     background-color:#122C4B;
+    display:-ms-grid;
+    /*-ms-grid-columns: auto 1fr 200px;*/
+    -ms-grid-rows: 150px 1fr 100px;
 }
 
 @media screen and (-ms-view-state: fullscreen-landscape) {
@@ -14,9 +17,19 @@
 @media screen and (-ms-view-state: fullscreen-portrait) {
 }
 
+
 #staticHeader {
-color:lightblue;
+position:absolute;
+left:50px;
+top:30px;
 }
+
+#contenthost {
+    -ms-grid-row:2;
+    margin-left:75px;
+}
+
+
 
 #playerContainer {
 display:none;
@@ -28,15 +41,17 @@ display:none;
     display:none;
 }
 
-#contenthost {
-height:500px;
-}
 
 #userContainer {
-float:right;
-margin-top:50px;
-margin-right:100px;
+position:absolute;
+right:150px;
+top:50px;
 }
+
+    #userContainer a {
+    color:white;
+    font-size: large;
+    }
 
 #loggedInContainer {
 display: none;
