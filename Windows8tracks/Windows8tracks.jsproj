@@ -61,6 +61,7 @@
     <Content Include="home\home.css" />
     <Content Include="home\home.html" />
     <Content Include="home\home.js" />
+    <Content Include="js\utils.js" />
     <Content Include="js\AWSQuerySigner.js" />
     <Content Include="js\ecmanaut.base64.js" />
     <Content Include="js\jssha256.js" />

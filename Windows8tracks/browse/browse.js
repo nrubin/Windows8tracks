@@ -1,6 +1,4 @@
-﻿// For an introduction to the Page Control template, see the following documentation:
-// http://go.microsoft.com/fwlink/?LinkId=232511
-(function () {
+﻿(function () {
     "use strict";
     var app = WinJS.Application;
     var nav = WinJS.Navigation;
@@ -263,7 +261,6 @@
         // populates the page elements with the app's data.
         ready: function (element, options) {
             globalMixList = new WinJS.Binding.List();
-            document.querySelector("#reRenderMixSets").addEventListener("click", reRenderMixSets);
             document.querySelector("#loggedInContainer").attachEvent("onpropertychange", loginStatusChanged);
             getPlaceholderMixes();
             getLatestMixes();

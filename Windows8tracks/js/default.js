@@ -24,33 +24,7 @@
         }
     }
 
-    function playNewMix(set) {
-        /*
-        Once a set is received, this method binds the set metadata to the audio player
-        and the windows media controls
-        */
-        var mediaControl = Windows.Media.MediaControl;
-        var mix = app.sessionState.currentMix
-        try {
-            document.querySelector(".pagesubtitle").innerText = mix.name;
-            document.querySelector(".mix-pic").src = mix.cover_urls.sq100;
-            document.querySelector(".mix-description").innerText = mix.description;
-        } catch (e) {
-            //I'm not on the listen page
-        }
-        var player = document.querySelector("#player"); //namespace issues w/ callbacks
-        app.sessionState.currentSet = set;
-        app.sessionState.currentSetReported = false;
-        var song = set.track;
-        mediaControl.artistName = song.performer;
-        mediaControl.trackName = song.name;
-        document.getElementById("appBarAlbumArt").src = app.sessionState.currentMix.cover_urls.sq100;
-        //mediaControl.albumArt = Windows.Foundation.Uri(app.sessionState.currentMix.cover_urls.original_url);
-        player.src = song.track_file_stream_url; //immediately start buffering track
-        player.load();
-        player.play();
-        document.querySelector("#mainAppBar").winControl.show();
-    }
+
 
 
     function launchLogout() {
@@ -58,10 +32,10 @@
             function completed(response) {
                 console.log("logout successful");
                 console.log(response);
-        }, function errored(response) {
-            console.log("logout unsuccessful");
-            console.log(response);
-        });
+            }, function errored(response) {
+                console.log("logout unsuccessful");
+                console.log(response);
+            });
         app.sessionState.previouslyLoggedIn = app.sessionState.currentlyLoggedIn;
         app.sessionState.currentlyLoggedIn = false;
         document.querySelector("#loginContainer").style.display = "inline";
@@ -116,7 +90,16 @@
                 if (nextMix) {
                     app.sessionState.currentMix = nextMix; //set the current mix
                     var mixId = app.sessionState.currentMix.id;
-                    Networker.beginMix(playToken, mixId, playNewMix);
+                    Networker.beginMix(playToken, mixId).then.then(
+            function completed(set) {
+                utils.loadSet(set);
+            },
+            function errored(response) {
+
+            },
+            function progress(response) {
+
+            });
                 } else {
                     console.log("the mix set is over");
                 }
@@ -126,14 +109,14 @@
         }
     }
 
-    function nextMix(){
+    function nextMix() {
         app.sessionState.goToNextMix = false;
         var nextMix = app.sessionState.currentMix.nextMix;
         if (nextMix) {
             app.sessionState.currentMix = nextMix; //set the current mix
             var mixId = app.sessionState.currentMix.id;
             Networker.beginMix(app.sessionState.playToken, mixId, playNewMix);
-        }else {
+        } else {
             console.log("the mix set is over");
         }
     }
@@ -217,7 +200,7 @@
         document.getElementById("appBarPlayPause").addEventListener("click", playpause);
         document.getElementById("appBarSkipSong").addEventListener("click", skipSong);
         document.getElementById("appBarNextMix").addEventListener("click", nextMix);
-        
+
         //mediaControl.albumArt = Windows.Foundation.Uri("ms-appx:///media/images/sampleAlbumArt.jpg");
     };
 
@@ -261,7 +244,7 @@
                 if (nav.location) {
                     nav.history.current.initialPlaceholder = true;
                     return nav.navigate(nav.location, nav.state);
-                    
+
                 } else {
                     return nav.navigate(Application.navigator.home);
                 }

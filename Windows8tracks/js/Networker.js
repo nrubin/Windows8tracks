@@ -361,27 +361,32 @@
         about the position of the track within a mix (presumably the beginning).
         */
         defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/play" + urlPrefix + "&mix_id=" + mixId;
-        WinJS.xhr(defaultOptions).done(
-        function onCompleted(response) {
-            var responseObj = JSON.parse(response.responseText);
-            if (responseObj.status === "200 OK") {
-                console.log("received set");
-                console.log(response.responseText);
-                callback(responseObj.set);
-            }
-            else {
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(defaultOptions).done(
+            function onCompleted(response) {
+                var responseObj = JSON.parse(response.responseText);
+                if (responseObj.status === "200 OK") {
+                    console.log("received set");
+                    console.log(response.responseText);
+                    completed(responseObj.set);
+                }
+                else {
+                    console.log("did not receive set");
+                    console.log(response.responseText);
+                    errored(response);
+                }
+            },
+
+            function onError(response) {
                 console.log("did not receive set");
                 console.log(response.responseText);
-            }
-        },
+                errored(response);
+            },
 
-        function onError(response) {
-            console.log("did not receive set");
-            console.log(response.responseText);
-        },
-
-        function inProgress(response) {
-            console.log("receiving set...");
+            function inProgress(response) {
+                console.log("receiving set...");
+                progress();
+            });
         });
     };
 

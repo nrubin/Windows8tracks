@@ -18,6 +18,7 @@
     <script src="/js/jssha256.js"></script>
     <script src="/js/ecmanaut.base64.js"></script>
     <script src="/js/AWSQuerySigner.js"></script>
+    <script src="js/utils.js"></script>
 </head>
 <body>
     <h6 id="staticHeader">Windows8tracks</h6>
@@ -56,6 +57,8 @@
             <button id="appBarPlayPause" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'play', label:'Play', section:'global'}"></button>
             <button id="appBarSkipSong" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'next', label:'Skip', section:'global'}"></button>
             <button id="appBarNextMix" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'forward', label:'Next Mix', section:'global'}"></button>
+            <h3 id="appBarSongTitle"></h3>
+            <h5 id="appBarSongArtist"></h5>
             </div>
                 </div>
           </div>

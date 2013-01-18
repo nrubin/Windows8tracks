@@ -4,45 +4,25 @@
     "use strict";
     var app = WinJS.Application;
     var nav = WinJS.Navigation;
-    var player = null;
+    var player;
 
     function beginListening(eventargs) {
-        //eventargs.srcElement.removeEventListener("click");
         console.log("beginning to listen");
         var playToken = app.sessionState.playToken;
         var mix = app.sessionState.currentMix;
-        Networker.beginMix(playToken, mix.id, loadSet);
+        Networker.beginMix(playToken, mix.id).then(
+            function completed(set) {
+                utils.loadSet(set);
+            },
+            function errored(response) {
+
+            },
+            function progress(response) {
+
+            });
     }
 
-    function loadSet(set) {
-        /*
-        Once a set is received, this method binds the set metadata to the audio player
-        and the windows media controls
-        */
-        var mediaControl = Windows.Media.MediaControl;
-        var player = document.querySelector("#player"); //namespace issues w/ callbacks
-        app.sessionState.currentSet = set;
-        app.sessionState.currentSetReported = false;
-        var song = set.track;
-        mediaControl.artistName = song.performer;
-        mediaControl.trackName = song.name;
-        //mediaControl.albumArt = Windows.Foundation.Uri(app.sessionState.currentMix.cover_urls.sq56);
-        player.src = song.track_file_stream_url; //immediately start buffering track
-        player.load();
-        player.play();
-        document.getElementById("appBarPlayPause").winControl.icon = 'pause';
-        document.getElementById("appBarPlayPause").winControl.label = 'Pause';
-        document.getElementById("appBarAlbumArt").src = app.sessionState.currentMix.cover_urls.sq100;
-    }
 
-    function setup() {
-        var playToken = app.sessionState.playToken;
-        var mix = app.sessionState.currentMix;
-        document.querySelector(".pagesubtitle").innerText = mix.name;
-        document.querySelector(".mix-pic").src = mix.cover_urls.max200;
-        document.querySelector(".mix-description").innerText = mix.description;
-        document.querySelector(".mix-pic").addEventListener("click", beginListening);
-    }
 
     WinJS.UI.Pages.define("/listen/listen.html", {
         // This function is called whenever a user navigates to this page. It
@@ -52,7 +32,13 @@
             if (!app.sessionState.playToken) {
                 Networker.getPlayToken().then(function completed(playToken) { app.sessionState.playToken = playToken}, function errored(response) { }, function progress() { });
             }
-            setup();
+            player = document.querySelector("#player");
+            var playToken = app.sessionState.playToken;
+            var mix = app.sessionState.currentMix;
+            document.querySelector(".pagesubtitle").innerText = mix.name;
+            document.querySelector(".mix-pic").src = mix.cover_urls.max200;
+            document.querySelector(".mix-description").innerText = mix.description;
+            document.querySelector(".mix-pic").addEventListener("click", beginListening);
             
 
         },
