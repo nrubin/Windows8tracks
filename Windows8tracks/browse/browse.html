@@ -15,8 +15,7 @@
 <body>
     <div class="browse fragment">
         <section aria-label="Main content" role="main">
-            <div id="mixSetTemplate" data-win-control="WinJS.Binding.Template">
-                
+            <div id="mixSetTemplate" data-win-control="WinJS.Binding.Template" class="mix-set-template">
                 <div class="mix-set-title-container">
                     <span class="mix-set-title" data-win-bind="innerText: name"></span>
                 </div>
@@ -24,14 +23,14 @@
             <div id="mixTemplate" data-win-control="WinJS.Binding.Template">
                 <div class="mix" data-win-bind="style.backgroundImage: escapedCoverUrls.max200">
                     <progress class="win-ring win-large mix-in-progress" data-win-bind="style.display: progressBarDisplay"  ></progress>
-                    <div class="mix-title-container">
-                        <h2 class="mix-title" data-win-bind="innerText : name; style.display: mixTitleDisplay"></h2>
+                    <div class="mix-title-container  win-type-ellipsis" data-win-bind="style.display: mixTitleDisplay">
+                        <h2 class="mix-title" data-win-bind="innerText : name"></h2>
                     </div>
                     <span class="mix-id" data-win-bind="innerText: id"></span>
                 </div>
             </div>
                 <div id="allMixesListView" data-win-control="WinJS.UI.ListView"
-                    data-win-options="{itemTemplate: select('#mixTemplate'),groupHeaderTemplate: select('#mixSetTemplate'), layout: {type: WinJS.UI.GridLayout}}" class="all-mix">
+                    data-win-options="{itemTemplate: select('#mixTemplate'),groupHeaderTemplate: select('#mixSetTemplate'), layout: {type: WinJS.UI.GridLayout}}" >
                 </div>
         </section>
     </div>
