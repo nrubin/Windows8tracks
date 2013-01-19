@@ -24,9 +24,6 @@
         }
     }
 
-
-
-
     function launchLogout() {
         Networker.logout().then(
             function completed(response) {

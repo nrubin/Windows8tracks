@@ -360,7 +360,7 @@
         Begins playback of a mix. callback receives a "set", which contains some information
         about the position of the track within a mix (presumably the beginning).
         */
-        defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/play" + urlPrefix + "&mix_id=" + mixId;
+        defaultOptions.url = "http://8tracks.com/sets/" + playToken + "/play" + urlPrefix + "&mix_id=" + mixId + "&include=length";
         return new WinJS.Promise(function (completed, errored, progress) {
             WinJS.xhr(defaultOptions).done(
             function onCompleted(response) {
@@ -467,6 +467,22 @@
             console.log("reporting song...");
         });
     };
+
+    Networker.getTopTags = function (perPage,pageNumber) {
+        defaultOptions.url = "http://8tracks.com/all/mixes/tags.json?tags_per_page=" + perPage + "&tag_page=" + pageNumber + "&include=tags";
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(defaultOptions).then(
+                function onComplete(response) {
+                    console.log("getting top tags succeeded!");
+                    console.log(response.responseText);
+                }, function onError(response) {
+                    console.log("getting top tags did not succeed");
+                    console.log(response.responseText);
+                }, function onProgress(response) {
+
+                });
+        });
+    }
 
     Networker.getAlbumArt = function (artistName, album) {
         //http://webservices.amazon.com/onca/xml?

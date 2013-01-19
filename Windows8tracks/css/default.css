@@ -2,7 +2,8 @@
     background-color:#122C4B;
     display:-ms-grid;
     -ms-grid-columns: 20px 1fr;
-    -ms-grid-rows: 90px 1fr;
+    -ms-grid-rows: 50px 1fr;
+    overflow:scroll;
 }
 
 @media screen and (-ms-view-state: fullscreen-landscape) {

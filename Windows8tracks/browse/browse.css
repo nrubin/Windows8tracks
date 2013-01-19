@@ -8,14 +8,12 @@
     width: 100%;
 }
 
-    .browse p {
-        margin-left: 120px;
-    }
 
 #allMixesListView.win-listview {
     height: 100%;
     width: 100%;
     position: relative;
+    margin-bottom:100px;
 }
 
 #allMixesListView .win-container:not(.footprint):not(.hover) {
@@ -64,4 +62,21 @@
 
 .mix-id {
     display: none;
+}
+
+#tagsMixesListView.win-listview {
+    height: 100%;
+    width: 100%;
+    /*position: relative;*/
+}
+
+.tag {
+    height:60px;
+    width:100px;
+    text-align:center;
+}
+
+.tag-name {
+font-size: 12pt;
+margin-top: 4px;
 }

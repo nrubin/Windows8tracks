@@ -3,7 +3,8 @@
     var app = WinJS.Application;
     var nav = WinJS.Navigation;
     var allMixes = {};
-    var globalMixList = new WinJS.Binding.List();
+    var globalMixList;
+    var globalTagList = new WinJS.Binding.List();
     var tagsToTitles = {
         "favorite": "Liked By You",
         "latest": "Featured",
@@ -13,8 +14,15 @@
     var verticalMixNumber = 3;
     var horizontalMixNumber = 2;
     var totalMixNumber = verticalMixNumber * horizontalMixNumber;
+    var defaultTags = ["best of 2012", "chill", "study", "workout", "indie rock", "pop", "party", "happy", "rock", "hip hop", "love", "country", "sleep", "dubstep", "electronic", "sex", "jazz", "dance", "folk", "sad", "house", "acoustic", "covers", "classical", "summer", "relax", "instrumental"]
+    var tagColors = ["rgb(3,7,12)","rgb(10,25,43)","rgb(18,44,75)","rgb(26,63,107)","rgb(33,81,138)","rgb(41,100,170)","rgb(48,118,202)","rgb(77,139,212)","rgb(109,159,220)","rgb(140,180,227)","rgb(172,201,235)","rgb(203,221,243)","rgb(235,242,250)"]
 
-
+    function getDummyTagData(tagName) {
+        return {
+            name: tagName,
+            color: tagColors[Math.floor(Math.random()*tagColors.length)]
+        }
+    }
 
     function getDummyMixData(mixSetName) {
         return {
@@ -79,6 +87,7 @@
             addMixToAllMixes(mix);
         }
     }
+
     function getPlaceholderMixes() {
         var myArray = new Array();
         var str = "latest";
@@ -114,6 +123,20 @@
         var myGroupedList = globalMixList.createGrouped(getGroupKey, getGroupData, compareMixSetNames);
         listView.itemDataSource = myGroupedList.dataSource;
         listView.groupDataSource = myGroupedList.groups.dataSource;
+    }
+
+    function getPlaceholderTags() {
+        var myArray = new Array();
+        for (var i = 0; i < defaultTags.length; i++) {
+            myArray.push(getDummyTagData(defaultTags[i]));
+        }
+        renderDefaultTags(myArray);
+    }
+
+    function renderDefaultTags(tags) {
+        globalTagList = new WinJS.Binding.List(tags);
+        var tagListView = document.querySelector("#tagsListView").winControl;
+        tagListView.itemDataSource = globalTagList.dataSource;
     }
 
     function getRecommendedMixes() {
@@ -276,6 +299,7 @@
             console.log(verticalMixNumber * horizontalMixNumber);
             globalMixList = new WinJS.Binding.List();
             document.querySelector("#loggedInContainer").attachEvent("onpropertychange", loginStatusChanged);
+            getPlaceholderTags();
             getPlaceholderMixes();
             getLatestMixes();
             if (app.sessionState.currentlyLoggedIn) {
@@ -290,6 +314,7 @@
                 replacePlaceholderMixes("recommended", []);
             }
             addLoadCompleteEventListenersToListViews();
+            Networker.getTopTags(10,1);
         },
 
         unload: function () {

@@ -38,7 +38,9 @@
         document.querySelector("#mainAppBar").winControl.show();
     };
 
-
+    utils.getRandomNumberFromRange = function (min, max) {
+        return Math.random() * (max - min) + min;
+    }
 
 
 

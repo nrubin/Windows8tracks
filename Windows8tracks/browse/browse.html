@@ -29,8 +29,16 @@
                     <span class="mix-id" data-win-bind="innerText: id"></span>
                 </div>
             </div>
+            <div id="tagTemplate" data-win-control="WinJS.Binding.Template">
+                <div class="tag" data-win-bind="style.backgroundColor: color">
+                    <span class="tag-name" data-win-bind="innerText: name"></span>
+                </div>
+            </div>
                 <div id="allMixesListView" data-win-control="WinJS.UI.ListView"
                     data-win-options="{itemTemplate: select('#mixTemplate'),groupHeaderTemplate: select('#mixSetTemplate'), layout: {type: WinJS.UI.GridLayout}}" >
+                </div>
+                    <div id="tagsListView" data-win-control="WinJS.UI.ListView"
+                    data-win-options="{itemTemplate: select('#tagTemplate'), layout: {type: WinJS.UI.GridLayout}}" >
                 </div>
         </section>
     </div>
