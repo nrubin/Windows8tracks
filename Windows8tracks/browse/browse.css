@@ -29,12 +29,19 @@ height:100%;
 width:100%;
 position:relative;
 }
+.mix-set-title-container {
+min-width: 1000px;
+}
+.mix-set-title {
+    font-size: 30pt;
+    }
 
-
+.win-template .win-groupheader {
+width:100%;
+}
 
 .mix-pic {
 float:right;
-
 }
 
 .mix-title-container {
@@ -49,8 +56,12 @@ bottom:0;
 .mix {
 width:200px;
 height: 200px;
-display: -ms-grid;
 background-repeat: no-repeat;
 background-position: center;
 background-color:rgba(0, 0, 0, 0.00);
+}
+
+.mix-in-progress {
+margin-top:70px;
+margin-left: 70px;
 }

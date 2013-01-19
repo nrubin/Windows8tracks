@@ -2,7 +2,7 @@
     background-color:#122C4B;
     display:-ms-grid;
     -ms-grid-columns: 20px 1fr;
-    -ms-grid-rows: 120px 1fr;
+    -ms-grid-rows: 90px 1fr;
 }
 
 @media screen and (-ms-view-state: fullscreen-landscape) {
@@ -15,10 +15,6 @@
 }
 
 @media screen and (-ms-view-state: fullscreen-portrait) {
-}
-
-#staticHeader {
-color:lightblue;
 }
 
 #playerContainer {
@@ -42,20 +38,18 @@ width:100%;
     -ms-grid-column: 2;
     -ms-grid-row: 1;
     position:absolute;
-    top:20px;
+    top:0px;
     right:50px;
     /*float:right;*/
-    margin-top:50px;
+    margin-top:20px;
     /*margin-right:100px;*/
-    background-color:green;
 }
 
     #userContainer button {
-    float:right;
+        margin-top: 30px;
     }
 
 header {
-display:none;
 }
 
 #loggedInContainer {

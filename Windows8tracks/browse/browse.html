@@ -14,22 +14,18 @@
 </head>
 <body>
     <div class="browse fragment">
-        <header aria-label="Header content" role="banner">
-            <button class="win-backbutton" aria-label="Back" disabled type="button"></button>
-            <h1 class="titlearea win-type-ellipsis">
-                <span class="pagetitle">Browse</span>
-            </h1>
-        </header>
         <section aria-label="Main content" role="main">
             <div id="mixSetTemplate" data-win-control="WinJS.Binding.Template">
-                <div class="mix-set-title">
-                    <h1 data-win-bind="innerText: name"></h1>
+                
+                <div class="mix-set-title-container">
+                    <span class="mix-set-title" data-win-bind="innerText: name"></span>
                 </div>
             </div>
             <div id="mixTemplate" data-win-control="WinJS.Binding.Template">
                 <div class="mix" data-win-bind="style.backgroundImage: escapedCoverUrls.max200">
+                    <progress class="win-ring win-large mix-in-progress" data-win-bind="style.display: progressBarDisplay"  ></progress>
                     <div class="mix-title-container">
-                        <h2 class="mix-title" data-win-bind="innerText : name"></h2>
+                        <h2 class="mix-title" data-win-bind="innerText : name; style.display: mixTitleDisplay"></h2>
                     </div>
                     <span class="mix-id" data-win-bind="innerText: id"></span>
                 </div>

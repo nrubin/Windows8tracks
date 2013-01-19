@@ -10,16 +10,23 @@
         "listeningHistory": "Listening History",
         "recommended": "Recommeded For You"
     }
+    var verticalMixNumber = 3;
+    var horizontalMixNumber = 2;
+    var totalMixNumber = verticalMixNumber * horizontalMixNumber;
+
 
 
     function getDummyMixData(mixSetName) {
         return {
             name: "Mix",
-            escapedCoverUrls: { max200: "url('/media/images/default-mix-thumb.png')" },
+            //escapedCoverUrls: { max200: "url('/media/images/default-mix-thumb.png')" },
+            escapedCoverUrls : { max200: "url('')" },
             cover_urls: { max200: "/media/images/default-mix-thumb.png" },
             id: "-1",
             mixSetName: mixSetName,
-            description: "this is fake"
+            description: "this is fake",
+            progressBarDisplay: "inline",
+            mixTitleDisplay: "none"
         }
     }
 
@@ -41,6 +48,8 @@
         //tags a mix with the mix set it belongs to (e.g. "latest" or "favorite")
         for (var i = 0; i < mixes.length; i++) {
             var mix = mixes[i];
+            mix.progressBarDisplay = "none";
+            mix.mixTitleDisplay = "inline";
             mix.mixSetName = mixSetName;
             mix.escapedCoverUrls = {}
             for (var imgName in mix.cover_urls) {
@@ -73,19 +82,19 @@
     function getPlaceholderMixes() {
         var myArray = new Array();
         var str = "latest";
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < totalMixNumber; i++) {
             myArray.push(getDummyMixData(str));
         }
         var str = "favorite";
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < totalMixNumber; i++) {
             myArray.push(getDummyMixData(str));
         }
         var str = "listeningHistory";
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < totalMixNumber; i++) {
             myArray.push(getDummyMixData(str));
         }
         var str = "recommended";
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < totalMixNumber; i++) {
             myArray.push(getDummyMixData(str));
         }
         var arrayPromise = WinJS.Promise.wrap(myArray);
@@ -109,7 +118,7 @@
 
     function getRecommendedMixes() {
         console.log("getting recommended mixes");
-        Networker.getRecommendedMixes(app.sessionState.userId, "5", "1").then(
+        Networker.getRecommendedMixes(app.sessionState.userId, totalMixNumber.toString(), "1").then(
             function completed(mixes) {
                 processMixSet(mixes,"recommended");
             },
@@ -121,7 +130,7 @@
 
     function getMixFeedMixes() {
         console.log("getting mix feed");
-        Networker.getMixFeed(app.sessionState.userId, "5", "1").then(
+        Networker.getMixFeed(app.sessionState.userId, totalMixNumber.toString(), "1").then(
             function completed(mixes) {
                 processMixSet(mixes,"mixFeed");
             },
@@ -134,7 +143,7 @@
 
     function getListeningHistoryMixes() {
         console.log("getting listening history");
-        Networker.getListeningHistory(app.sessionState.userId, "5", "1").then(
+        Networker.getListeningHistory(app.sessionState.userId, totalMixNumber.toString(), "1").then(
             function completed(mixes) {
                 processMixSet(mixes, "listeningHistory");
             },
@@ -146,7 +155,7 @@
 
     function getLatestMixes(eventargs) {
         console.log("getting latest mixes....");
-        Networker.getLatestMixes("5", "1").then(
+        Networker.getLatestMixes(totalMixNumber.toString(), "1").then(
             function completed(mixes) {
                 processMixSet(mixes,"latest");
             }, function errored(response) {
@@ -156,7 +165,7 @@
 
     function getFavoriteMixes(eventargs) {
         console.log("getting favorite mixes....");
-        Networker.getFavoriteMixes(app.sessionState.userId, "7", "1").then(function completed(mixes) {
+        Networker.getFavoriteMixes(app.sessionState.userId, totalMixNumber.toString(), "1").then(function completed(mixes) {
             processMixSet(mixes,"favorite");
         }, function errored(response) { });
     }
@@ -260,6 +269,11 @@
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
+            verticalMixNumber = Math.floor(app.sessionState.screenSize.height / 200);
+            horizontalMixNumber = Math.floor(app.sessionState.screenSize.width / 500);
+            totalMixNumber = verticalMixNumber * horizontalMixNumber;
+            console.log("I want this many mixes:");
+            console.log(verticalMixNumber * horizontalMixNumber);
             globalMixList = new WinJS.Binding.List();
             document.querySelector("#loggedInContainer").attachEvent("onpropertychange", loginStatusChanged);
             getPlaceholderMixes();

@@ -60,7 +60,7 @@
                     app.sessionState.currentUser = user;
                     app.sessionState.previouslyLoggedIn = app.sessionState.currentlyLoggedIn;
                     app.sessionState.currentlyLoggedIn = true;
-                    document.querySelector("#userAvatar").src = user.avatar_urls.sq100;
+                    document.querySelector("#userAvatar").style.backgroundImage = "url('" + user.avatar_urls.sq100 + "')";
                     document.querySelector("#username").innerText = user.login;
                     document.querySelector("#loginContainer").style.display = "none";
                     document.querySelector("#loggedInContainer").style.display = "inline";
@@ -213,6 +213,10 @@
 
 
     app.onactivated = function (args) {
+        app.sessionState.screenSize = {
+            width: window.innerWidth,
+            height: window.innerHeight
+        }
         if (args.detail.kind === activation.ActivationKind.launch) {
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 // TODO: This application has been newly launched. Initialize
