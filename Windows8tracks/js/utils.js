@@ -13,11 +13,13 @@
         var mix = app.sessionState.currentMix;
         var song = set.track;
         var player = document.querySelector("#player");
+        var appBarAlbumArt = document.querySelector("#appBarAlbumArt");
         //immediately start buffering
         player.src = song.track_file_stream_url;
         player.load();
         //render all the UI
-        document.querySelector("#appBarAlbumArt").src = app.sessionState.currentMix.cover_urls.sq100;
+        appBarAlbumArt.src = app.sessionState.currentMix.cover_urls.sq100;
+        appBarAlbumArt.style.display = "inline";
         mediaControl.artistName = song.performer;
         mediaControl.trackName = song.name;
         document.querySelector("#appBarSongTitle").innerText = song.name;

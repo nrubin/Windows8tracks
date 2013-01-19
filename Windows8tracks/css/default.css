@@ -1,5 +1,8 @@
 ﻿body {
     background-color:#122C4B;
+    display:-ms-grid;
+    -ms-grid-columns: 20px 1fr;
+    -ms-grid-rows: 120px 1fr;
 }
 
 @media screen and (-ms-view-state: fullscreen-landscape) {
@@ -29,13 +32,30 @@ display:none;
 }
 
 #contenthost {
-height:500px;
+height:100%;
+width:100%;
+-ms-grid-row:2;
+-ms-grid-column:2;
 }
 
 #userContainer {
-float:right;
-margin-top:50px;
-margin-right:100px;
+    -ms-grid-column: 2;
+    -ms-grid-row: 1;
+    position:absolute;
+    top:20px;
+    right:50px;
+    /*float:right;*/
+    margin-top:50px;
+    /*margin-right:100px;*/
+    background-color:green;
+}
+
+    #userContainer button {
+    float:right;
+    }
+
+header {
+display:none;
 }
 
 #loggedInContainer {

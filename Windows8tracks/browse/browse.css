@@ -1,7 +1,12 @@
-﻿body {
-overflow:scroll;
+﻿section[role=main] {
+width:100%;
+height:100%;
 }
 
+.browse {
+    height:100%;
+    width:100%;
+}
 .browse p {
     margin-left: 120px;
 }
@@ -17,6 +22,12 @@ float:left;
 
 .mix-id {
 display: none;
+}
+
+.all-mix {
+height:100%;
+width:100%;
+position:relative;
 }
 
 
