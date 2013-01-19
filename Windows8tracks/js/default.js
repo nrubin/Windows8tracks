@@ -121,6 +121,25 @@
         }
     }
 
+    function loadNextSong(responseObj) {
+        var mediaControl = Windows.Media.MediaControl;
+        var set = responseObj.set;
+        app.sessionState.currentSet = set;
+        app.sessionState.currentSetReported = false;
+        //need to set up pulling of next mix if at last song of current mix
+        if (set.at_last_track) {
+            app.sessionState.goToNextMix = true;
+        }
+        var player = document.querySelector("#player"); //namespace issues w/ callbacks
+        var song = set.track;
+        mediaControl.artistName = song.performer;
+        mediaControl.trackName = song.name;
+        player.src = song.track_file_stream_url; //immediately start buffering track
+        player.load();
+        player.play();
+        document.querySelector("#mainAppBar").winControl.show();
+    }
+
     function skipSong() {
         //this gets called when a song is skipped, not when a song ends
         if (app.sessionState.currentMix && app.sessionState.playToken) {
@@ -240,7 +259,6 @@
         // saved and restored across suspension. If you need to complete an
         // asynchronous operation before your application is suspended, call
         // args.setPromise().
-        args.setPromise(Networker.logout());
     };
 
     app.start();

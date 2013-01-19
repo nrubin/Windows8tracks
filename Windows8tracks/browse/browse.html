@@ -17,7 +17,7 @@
         <header aria-label="Header content" role="banner">
             <button class="win-backbutton" aria-label="Back" disabled type="button"></button>
             <h1 class="titlearea win-type-ellipsis">
-                <!--<span class="pagetitle">Browse</span>-->
+                <span class="pagetitle">Browse</span>
             </h1>
         </header>
         <section aria-label="Main content" role="main">
@@ -35,12 +35,8 @@
                 </div>
             </div>
                 <div id="allMixesListView" data-win-control="WinJS.UI.ListView"
-                    data-win-options="{itemTemplate: select('#mixTemplate'),groupHeaderTemplate: select('#mixSetTemplate'),
-                     layout: {type: WinJS.UI.GridLayout}, selectionmode: 'none'}" class="mixesListView">
-                <span style="display:none">Hello!
-                </span>     
+                    data-win-options="{itemTemplate: select('#mixTemplate'),groupHeaderTemplate: select('#mixSetTemplate'), layout: {type: WinJS.UI.GridLayout}}" class="all-mix">
                 </div>
-            
         </section>
     </div>
 </body>

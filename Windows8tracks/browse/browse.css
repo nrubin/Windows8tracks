@@ -1,9 +1,14 @@
-﻿.win-backbutton {
-display:none;
-
+﻿body {
+overflow:scroll;
 }
+
 .browse p {
     margin-left: 120px;
+}
+
+.win-listview 
+{
+    height: 500px; 
 }
 
 .mix-set-view {
@@ -14,31 +19,17 @@ float:left;
 display: none;
 }
 
+
+
 .mix-pic {
 float:right;
 
 }
 
-#allMixesListView {
-    height: 700px;
-    width: 2000px;
-}
-    #allMixesListView .win-viewport {
-    overflow-x:auto visible;
-    }
-    #allMixesListView .win-surface {
-    /*margin: 200px 120px 100px 120px;*/
-    }
-
-.mixesListView .mix {
-        height: 200px;
-        width: 200px;
-}
-
 .mix-title-container {
 /*margin-top: calc(.75*1fr);*/
 position:absolute;
-background-color: rgba(52, 50, 50, 0.85);
+background-color: rgba(52, 50, 50, 0.76);
 bottom:0;
 }
 .mix-title {

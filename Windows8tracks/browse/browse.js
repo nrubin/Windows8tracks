@@ -94,9 +94,10 @@
         }, function errored(response) { });
     }
     function renderDefaultMixes(mixes) {
-        //addMixesToAllMixes(mixes);
-        //linkMixes(mixes);
-        //app.sessionState.defaultMixSet = mixes;
+        //tagMixesWithMixSet(mixes, "dj");
+        addMixesToAllMixes(mixes);
+        linkMixes(mixes);
+        app.sessionState.defaultMixSet = mixes;
         var listView = document.querySelector("#allMixesListView").winControl;
         for (var i = 0; i < mixes.length; i++) {
             globalMixList.push(mixes[i]);
@@ -110,7 +111,7 @@
         console.log("getting recommended mixes");
         Networker.getRecommendedMixes(app.sessionState.userId, "5", "1").then(
             function completed(mixes) {
-                processMixSet(mixes, "recommended");
+                processMixSet(mixes,"recommended");
             },
             function errored(response) {
             },
@@ -122,7 +123,7 @@
         console.log("getting mix feed");
         Networker.getMixFeed(app.sessionState.userId, "5", "1").then(
             function completed(mixes) {
-                processMixSet(mixes, "mixFeed");
+                processMixSet(mixes,"mixFeed");
             },
             function errored(response) {
             },
@@ -147,16 +148,16 @@
         console.log("getting latest mixes....");
         Networker.getLatestMixes("5", "1").then(
             function completed(mixes) {
-                processMixSet(mixes, "latest");
+                processMixSet(mixes,"latest");
             }, function errored(response) {
             });
     }
-
+  
 
     function getFavoriteMixes(eventargs) {
         console.log("getting favorite mixes....");
         Networker.getFavoriteMixes(app.sessionState.userId, "7", "1").then(function completed(mixes) {
-            processMixSet(mixes, "favorite");
+            processMixSet(mixes,"favorite");
         }, function errored(response) { });
     }
 
@@ -188,7 +189,7 @@
         }
     }
 
-    function processMixSet(mixes, mixSetName) {
+    function processMixSet(mixes,mixSetName) {
         tagMixesWithMixSet(mixes, mixSetName);
         addMixesToAllMixes(mixes);
         linkMixes(mixes);
@@ -222,7 +223,7 @@
             for (var i = 0; i < actualMixes.length; i++) {
                 globalMixList.setAt(indices[i], actualMixes[i]);
             }
-            for (var i = globalMixList.length - 1; i > 0; i--) {
+            for (var i = globalMixList.length-1; i > 0; i--) {
                 //this for loop traveres the list backwards, and if there's still a default mix, removes it
                 var currentItem = globalMixList.getAt(i);
                 if (currentItem.mixSetName === mixSetName && currentItem.id === "-1") {
@@ -252,33 +253,29 @@
             }
         }
     }
-
-
+       
+    
 
     WinJS.UI.Pages.define("/browse/browse.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
             globalMixList = new WinJS.Binding.List();
-            //var listView = document.querySelector("#allMixesListView").style.height = "100%;";
-            WinJS.UI.processAll().then(function () {
-                getPlaceholderMixes();
-                getLatestMixes();
-                if (app.sessionState.currentlyLoggedIn) {
-                    getFavoriteMixes();
-                    getListeningHistoryMixes();
-                    getMixFeedMixes();
-                    getRecommendedMixes();
-                }
-                else {
-                    replacePlaceholderMixes("favorite", []);
-                    replacePlaceholderMixes("listeningHistory", []);
-                    replacePlaceholderMixes("recommended", []);
-                }
-                addLoadCompleteEventListenersToListViews();
-            })
             document.querySelector("#loggedInContainer").attachEvent("onpropertychange", loginStatusChanged);
-         
+            getPlaceholderMixes();
+            getLatestMixes();
+            if (app.sessionState.currentlyLoggedIn) {
+                getFavoriteMixes();
+                getListeningHistoryMixes();
+                getMixFeedMixes();
+                getRecommendedMixes();
+            }
+            else {
+                replacePlaceholderMixes("favorite", []);
+                replacePlaceholderMixes("listeningHistory", []);
+                replacePlaceholderMixes("recommended", []);
+            }
+            addLoadCompleteEventListenersToListViews();
         },
 
         unload: function () {
