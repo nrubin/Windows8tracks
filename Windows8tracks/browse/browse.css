@@ -68,12 +68,6 @@ width:100%;
     display: none;
 }
 
-#tagsMixesListView.win-listview {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    max-width:1000px;
-}
 
 .tag {
     height:60px;
