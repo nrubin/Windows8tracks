@@ -16,16 +16,15 @@
 <body>
     <!-- This template is used to display each item in the ListView declared
          below. -->
-    <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
-        <div class="mix">
-            <img  src="#" data-win-bind="src: cover_urls.max200; alt: name" />
-            <div class="mix-content">
-                <h3  data-win-bind="innerHTML: name"></h3>
-                <h4 class="mix-description win-type-ellipsis" data-win-bind="innerHTML: description"></h4>
-                <span class="mix-id" data-win-bind="innerText: id"></span>
+            <div id="mixTemplate" data-win-control="WinJS.Binding.Template">
+                <div class="mix" data-win-bind="style.backgroundImage: escapedCoverUrls.max200">
+                    <progress class="win-ring win-large mix-in-progress" data-win-bind="style.display: progressBarDisplay"></progress>
+                    <div class="mix-title-container  win-type-ellipsis" data-win-bind="style.display: mixTitleDisplay">
+                        <h2 class="mix-title" data-win-bind="innerText : name"></h2>
+                    </div>
+                    <span class="mix-id" data-win-bind="innerText: id"></span>
+                </div>
             </div>
-        </div>
-    </div>
 
     <!-- The content that will be loaded and displayed. -->
     <div class="searchResults fragment">
@@ -38,7 +37,7 @@
         </header>
         <section aria-label="Main content" role="main">
             <div class="resultsmessage win-type-x-large">No results match your search.</div>
-            <div class="results" id="searchResults" aria-label="Search results" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
+            <div class="results" id="searchResultsListView" aria-label="Search results" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
         </section>
     </div>
 </body>

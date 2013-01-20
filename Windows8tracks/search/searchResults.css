@@ -1,33 +1,27 @@
 ﻿.mix-id {
-display: none;
+    display: none;
 }
 
 .mix-description {
-text-overflow: ellipsis;
+    text-overflow: ellipsis;
 }
 
-.searchResults header[role=banner] .titlearea {
-    -ms-grid-column: 2;
-    -ms-grid-columns: auto 20px 1fr 20px;
-    display: -ms-grid;
+
+section[role=main] {
+    width: 100%;
+    height: 100%;
 }
 
-    .searchResults header[role=banner] .titlearea .pagetitle {
-        width: auto;
-    }
+.browse {
+    height: 100%;
+    width: 100%;
+}
 
-    .searchResults header[role=banner] .titlearea .pagesubtitle {
-        -ms-grid-column: 3;
-        margin-top: 32px;
-    }
-
-.searchResults section[role=main] {
-    /* Define a grid with rows for the filters and results */
-    -ms-grid-columns: 1fr;
-    -ms-grid-rows: 180px 1fr;
-    -ms-grid-row: 1;
-    -ms-grid-row-span: 2;
-    display: -ms-grid;
+#searchResultsListView.win-listview {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    margin-bottom: 100px;
 }
 
     .searchResults section[role=main] .resultsmessage {
@@ -35,34 +29,9 @@ text-overflow: ellipsis;
         margin-top: 193px;
     }
 
-    .searchResults section[role=main] .filterarea {
-        -ms-font-feature-settings: "case" 1;
-        -ms-grid-row: 1;
-    }
-
-        .searchResults section[role=main] .filterarea .filterbar {
-            height: auto;
-            list-style-type: none;
-            margin-left: 80px;
-            margin-top: 133px;
-            max-width: calc(100% - 120px);
-        }
-
-            .searchResults section[role=main] .filterarea .filterbar li {
-                display: inline;
-                margin-right: 40px;
-                margin-top: 5px;
-                opacity: 0.6;
-            }
-
-                .searchResults section[role=main] .filterarea .filterbar li.highlight, .searchResults section[role=main] .filterarea .filterbar li:hover {
-                    opacity: 1.00;
-                }
 
 
     .searchResults section[role=main] .resultslist {
-        -ms-grid-row: 1;
-        -ms-grid-row-span: 2;
         height: 100%;
         position: relative;
         width: 100%;
@@ -84,34 +53,31 @@ text-overflow: ellipsis;
 
         .searchResults section[role=main] .resultslist .mix {
             /* Define a grid with columns for an icon, spacing and mix details */
-            -ms-grid-columns: 40px 1fr;
+            /*-ms-grid-columns: 40px 1fr;
             -ms-grid-rows: 1fr;
             display: -ms-grid;
             height: 64px;
             padding-left: 7px;
             padding-right: 7px;
             padding-top: 1px;
-            width: 280px;
+            width: 280px;*/
         }
 
             .searchResults section[role=main] .resultslist .mix .mix-image {
-                -ms-grid-column: 1;
+                /*-ms-grid-column: 1;
                 -ms-grid-row: 1;
                 height: 40px;
                 margin-top: 6px;
-                width: 40px;
+                width: 40px;*/
             }
 
             .searchResults section[role=main] .resultslist .mix .mix-content {
-                -ms-grid-column: 2;
+                /*-ms-grid-column: 2;
                 -ms-grid-row: 1;
-                margin-left: 10px;
+                margin-left: 10px;*/
             }
 
-                .searchResults section[role=main] .resultslist .mix .mix-content .mix-subtitle, .searchResults section[role=main] .resultslist .mix .mix-content .mix-description {
-                    opacity: 0.6;
-                }
-
+          
 @media screen and (-ms-view-state: snapped) {
     .searchResults header[role=banner] .titlearea {
         -ms-grid-columns: 1fr 20px;

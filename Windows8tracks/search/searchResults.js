@@ -50,8 +50,8 @@
         // populates the page elements with the app's data.
         ready: function (element, queryText) {
             var pageControl = element;
-            var listView = pageControl.querySelector("#searchResults").winControl;
-            listView.itemTemplate = pageControl.querySelector(".itemtemplate");
+            var listView = pageControl.querySelector("#searchResultsListView").winControl;
+            listView.itemTemplate = pageControl.querySelector("#mixTemplate");
             document.querySelector('.resultsmessage').style.display = "none";
             //listView.oniteminvoked = this.itemInvoked;
             handleQuery(pageControl, queryText);
@@ -94,7 +94,7 @@
         tagMixesWithMixSet(mixes, "searched");
         addMixesToAllMixes(mixes);
         var mixesList = new WinJS.Binding.List(mixes);
-        var listView = pageControl.querySelector("#searchResults").winControl;
+        var listView = pageControl.querySelector("#searchResultsListView").winControl;
         listView.itemDataSource = mixesList.dataSource;
     }
 
