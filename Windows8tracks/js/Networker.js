@@ -469,7 +469,7 @@
     };
 
     Networker.getTopTags = function (perPage,pageNumber) {
-        defaultOptions.url = "http://8tracks.com/tags.json?tags_per_page=" + perPage + "&tag_page=" + pageNumber;
+        defaultOptions.url = "http://8tracks.com/tags.json?per_page=" + perPage + "&page=" + pageNumber;
         return new WinJS.Promise(function (completed, errored, progress) {
             WinJS.xhr(defaultOptions).then(
                 function onComplete(response) {

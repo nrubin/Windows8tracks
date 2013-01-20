@@ -9,7 +9,7 @@
 }
 
 .list-view-container {
-width:100%;
+    width: 100%;
 }
 
 
@@ -17,7 +17,7 @@ width:100%;
     height: 100%;
     width: 100%;
     position: relative;
-    margin-bottom:100px;
+    margin-bottom: 100px;
 }
 
 #allMixesListView .win-container:not(.footprint):not(.hover) {
@@ -25,9 +25,9 @@ width:100%;
     /*border-color:white;*/
 }
 
+
 #allMixesListView .win-groupheader {
-   /*background-color:green;*/
-   min-width:1000px;
+    min-width: 1000px;
 }
 
 .mix-set-title {
@@ -70,12 +70,15 @@ width:100%;
 
 
 .tag {
-    height:60px;
-    width:100px;
-    text-align:center;
+height:200px;
+width:200px;
 }
 
 .tag-name {
-font-size: 12pt;
-margin-top: 4px;
+font-size:20pt;
+height: 50px;
+position:absolute;
+top: 75px;
+text-align:center;
+width:100%;
 }

@@ -112,10 +112,6 @@
         for (var i = 0; i < totalMixNumber; i++) {
             myArray.push(getDummyMixData(str));
         }
-        //var str = "tag";
-        //for (var i = 0; i < totalTagNumber; i++) {
-        //    myArray.push(getDummyMixData(str));
-        //}
         var arrayPromise = WinJS.Promise.wrap(myArray);
         arrayPromise.then(function completed(mixes) {
             renderDefaultMixes(mixes);
@@ -135,7 +131,7 @@
         listView.groupDataSource = myGroupedList.groups.dataSource;
     }
 
-    function getPlaceholderTags() {
+    function getTags() {
         Networker.getTopTags(totalTagNumber.toString(), "1").then(
             function completed(tags) {
                 var myArray = new Array();
@@ -151,7 +147,6 @@
         for (var i = 0; i < tags.length; i++) {
             globalMixList.push(tags[i]);
         }
-        document.querySelector("#allMixesListView").winControl.forceLayout();
     }
 
     function getRecommendedMixes() {
@@ -292,6 +287,7 @@
             return container;
         });
     }
+
     function loginStatusChanged(eventargs) {
         //this should only check if the status is different
         if (app.sessionState.currentlyLoggedIn != app.sessionState.previouslyLoggedIn) {
@@ -305,35 +301,39 @@
                 getListeningHistoryMixes();
                 getMixFeedMixes();
                 getRecommendedMixes();
+                getTags();
             } else {
                 console.log("you've logged out!");
                 replacePlaceholderMixes("favorite", []);
                 replacePlaceholderMixes("listeningHistory", []);
                 replacePlaceholderMixes("recommended", []);
+                getTags();
             }
         }
     }
        
-    
+    function processWindowHeight() {
+        verticalMixNumber = Math.floor(app.sessionState.screenSize.height / 200);
+        horizontalMixNumber = Math.floor(app.sessionState.screenSize.width / 500);
+        totalMixNumber = verticalMixNumber * horizontalMixNumber;
+        verticalTagNumber = Math.floor(app.sessionState.screenSize.height / 200);
+        horizontalTagNumber = Math.floor(app.sessionState.screenSize.width / 500);
+        totalTagNumber = verticalTagNumber * horizontalTagNumber
+        console.log("I want this many mixes:");
+        console.log(totalMixNumber);
+        console.log("and this many tags:");
+        console.log(totalTagNumber);
+    }
 
     WinJS.UI.Pages.define("/browse/browse.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
-            verticalMixNumber = Math.floor(app.sessionState.screenSize.height / 200);
-            horizontalMixNumber = Math.floor(app.sessionState.screenSize.width / 500);
-            totalMixNumber = verticalMixNumber * horizontalMixNumber;
-            verticalTagNumber = Math.floor(app.sessionState.screenSize.height / 50);
-            horizontalTagNumber = Math.floor(app.sessionState.screenSize.width / 100);
-            totalTagNumber = verticalTagNumber * horizontalTagNumber;
-            console.log("I want this many mixes:");
-            console.log(totalMixNumber);
-            console.log("and this many tags:");
-            console.log(totalTagNumber);
+            processWindowHeight();
             globalMixList = new WinJS.Binding.List();
             document.querySelector("#loggedInContainer").attachEvent("onpropertychange", loginStatusChanged);
             document.querySelector("#allMixesListView").winControl.itemTemplate = itemTemplateFunction;
-            getPlaceholderTags();
+            getTags();
             getPlaceholderMixes();
             getLatestMixes();
             if (app.sessionState.currentlyLoggedIn) {
