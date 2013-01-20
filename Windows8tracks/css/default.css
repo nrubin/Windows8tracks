@@ -1,6 +1,6 @@
 ﻿body {
-    background-color:#122C4B;
-    display:-ms-grid;
+    background-color: #122C4B;
+    display: -ms-grid;
     -ms-grid-columns: 20px 1fr;
     -ms-grid-rows: 50px 1fr;
 }
@@ -18,74 +18,81 @@
 }
 
 #playerContainer {
-display:none;
+    display: none;
 }
 
 #last-track {
-    color:white;
-    float:left;
-    display:none;
+    color: white;
+    float: left;
+    display: none;
 }
 
 #contenthost {
-height:100%;
-width:100%;
--ms-grid-row:2;
--ms-grid-column:2;
+    height: 100%;
+    width: 100%;
+    -ms-grid-row: 2;
+    -ms-grid-column: 2;
 }
 
 #userContainer {
     -ms-grid-column: 2;
     -ms-grid-row: 1;
-    position:absolute;
-    top:0px;
-    right:50px;
+    position: absolute;
+    top: 0px;
+    right: 50px;
     /*float:right;*/
-    margin-top:20px;
+    margin-top: 20px;
     /*margin-right:100px;*/
 }
 
     #userContainer a {
         margin-top: 30px;
-        margin-right:30px;
+        margin-right: 30px;
+    }
+
+.login {
+    color: white;
+}
+
+    .login:hover {
+    color:rgb(126, 126, 126);
     }
 
 header {
 }
 
 #loggedInContainer {
-display: none;
+    display: none;
 }
 
 #appBarButtonContainer {
-position:absolute;
-bottom: 0px;
-left: 125px;
+    position: absolute;
+    bottom: 0px;
+    left: 125px;
 }
 
 #appBarAlbumArt {
-position:absolute;
-left:15px;
-right:15px;
-top: 10px;
-bottom:10px;
-width:100px;
-height: 100px;
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    top: 10px;
+    bottom: 10px;
+    width: 100px;
+    height: 100px;
 }
 
 .songProgress {
-margin-left:130px;
-margin-top:15px;
-width: 300px;
-height:20px;
-background-color:#122C4B;
-color:rgba(35, 34, 34, 0.91);   
-border:solid 1px;
-border-color:white;
+    margin-left: 130px;
+    margin-top: 15px;
+    width: 300px;
+    height: 20px;
+    background-color: #122C4B;
+    color: rgba(35, 34, 34, 0.91);
+    border: solid 1px;
+    border-color: white;
 }
 
 #mainAppBar {
-height:120px;
-background-color:rgba(35, 34, 34, 0.91);
+    height: 120px;
+    background-color: rgba(35, 34, 34, 0.91);
 }
-

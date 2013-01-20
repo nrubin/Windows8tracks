@@ -9,7 +9,7 @@
         "favorite": "Liked By You",
         "latest": "Featured",
         "listeningHistory": "Listening History",
-        "recommended": "Recommeded For You",
+        "recommended": "Recommended For You",
         "tag" : "Browse By Tag"
     }
     var verticalMixNumber = 3;
@@ -132,7 +132,11 @@
     }
 
     function getTags() {
-        Networker.getTopTags(totalTagNumber.toString(), "1").then(
+        var numTags = totalTagNumber;
+        if (!app.sessionState.currentlyLoggedIn) {
+            numTags = Math.floor(totalTagNumber * 1.5);
+        }
+        Networker.getTopTags(numTags.toString(), "1").then(
             function completed(tags) {
                 var myArray = new Array();
                 for (var i = 0; i < tags.length; i++) {
@@ -185,9 +189,12 @@
             });
     }
 
-    function getLatestMixes(eventargs) {
-        console.log("getting latest mixes....");
-        Networker.getLatestMixes(totalMixNumber.toString(), "1").then(
+    function getLatestMixes(loggedIn) {
+        var numMixes = totalMixNumber;
+        if (!app.sessionState.currentlyLoggedIn) {
+            numMixes = Math.floor(totalMixNumber * 1.5);
+        }
+        Networker.getLatestMixes(numMixes.toString(), "1").then(
             function completed(mixes) {
                 processMixSet(mixes,"latest");
             }, function errored(response) {
