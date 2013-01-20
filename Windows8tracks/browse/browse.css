@@ -8,6 +8,10 @@
     width: 100%;
 }
 
+.list-view-container {
+width:100%;
+}
+
 
 #allMixesListView.win-listview {
     height: 100%;
@@ -67,7 +71,8 @@
 #tagsMixesListView.win-listview {
     height: 100%;
     width: 100%;
-    /*position: relative;*/
+    position: relative;
+    max-width:1000px;
 }
 
 .tag {

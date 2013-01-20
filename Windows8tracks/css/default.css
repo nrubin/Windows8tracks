@@ -3,7 +3,6 @@
     display:-ms-grid;
     -ms-grid-columns: 20px 1fr;
     -ms-grid-rows: 50px 1fr;
-    overflow:scroll;
 }
 
 @media screen and (-ms-view-state: fullscreen-landscape) {

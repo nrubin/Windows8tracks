@@ -469,15 +469,29 @@
     };
 
     Networker.getTopTags = function (perPage,pageNumber) {
-        defaultOptions.url = "http://8tracks.com/all/mixes/tags.json?tags_per_page=" + perPage + "&tag_page=" + pageNumber + "&include=tags";
+        defaultOptions.url = "http://8tracks.com/tags.json?tags_per_page=" + perPage + "&tag_page=" + pageNumber;
         return new WinJS.Promise(function (completed, errored, progress) {
             WinJS.xhr(defaultOptions).then(
                 function onComplete(response) {
-                    console.log("getting top tags succeeded!");
-                    console.log(response.responseText);
+                    try {
+                        var responseObj = JSON.parse(response.responseText);
+                    } catch (e) {
+                        console.log("getting top tags did not succeed");
+                        errored(response)
+                    }
+                    if (responseObj.status === "200 OK") {
+                        console.log("getting top tags succeeded!");
+                        console.log(response.responseText);
+                        completed(responseObj.tags);
+                    } else {
+                        console.log("getting top tags did not succeed");
+                        errored(response)
+                    }
+
                 }, function onError(response) {
                     console.log("getting top tags did not succeed");
                     console.log(response.responseText);
+                    errored(response);
                 }, function onProgress(response) {
 
                 });
