@@ -1,4 +1,14 @@
-﻿.mix-id {
+﻿section[role=main] {
+    width: 100%;
+    height: 100%;
+}
+
+.searchResults {
+height:100%;
+width:100%;
+}
+
+.mix-id {
     display: none;
 }
 
@@ -6,16 +16,6 @@
     text-overflow: ellipsis;
 }
 
-
-section[role=main] {
-    width: 100%;
-    height: 100%;
-}
-
-.browse {
-    height: 100%;
-    width: 100%;
-}
 
 #searchResultsListView.win-listview {
     height: 100%;

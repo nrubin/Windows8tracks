@@ -109,7 +109,7 @@
             myArray.push(getDummyMixData(str));
         }
         var str = "recommended";
-        for (var i = 0; i < totalMixNumber; i++) {
+        for (var i = 0; i < totalMixNumber;  i++) {
             myArray.push(getDummyMixData(str));
         }
         var arrayPromise = WinJS.Promise.wrap(myArray);

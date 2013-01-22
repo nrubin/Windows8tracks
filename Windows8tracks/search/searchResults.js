@@ -70,8 +70,10 @@
 
     function searchData(element, queryText) {
         var originalResults;
+        var header = document.querySelector("#searchResultsHeader");
+        header.innerText = "Search results for '" + queryText + "'"
         var resultsMessage = document.querySelector('.resultsmessage');
-        Networker.getMixesBySearchTerm(queryText, 20, 1).done(
+        Networker.getMixesBySearchTerm(queryText, 100, 1).done(
         function completed(mixes) {
             originalResults = mixes;
             formatResults(element, mixes);
@@ -137,7 +139,13 @@
         //tags a mix with the mix set it belongs to (e.g. "latest" or "favorite")
         for (var i = 0; i < mixes.length; i++) {
             var mix = mixes[i];
+            mix.progressBarDisplay = "none";
+            mix.mixTitleDisplay = "inline";
             mix.mixSetName = mixSetName;
+            mix.escapedCoverUrls = {}
+            for (var imgName in mix.cover_urls) {
+                mix.escapedCoverUrls[imgName] = "url('" + mix.cover_urls[imgName] + "')";//enabled cover urls in css
+            }
         }
     }
 
