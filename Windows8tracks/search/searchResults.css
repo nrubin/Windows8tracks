@@ -24,59 +24,6 @@ width:100%;
     margin-bottom: 100px;
 }
 
-    .searchResults section[role=main] .resultsmessage {
-        margin-left: 120px;
-        margin-top: 193px;
-    }
-
-
-
-    .searchResults section[role=main] .resultslist {
-        height: 100%;
-        position: relative;
-        width: 100%;
-        z-index: 0;
-    }
-
-        .searchResults section[role=main] .resultslist .win-horizontal.win-viewport .win-surface {
-            margin-bottom: 60px;
-            margin-left: 90px;
-            margin-right: 90px;
-            margin-top: 198px;
-        }
-
-        .searchResults section[role=main] .resultslist .win-container {
-            margin-bottom: 10px;
-            margin-left: 23px;
-            margin-right: 23px;
-        }
-
-        .searchResults section[role=main] .resultslist .mix {
-            /* Define a grid with columns for an icon, spacing and mix details */
-            /*-ms-grid-columns: 40px 1fr;
-            -ms-grid-rows: 1fr;
-            display: -ms-grid;
-            height: 64px;
-            padding-left: 7px;
-            padding-right: 7px;
-            padding-top: 1px;
-            width: 280px;*/
-        }
-
-            .searchResults section[role=main] .resultslist .mix .mix-image {
-                /*-ms-grid-column: 1;
-                -ms-grid-row: 1;
-                height: 40px;
-                margin-top: 6px;
-                width: 40px;*/
-            }
-
-            .searchResults section[role=main] .resultslist .mix .mix-content {
-                /*-ms-grid-column: 2;
-                -ms-grid-row: 1;
-                margin-left: 10px;*/
-            }
-
           
 @media screen and (-ms-view-state: snapped) {
     .searchResults header[role=banner] .titlearea {

@@ -21,6 +21,9 @@
     var utils = WinJS.Utilities;
     var searchPageURI = "/search/searchResults.html";
     var searchedMixes = {};
+    var verticalMixNumber = 3;
+    var horizontalMixNumber = 2;
+    var totalMixNumber = verticalMixNumber * horizontalMixNumber;
 
 
     WinJS.Application.addEventListener("activated", function (args) {
@@ -49,6 +52,7 @@
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, queryText) {
+            processWindowHeight();
             var pageControl = element;
             var listView = pageControl.querySelector("#searchResultsListView").winControl;
             listView.itemTemplate = pageControl.querySelector("#mixTemplate");
@@ -59,6 +63,14 @@
             addLoadCompleteEventListenersToListViews();
         }
     });
+
+    function processWindowHeight() {
+        verticalMixNumber = Math.floor(app.sessionState.screenSize.height / 200);
+        horizontalMixNumber = Math.floor(app.sessionState.screenSize.width / 500);
+        totalMixNumber = verticalMixNumber * horizontalMixNumber;
+        console.log("I want this many mixes:");
+        console.log(totalMixNumber);
+    }
 
     // This function executes each step required to perform a search.
     function handleQuery(pageControl, args) {
