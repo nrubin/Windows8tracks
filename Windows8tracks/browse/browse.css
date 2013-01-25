@@ -34,13 +34,20 @@
     float: right;
 }
 
-.mix-title-container {
+.mix-info-container {
     position: absolute;
     background-color: rgba(52, 50, 50, 0.76);
     bottom: 0;
     right: 0;
     left: 0;
-    height: 25px;
+}
+
+.mix-title-container {
+    position: absolute;
+    background-color: rgba(52, 50, 50, 0.76);
+    top: 0px;
+    right: 0px;
+    left: 0px;
 }
 
 .mix-title {
@@ -66,15 +73,15 @@
 
 
 .tag {
-height:200px;
-width:200px;
+    height: 200px;
+    width: 200px;
 }
 
 .tag-name {
-font-size:20pt;
-height: 50px;
-position:absolute;
-top: 75px;
-text-align:center;
-width:100%;
+    font-size: 20pt;
+    height: 50px;
+    position: absolute;
+    top: 75px;
+    text-align: center;
+    width: 100%;
 }
