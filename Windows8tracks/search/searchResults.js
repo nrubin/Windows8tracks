@@ -44,6 +44,10 @@
         }
     });
 
+    function userHasScrolled(eventargs) {
+        console.log("the user has scrolled this much: " + eventargs.wheelDelta.toString());
+    }
+
     function processWindowHeight() {
         verticalMixNumber = Math.floor(app.sessionState.screenSize.height / 200);
         horizontalMixNumber = Math.floor(app.sessionState.screenSize.width / 500);
@@ -65,7 +69,7 @@
         var header = document.querySelector("#searchResultsHeader");
         header.innerText = "Search results for \"" + queryText + "\""
         var resultsMessage = document.querySelector('.resultsmessage');
-        Networker.getMixesBySearchTerm(queryText, 20, 1).done(
+        Networker.getMixesBySearchTerm(queryText, 50, 1).done(
         function completed(mixes) {
             originalResults = mixes;
             formatResults(element, mixes);
@@ -90,6 +94,7 @@
         var mixesList = new WinJS.Binding.List(mixes);
         var listView = pageControl.querySelector("#searchResultsListView").winControl;
         listView.itemDataSource = mixesList.dataSource;
+        addLoadCompleteEventListenersToListViews();
     }
 
 
@@ -145,6 +150,7 @@
         var listViewDOM = eventargs.srcElement;
         var listViewWinControl = listViewDOM.winControl;
         if (listViewWinControl.loadingState === "complete") {
+            listViewDOM.addEventListener("mousewheel", userHasScrolled);
             var mixes = listViewDOM.querySelectorAll(".mix");
             for (var i = 0; i < mixes.length; i++) {
                 var mix = mixes[i];

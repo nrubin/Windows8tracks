@@ -1,15 +1,25 @@
-﻿section[role=main] {
+﻿.searchResults {
+    height: 100%;
+    width: 100%;
+    display: -ms-grid;
+    -ms-grid-rows: 100px 1fr;
+    -ms-grid-columns: 0px 1fr;
+}
+
+header[role=banner] {
+-ms-grid-column:2;
+-ms-grid-row:1;
+}
+
+section[role=main] {
+    -ms-grid-row: 2;
+    -ms-grid-column:2;
     width: 100%;
     height: 100%;
 }
 
-.searchResults {
-height:100%;
-width:100%;
-}
-
 #searchResultsHeader {
-font-size:28pt;
+    font-size: 28pt;
 }
 
 .mix-id {
@@ -25,35 +35,4 @@ font-size:28pt;
     height: 100%;
     width: 100%;
     position: relative;
-}
-
-          
-@media screen and (-ms-view-state: snapped) {
-    .searchResults header[role=banner] .titlearea {
-        -ms-grid-columns: 1fr 20px;
-    }
-
-        .searchResults header[role=banner] .titlearea .pagetitle {
-            margin-top: 0;
-        }
-
-    .searchResults section[role=main] {
-        /* Rows for the filters and the results */
-        -ms-grid-columns: 1fr;
-        -ms-grid-rows: 30px 1fr;
-        -ms-grid-row: 2;
-        -ms-grid-row-span: 1;
-        display: -ms-grid;
-    }
-
-        .searchResults section[role=main] .resultsmessage {
-            margin-left: 20px;
-            margin-top: 36px;
-        }
-}
-
-@media screen and (-ms-view-state: fullscreen-portrait) {
-    .searchResults section[role=main] .resultslist .win-horizontal.win-viewport .win-surface {
-        margin-left: 70px;
-    }
 }
