@@ -8,6 +8,10 @@ height:100%;
 width:100%;
 }
 
+#searchResultsHeader {
+font-size:28pt;
+}
+
 .mix-id {
     display: none;
 }
@@ -21,7 +25,6 @@ width:100%;
     height: 100%;
     width: 100%;
     position: relative;
-    margin-bottom: 100px;
 }
 
           

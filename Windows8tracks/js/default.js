@@ -8,6 +8,8 @@
     var app = WinJS.Application;
     var activation = Windows.ApplicationModel.Activation;
     var nav = WinJS.Navigation;
+    var searchPageURI = "/search/searchResults.html";
+    var appModel = Windows.ApplicationModel;
     var player = null;
 
     function reportSong(eventargs) {
@@ -208,11 +210,28 @@
         //appBarPlayPause.icon = 'play';
     }
 
+    appModel.Search.SearchPane.getForCurrentView().onquerysubmitted = function (args) {
+        nav.navigate(searchPageURI, args);
+    };
+
 
     app.onactivated = function (args) {
         app.sessionState.screenSize = {
             width: window.innerWidth,
             height: window.innerHeight
+        }
+        if (args.detail.kind === appModel.Activation.ActivationKind.search) {
+            args.setPromise(ui.processAll().then(function () {
+                if (!nav.location) {
+                    nav.history.current = {
+                        location: Application.navigator.home,
+                        initialState: {}
+                    };
+                }
+                return nav.navigate(searchPageURI, {
+                    queryText: args.detail.queryText
+                });
+            }));
         }
         if (args.detail.kind === activation.ActivationKind.launch) {
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {

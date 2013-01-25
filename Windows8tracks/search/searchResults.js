@@ -26,26 +26,6 @@
     var totalMixNumber = verticalMixNumber * horizontalMixNumber;
 
 
-    WinJS.Application.addEventListener("activated", function (args) {
-        if (args.detail.kind === appModel.Activation.ActivationKind.search) {
-            args.setPromise(ui.processAll().then(function () {
-                if (!nav.location) {
-                    nav.history.current = {
-                        location: Application.navigator.home,
-                        initialState: {}
-                    };
-                }
-                return nav.navigate(searchPageURI, {
-                    queryText: args.detail.queryText
-                });
-            }));
-        }
-    });
-
-    appModel.Search.SearchPane.getForCurrentView().onquerysubmitted = function (args) {
-        nav.navigate(searchPageURI, args);
-    };
-
     ui.Pages.define(searchPageURI, {
         lastSearch: "",
 
@@ -83,9 +63,9 @@
     function searchData(element, queryText) {
         var originalResults;
         var header = document.querySelector("#searchResultsHeader");
-        header.innerText = "Search results for '" + queryText + "'"
+        header.innerText = "Search results for \"" + queryText + "\""
         var resultsMessage = document.querySelector('.resultsmessage');
-        Networker.getMixesBySearchTerm(queryText, 100, 1).done(
+        Networker.getMixesBySearchTerm(queryText, 20, 1).done(
         function completed(mixes) {
             originalResults = mixes;
             formatResults(element, mixes);
