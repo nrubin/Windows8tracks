@@ -32,7 +32,7 @@
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, queryText) {
-            processWindowHeight();
+            utils.processWindowHeight(200,500);
             var pageControl = element;
             WinJS.UI.processAll().then(function () {
                 var listView = pageControl.querySelector("#searchResultsListView").winControl;
@@ -49,14 +49,6 @@
 
     function userHasScrolled(eventargs) {
         console.log("the user has scrolled this much: " + eventargs.wheelDelta.toString());
-    }
-
-    function processWindowHeight() {
-        verticalMixNumber = Math.floor(app.sessionState.screenSize.height / 200);
-        horizontalMixNumber = Math.floor(app.sessionState.screenSize.width / 500);
-        totalMixNumber = verticalMixNumber * horizontalMixNumber;
-        console.log("I want this many mixes:");
-        console.log(totalMixNumber);
     }
 
     // This function executes each step required to perform a search.
