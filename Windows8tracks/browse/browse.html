@@ -20,21 +20,7 @@
                     <span class="mix-set-title" data-win-bind="innerText: name"></span>
                 </div>
             </div>
-            <div id="mixTemplate" data-win-control="WinJS.Binding.Template">
-                <div class="mix" data-win-bind="style.backgroundImage: escapedCoverUrls.max200">
-                    <progress class="win-ring win-large mix-in-progress" data-win-bind="style.display: progressBarDisplay"></progress>
-                    <div class="mix-info-container" data-win-bind="style.display: mixTitleDisplay">
-                        <span class="mix-plays" data-win-bind=" innerText: likes_count"></span>
-                        <span class="mix-plays"> likes </span>
-                        <span class="mix-listens" data-win-bind=" innerText: plays_count"></span>
-                        <span class="mix-listens"> plays </span>
-                    </div>
-                    <div class="mix-title-container" data-win-bind="style.display: mixTitleDisplay">
-                        <h2 class="mix-title" data-win-bind="innerText : name"></h2>
-                    </div>
-                    <span class="mix-id" data-win-bind="innerText: id"></span>
-                </div>
-            </div>
+
             <div id="tagTemplate" data-win-control="WinJS.Binding.Template">
                 <div class="tag" data-win-bind="style.backgroundColor: backgroundColor">
                     <span class="tag-name" data-win-bind="innerText: name"></span>

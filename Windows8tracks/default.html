@@ -28,37 +28,52 @@
         <div id="loggedInContainer">
             <div id="userAvatar"></div>
             <span id="username"></span>
-            <span> | </span>
+            <span>| </span>
             <span id="launchLogout"><a class="login">Logout</a></span>
+        </div>
+    </div>
+    <div id="mixTemplate" data-win-control="WinJS.Binding.Template">
+        <div class="mix" data-win-bind="style.backgroundImage: escapedCoverUrls.max200">
+            <progress class="win-ring win-large mix-in-progress" data-win-bind="style.display: progressBarDisplay"></progress>
+            <div class="mix-info-container" data-win-bind="style.display: mixTitleDisplay">
+                <span class="mix-plays" data-win-bind=" innerText: likes_count"></span>
+                <span class="mix-plays">likes </span>
+                <span class="mix-listens" data-win-bind=" innerText: plays_count"></span>
+                <span class="mix-listens">plays </span>
+            </div>
+            <div class="mix-title-container" data-win-bind="style.display: mixTitleDisplay">
+                <h2 class="mix-title" data-win-bind="innerText : name"></h2>
+            </div>
+            <span class="mix-id" data-win-bind="innerText: id"></span>
         </div>
     </div>
     <div id="contenthost"
         data-win-control="Application.PageControlNavigator"
         data-win-options="{home: '/browse/browse.html'}">
     </div>
-        <div id="playerContainer">
-            <audio id="player" controls="controls" src="/media/songs/sampleSong.mp3" msaudiocategory="BackgroundCapableMedia"></audio>
-            <button id="nextSong">next song</button>
-            <button id="skipSong">skip song</button>
-        </div>
+    <div id="playerContainer">
+        <audio id="player" controls="controls" src="/media/songs/sampleSong.mp3" msaudiocategory="BackgroundCapableMedia"></audio>
+        <button id="nextSong">next song</button>
+        <button id="skipSong">skip song</button>
+    </div>
 
     <div data-win-control="WinJS.UI.AppBar" aria-label="Navigation Bar" id="mainAppBar"
-        data-win-options="{layout:'custom',placement:'bottom'}" >
+        data-win-options="{layout:'custom',placement:'bottom'}">
         <div id="playControlContainer">
             <div id="albumArtContainer">
-            <img id="appBarAlbumArt" src="#" alt="img" />
-                </div>
-            <div id="notAlbumArt">
-            <progress class="songProgress" id="songProgressBar" value="0" max="100" ></progress>
-            <div id="appBarButtonContainer">
-            <button id="appBarPlayPause" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'play', label:'Play', section:'global'}"></button>
-            <button id="appBarSkipSong" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'next', label:'Skip', section:'global'}"></button>
-            <button id="appBarNextMix" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'forward', label:'Next Mix', section:'global'}"></button>
-            <h3 id="appBarSongTitle"></h3>
-            <h5 id="appBarSongArtist"></h5>
+                <img id="appBarAlbumArt" src="#" alt="img" />
             </div>
+            <div id="notAlbumArt">
+                <progress class="songProgress" id="songProgressBar" value="0" max="100"></progress>
+                <div id="appBarButtonContainer">
+                    <button id="appBarPlayPause" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'play', label:'Play', section:'global'}"></button>
+                    <button id="appBarSkipSong" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'next', label:'Skip', section:'global'}"></button>
+                    <button id="appBarNextMix" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'forward', label:'Next Mix', section:'global'}"></button>
+                    <h3 id="appBarSongTitle"></h3>
+                    <h5 id="appBarSongArtist"></h5>
                 </div>
-          </div>
+            </div>
+        </div>
     </div>
 
 </body>

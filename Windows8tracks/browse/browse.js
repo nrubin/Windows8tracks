@@ -72,27 +72,8 @@
         }
     }
 
-    function linkMixes(mixes) {
-        /*
-        I want to know the next item in a mix set, so I'll get to it by turning mix sets into a linked list. This way I can also know if I'm at the end of a mix set (since the last mix won't have a nextMix attr)
-        */
-        for (var i = 0; i < mixes.length - 1; i++) {
-            var mix = mixes[i];
-            mix.nextMix = mixes[i + 1];
-        }
-    }
 
-    function addMixToAllMixes(mix) {
-        var id = mix.id;
-        allMixes[id] = mix;
-    }
 
-    function addMixesToAllMixes(mixes) {
-        for (var i = 0; i < mixes.length; i++) {
-            var mix = mixes[i];
-            addMixToAllMixes(mix);
-        }
-    }
 
     function getPlaceholderMixes() {
         var myArray = new Array();
@@ -119,8 +100,8 @@
     }
     function renderDefaultMixes(mixes) {
         //tagMixesWithMixSet(mixes, "dj");
-        addMixesToAllMixes(mixes);
-        linkMixes(mixes);
+        utils.addMixToAllMixes(mixes,allMixes);
+        utils.linkMixes(mixes);
         app.sessionState.defaultMixSet = mixes;
         var listView = document.querySelector("#allMixesListView").winControl;
         for (var i = 0; i < mixes.length; i++) {
@@ -238,8 +219,8 @@
 
     function processMixSet(mixes,mixSetName) {
         tagMixesWithMixSet(mixes, mixSetName);
-        addMixesToAllMixes(mixes);
-        linkMixes(mixes);
+        utils.addMixToAllMixes(mixes,allMixes);
+        utils.linkMixes(mixes);
         app.sessionState.mixSets[mixSetName] = mixes;
         replacePlaceholderMixes(mixSetName, mixes);
     }

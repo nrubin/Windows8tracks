@@ -38,6 +38,23 @@
         document.querySelector("#mainAppBar").winControl.show();
     };
 
+    utils.addMixToAllMixes = function (mixesToAdd,mixTracker){
+        for (var i = 0; i < mixesToAdd.length; i++) {
+            var mix = mixesToAdd[i];
+            mixTracker[mix.id] = mix;
+        }
+    };
+
+    utils.linkMixes = function (mixes) {
+        /*
+I want to know the next item in a mix set, so I'll get to it by turning mix sets into a linked list. This way I can also know if I'm at the end of a mix set (since the last mix won't have a nextMix attr)
+*/
+        for (var i = 0; i < mixes.length - 1; i++) {
+            var mix = mixes[i];
+            mix.nextMix = mixes[i + 1];
+        }
+    }
+
     utils.getRandomNumberFromRange = function (min, max) {
         return Math.random() * (max - min) + min;
     }

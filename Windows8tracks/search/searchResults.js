@@ -34,13 +34,16 @@
         ready: function (element, queryText) {
             processWindowHeight();
             var pageControl = element;
-            var listView = pageControl.querySelector("#searchResultsListView").winControl;
-            listView.itemTemplate = pageControl.querySelector("#mixTemplate");
-            document.querySelector('.resultsmessage').style.display = "none";
-            //listView.oniteminvoked = this.itemInvoked;
-            handleQuery(pageControl, queryText);
-            listView.element.focus();
-            addLoadCompleteEventListenersToListViews();
+            WinJS.UI.processAll().then(function () {
+                var listView = pageControl.querySelector("#searchResultsListView").winControl;
+                listView.itemTemplate = pageControl.querySelector("#mixTemplate");
+                document.querySelector('.resultsmessage').style.display = "none";
+                //listView.oniteminvoked = this.itemInvoked;
+                handleQuery(pageControl, queryText);
+                listView.element.focus();
+                addLoadCompleteEventListenersToListViews();
+            })
+
         }
     });
 
@@ -69,7 +72,7 @@
         var header = document.querySelector("#searchResultsHeader");
         header.innerText = "Search results for \"" + queryText + "\""
         var resultsMessage = document.querySelector('.resultsmessage');
-        Networker.getMixesBySearchTerm(queryText, 50, 1).done(
+        Networker.getMixesBySearchTerm(queryText, 20, 1).done(
         function completed(mixes) {
             originalResults = mixes;
             formatResults(element, mixes);
@@ -88,9 +91,9 @@
         if (mixes.length > 0) {
             document.querySelector('.resultsmessage').style.display = "none";
         }
-        linkMixes(mixes);
+        utils.linkMixes(mixes);
         tagMixesWithMixSet(mixes, "searched");
-        addMixesToAllMixes(mixes);
+        utils.addMixesToAllMixes(mixes, searchedMixes);
         var mixesList = new WinJS.Binding.List(mixes);
         var listView = pageControl.querySelector("#searchResultsListView").winControl;
         listView.itemDataSource = mixesList.dataSource;
@@ -107,28 +110,6 @@
             listView.layout = new ui.ListLayout();
             document.querySelector(".titlearea .pagetitle").textContent = "Windows8tracks";
             document.querySelector(".titlearea .pagesubtitle").textContent = "Results for “" + this._lastSearch + '”';
-        }
-    }
-
-    function addMixToAllMixes(mix) {
-        var id = mix.id;
-        searchedMixes[id] = mix;
-    }
-
-    function addMixesToAllMixes(mixes) {
-        for (var i = 0; i < mixes.length; i++) {
-            var mix = mixes[i];
-            addMixToAllMixes(mix);
-        }
-    }
-
-    function linkMixes(mixes) {
-        /*
-        I want to know the next item in a mix set, so I'll get to it by turning mix sets into a linked list. This way I can also know if I'm at the end of a mix set (since the last mix won't have a nextMix attr)
-        */
-        for (var i = 0; i < mixes.length - 1; i++) {
-            var mix = mixes[i];
-            mix.nextMix = mixes[i + 1];
         }
     }
 
