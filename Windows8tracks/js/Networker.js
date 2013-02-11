@@ -498,6 +498,26 @@
         });
     }
 
+    Networker.downloadImage = function (imageUrl, imageDirectory, imageName) {
+        var options = {
+            type: "GET",
+            url: imageUrl,
+            responseType: "blob"
+        }
+        return new WinJS.Promise(function (completed, errored, progress) {
+            WinJS.xhr(options).then(
+                function onComplete(response) {
+                    var blob = response
+                    Windows.Storage.ApplicationData.current.localFolder.createFileAsync(imageName, Windows.Storage.CreationCollisionOption.replaceExisting).then(
+                    }
+                },
+                function onError(response) { errored(response) }, 
+                function inProgress(response) { })
+        }
+                )
+
+    };
+
     Networker.getAlbumArt = function (artistName, album) {
         //http://webservices.amazon.com/onca/xml?
         //    Service=AWSECommerceService&

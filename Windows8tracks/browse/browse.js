@@ -100,7 +100,7 @@
     }
     function renderDefaultMixes(mixes) {
         //tagMixesWithMixSet(mixes, "dj");
-        utils.addMixToAllMixes(mixes,allMixes);
+        utils.addMixesToAllMixes(mixes,allMixes);
         utils.linkMixes(mixes);
         app.sessionState.defaultMixSet = mixes;
         var listView = document.querySelector("#allMixesListView").winControl;
@@ -219,7 +219,7 @@
 
     function processMixSet(mixes,mixSetName) {
         tagMixesWithMixSet(mixes, mixSetName);
-        utils.addMixToAllMixes(mixes,allMixes);
+        utils.addMixesToAllMixes(mixes,allMixes);
         utils.linkMixes(mixes);
         app.sessionState.mixSets[mixSetName] = mixes;
         replacePlaceholderMixes(mixSetName, mixes);

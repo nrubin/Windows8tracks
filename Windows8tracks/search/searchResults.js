@@ -18,7 +18,6 @@
     var app = WinJS.Application;
     var nav = WinJS.Navigation;
     var ui = WinJS.UI;
-    var utils = WinJS.Utilities;
     var searchPageURI = "/search/searchResults.html";
     var searchedMixes = {};
     var verticalMixNumber = 3;
@@ -32,11 +31,11 @@
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, queryText) {
-            utils.processWindowHeight(200,500);
+            totalMixNumber = utils.processWindowHeight(200,500);
             var pageControl = element;
             WinJS.UI.processAll().then(function () {
-                var listView = pageControl.querySelector("#searchResultsListView").winControl;
-                listView.itemTemplate = pageControl.querySelector("#mixTemplate");
+                var listView = document.querySelector("#searchResultsListView").winControl;
+                listView.itemTemplate = document.querySelector("#mixTemplate");
                 document.querySelector('.resultsmessage').style.display = "none";
                 //listView.oniteminvoked = this.itemInvoked;
                 handleQuery(pageControl, queryText);
@@ -64,7 +63,7 @@
         var header = document.querySelector("#searchResultsHeader");
         header.innerText = "Search results for \"" + queryText + "\""
         var resultsMessage = document.querySelector('.resultsmessage');
-        Networker.getMixesBySearchTerm(queryText, 20, 1).done(
+        Networker.getMixesBySearchTerm(queryText, totalMixNumber * 2, 1).done(
         function completed(mixes) {
             originalResults = mixes;
             formatResults(element, mixes);
@@ -87,7 +86,7 @@
         tagMixesWithMixSet(mixes, "searched");
         utils.addMixesToAllMixes(mixes, searchedMixes);
         var mixesList = new WinJS.Binding.List(mixes);
-        var listView = pageControl.querySelector("#searchResultsListView").winControl;
+        var listView = document.querySelector("#searchResultsListView").winControl;
         listView.itemDataSource = mixesList.dataSource;
         addLoadCompleteEventListenersToListViews();
     }

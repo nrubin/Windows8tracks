@@ -38,7 +38,7 @@
         document.querySelector("#mainAppBar").winControl.show();
     };
 
-    utils.addMixToAllMixes = function (mixesToAdd,mixTracker){
+    utils.addMixesToAllMixes = function (mixesToAdd,mixTracker){
         for (var i = 0; i < mixesToAdd.length; i++) {
             var mix = mixesToAdd[i];
             mixTracker[mix.id] = mix;
@@ -68,11 +68,12 @@
     }
 
     utils.processWindowHeight = function (heightSize,widthSize) {
-        verticalMixNumber = Math.floor(app.sessionState.screenSize.height / heightSize);
-        horizontalMixNumber = Math.floor(app.sessionState.screenSize.width / widthSize);
-        totalMixNumber = verticalMixNumber * horizontalMixNumber;
+        var verticalMixNumber = Math.floor(app.sessionState.screenSize.height / heightSize);
+        var horizontalMixNumber = Math.floor(app.sessionState.screenSize.width / widthSize);
+        var totalMixNumber = verticalMixNumber * horizontalMixNumber;
         console.log("I want this many mixes:");
         console.log(totalMixNumber);
+        return totalMixNumber;
     }
 
     utils.getRandomNumberFromRange = function (min, max) {

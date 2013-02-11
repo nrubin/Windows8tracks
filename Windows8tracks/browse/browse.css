@@ -21,6 +21,11 @@
     /*border-color:white;*/
 }
 
+#allMixesListView.win-listview :not(.win-footprint).win-container {
+    background-color: transparent;
+}
+
+
 
 #allMixesListView .win-groupheader {
     min-width: 1000px;
