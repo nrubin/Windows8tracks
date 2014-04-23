@@ -21,8 +21,6 @@
         headers: headers,
     }
 
-    var AmazonSecretKey = "Hze+DufofO8Bky0wNdtErkmPLk4qa6sIDlOSS3kw"
-    var AmazonAccessKey = "AKIAIALLLG2CUNSPGLYQ"
     Networker.login = function (username, password) {
         /* 
         logs a given unane/pw combo into 8tracks. Sets the user token and play tokens
